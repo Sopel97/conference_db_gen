@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>15.0</VCProjectVersion>
+    <ProjectGuid>{CE68B607-22A9-470C-8BD8-DE0D6D6A80BA}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>conferencedatabasegen</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <PrecompiledHeaderFile />
+      <AdditionalOptions>/permissive- %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>C:\dev\conference_database_gen\conference_database_gen\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <PrecompiledHeaderFile />
+      <AdditionalOptions>/permissive- %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>C:\dev\conference_database_gen\conference_database_gen\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <PrecompiledHeaderFile />
+      <AdditionalOptions>/permissive- %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>C:\dev\conference_database_gen\conference_database_gen\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <PrecompiledHeaderFile />
+      <AdditionalOptions>/permissive- %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>C:\dev\conference_database_gen\conference_database_gen\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="conference_database_gen.cpp" />
+    <ClCompile Include="src\ConferenceDatabase\ConferenceDatabase.cpp" />
+    <ClCompile Include="src\ConferenceDatabase\Tables\Client.cpp" />
+    <ClCompile Include="src\ConferenceDatabase\Tables\Company.cpp" />
+    <ClCompile Include="src\ConferenceDatabase\Tables\Conference.cpp" />
+    <ClCompile Include="src\ConferenceDatabase\Tables\ConferenceDay.cpp" />
+    <ClCompile Include="src\ConferenceDatabase\Tables\ConferenceDayPrice.cpp" />
+    <ClCompile Include="src\ConferenceDatabase\Tables\ConferenceDayReservation.cpp" />
+    <ClCompile Include="src\ConferenceDatabase\Tables\Country.cpp" />
+    <ClCompile Include="src\ConferenceDatabase\Tables\Participant.cpp" />
+    <ClCompile Include="src\ConferenceDatabase\Tables\Person.cpp" />
+    <ClCompile Include="src\ConferenceDatabase\Tables\PriceRange.cpp" />
+    <ClCompile Include="src\ConferenceDatabase\Tables\Student.cpp" />
+    <ClCompile Include="src\ConferenceDatabase\Tables\Workshop.cpp" />
+    <ClCompile Include="src\ConferenceDatabase\Tables\WorkshopReservation.cpp" />
+    <ClCompile Include="src\Csv\CsvDocument.cpp" />
+    <ClCompile Include="src\Database\Database.cpp" />
+    <ClCompile Include="src\Database\Record.cpp" />
+    <ClCompile Include="src\Database\Table.cpp" />
+    <ClCompile Include="src\DateTime.cpp" />
+    <ClCompile Include="src\Generators\CompanyTableGenerator.cpp" />
+    <ClCompile Include="src\Generators\ConferenceDatabaseGenerator.cpp" />
+    <ClCompile Include="src\Generators\CountryTableGenerator.cpp" />
+    <ClCompile Include="src\Generators\NameGenerator.cpp" />
+    <ClCompile Include="src\Generators\PersonTableGenerator.cpp" />
+    <ClCompile Include="src\Price.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\ConferenceDatabase\ConferenceDatabase.h" />
+    <ClInclude Include="include\ConferenceDatabase\Tables\Client.h" />
+    <ClInclude Include="include\ConferenceDatabase\Tables\Company.h" />
+    <ClInclude Include="include\ConferenceDatabase\Tables\Conference.h" />
+    <ClInclude Include="include\ConferenceDatabase\Tables\ConferenceDay.h" />
+    <ClInclude Include="include\ConferenceDatabase\Tables\ConferenceDayPrice.h" />
+    <ClInclude Include="include\ConferenceDatabase\Tables\ConferenceDayReservation.h" />
+    <ClInclude Include="include\ConferenceDatabase\Tables\Country.h" />
+    <ClInclude Include="include\ConferenceDatabase\Tables\Participant.h" />
+    <ClInclude Include="include\ConferenceDatabase\Tables\Person.h" />
+    <ClInclude Include="include\ConferenceDatabase\Tables\PriceRange.h" />
+    <ClInclude Include="include\ConferenceDatabase\Tables\Student.h" />
+    <ClInclude Include="include\ConferenceDatabase\Tables\Workshop.h" />
+    <ClInclude Include="include\ConferenceDatabase\Tables\WorkshopReservation.h" />
+    <ClInclude Include="include\Csv\CsvDocument.h" />
+    <ClInclude Include="include\Csv\CsvRecord.h" />
+    <ClInclude Include="include\Database\Database.h" />
+    <ClInclude Include="include\Database\Record.h" />
+    <ClInclude Include="include\Database\Table.h" />
+    <ClInclude Include="include\DateTime.h" />
+    <ClInclude Include="include\Generators\Common.h" />
+    <ClInclude Include="include\Generators\CompanyTableGenerator.h" />
+    <ClInclude Include="include\Generators\ConferenceDatabaseGenerator.h" />
+    <ClInclude Include="include\Generators\CountryTableGenerator.h" />
+    <ClInclude Include="include\Generators\DateTimeGenerator.h" />
+    <ClInclude Include="include\Generators\DurationGenerator.h" />
+    <ClInclude Include="include\Generators\MarkovChainsDictionary.h" />
+    <ClInclude Include="include\Generators\NameGenerator.h" />
+    <ClInclude Include="include\Generators\PersonTableGenerator.h" />
+    <ClInclude Include="include\Generators\PhoneNumberFormatGenerator.h" />
+    <ClInclude Include="include\Generators\PhoneNumberGenerator.h" />
+    <ClInclude Include="include\Generators\TableGenerator.h" />
+    <ClInclude Include="include\Price.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

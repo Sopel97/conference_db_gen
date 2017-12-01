@@ -34,12 +34,10 @@ Debug
 *.ilk
 *.pdb
 *.sdf
-*.sln
 *.log
 *.tlog
 *.enc
 *.idb
-*.vcxproj*
 *.user
 *.suo
 *.iobj

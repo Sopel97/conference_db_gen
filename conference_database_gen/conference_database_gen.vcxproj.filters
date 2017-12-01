@@ -1,0 +1,230 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Source Files\src">
+      <UniqueIdentifier>{b77fb6cf-d75b-43d4-8b7e-94fa8e0a985d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\include">
+      <UniqueIdentifier>{10c61ceb-ffa0-44de-aa4c-4865b06cbd8e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\include\Csv">
+      <UniqueIdentifier>{8a2da479-97db-45f4-b15d-952f4b594932}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\include\Database">
+      <UniqueIdentifier>{3527719b-93a2-4279-be25-91b15459c07c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\include\ConferenceDatabase">
+      <UniqueIdentifier>{89ebe5e0-e069-42fd-bee8-3043f1867cae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\include\Generators">
+      <UniqueIdentifier>{9057d69f-6d50-4581-8085-12192cea1588}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\src\Csv">
+      <UniqueIdentifier>{f7cf1eba-319a-4c1d-86c3-6d4139feafe4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\src\Database">
+      <UniqueIdentifier>{1960f074-efcd-4236-a3ad-070ab299605c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\src\ConferenceDatabase">
+      <UniqueIdentifier>{fc3c0bdc-1eeb-4f31-8003-3f7ef6ca9d50}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\src\Generators">
+      <UniqueIdentifier>{9bde8fc5-1737-4a76-926f-a53f84cc4310}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\include\ConferenceDatabase\Tables">
+      <UniqueIdentifier>{416d05b9-f5c3-4e4e-b569-84e6847b94f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\src\ConferenceDatabase\Tables">
+      <UniqueIdentifier>{6f3787e3-2ce7-4cbc-8a32-fbde405f8afc}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="conference_database_gen.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Csv\CsvDocument.cpp">
+      <Filter>Source Files\src\Csv</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Database\Database.cpp">
+      <Filter>Source Files\src\Database</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Database\Record.cpp">
+      <Filter>Source Files\src\Database</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Database\Table.cpp">
+      <Filter>Source Files\src\Database</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ConferenceDatabase\Tables\Client.cpp">
+      <Filter>Source Files\src\ConferenceDatabase\Tables</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ConferenceDatabase\Tables\Company.cpp">
+      <Filter>Source Files\src\ConferenceDatabase\Tables</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ConferenceDatabase\Tables\Conference.cpp">
+      <Filter>Source Files\src\ConferenceDatabase\Tables</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ConferenceDatabase\Tables\ConferenceDay.cpp">
+      <Filter>Source Files\src\ConferenceDatabase\Tables</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ConferenceDatabase\Tables\ConferenceDayPrice.cpp">
+      <Filter>Source Files\src\ConferenceDatabase\Tables</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ConferenceDatabase\Tables\ConferenceDayReservation.cpp">
+      <Filter>Source Files\src\ConferenceDatabase\Tables</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ConferenceDatabase\Tables\Participant.cpp">
+      <Filter>Source Files\src\ConferenceDatabase\Tables</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ConferenceDatabase\Tables\Person.cpp">
+      <Filter>Source Files\src\ConferenceDatabase\Tables</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ConferenceDatabase\Tables\PriceRange.cpp">
+      <Filter>Source Files\src\ConferenceDatabase\Tables</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ConferenceDatabase\Tables\Student.cpp">
+      <Filter>Source Files\src\ConferenceDatabase\Tables</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ConferenceDatabase\Tables\Workshop.cpp">
+      <Filter>Source Files\src\ConferenceDatabase\Tables</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ConferenceDatabase\Tables\WorkshopReservation.cpp">
+      <Filter>Source Files\src\ConferenceDatabase\Tables</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ConferenceDatabase\ConferenceDatabase.cpp">
+      <Filter>Source Files\src\ConferenceDatabase</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Generators\ConferenceDatabaseGenerator.cpp">
+      <Filter>Source Files\src\Generators</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Generators\NameGenerator.cpp">
+      <Filter>Source Files\src\Generators</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Generators\PersonTableGenerator.cpp">
+      <Filter>Source Files\src\Generators</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Price.cpp">
+      <Filter>Source Files\src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Generators\CompanyTableGenerator.cpp">
+      <Filter>Source Files\src\Generators</Filter>
+    </ClCompile>
+    <ClCompile Include="src\DateTime.cpp">
+      <Filter>Source Files\src</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ConferenceDatabase\Tables\Country.cpp">
+      <Filter>Source Files\src\ConferenceDatabase\Tables</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Generators\CountryTableGenerator.cpp">
+      <Filter>Source Files\src\Generators</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\Csv\CsvDocument.h">
+      <Filter>Header Files\include\Csv</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Csv\CsvRecord.h">
+      <Filter>Header Files\include\Csv</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Database\Database.h">
+      <Filter>Header Files\include\Database</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Database\Record.h">
+      <Filter>Header Files\include\Database</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Database\Table.h">
+      <Filter>Header Files\include\Database</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ConferenceDatabase\Tables\Client.h">
+      <Filter>Header Files\include\ConferenceDatabase\Tables</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ConferenceDatabase\Tables\Company.h">
+      <Filter>Header Files\include\ConferenceDatabase\Tables</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ConferenceDatabase\Tables\Conference.h">
+      <Filter>Header Files\include\ConferenceDatabase\Tables</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ConferenceDatabase\Tables\ConferenceDay.h">
+      <Filter>Header Files\include\ConferenceDatabase\Tables</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ConferenceDatabase\Tables\ConferenceDayPrice.h">
+      <Filter>Header Files\include\ConferenceDatabase\Tables</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ConferenceDatabase\Tables\ConferenceDayReservation.h">
+      <Filter>Header Files\include\ConferenceDatabase\Tables</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ConferenceDatabase\Tables\Participant.h">
+      <Filter>Header Files\include\ConferenceDatabase\Tables</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ConferenceDatabase\Tables\Person.h">
+      <Filter>Header Files\include\ConferenceDatabase\Tables</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ConferenceDatabase\Tables\PriceRange.h">
+      <Filter>Header Files\include\ConferenceDatabase\Tables</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ConferenceDatabase\Tables\Student.h">
+      <Filter>Header Files\include\ConferenceDatabase\Tables</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ConferenceDatabase\Tables\Workshop.h">
+      <Filter>Header Files\include\ConferenceDatabase\Tables</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ConferenceDatabase\Tables\WorkshopReservation.h">
+      <Filter>Header Files\include\ConferenceDatabase\Tables</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ConferenceDatabase\ConferenceDatabase.h">
+      <Filter>Header Files\include\ConferenceDatabase</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Generators\ConferenceDatabaseGenerator.h">
+      <Filter>Header Files\include\Generators</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Generators\NameGenerator.h">
+      <Filter>Header Files\include\Generators</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Generators\PersonTableGenerator.h">
+      <Filter>Header Files\include\Generators</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Generators\TableGenerator.h">
+      <Filter>Header Files\include\Generators</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Price.h">
+      <Filter>Header Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Generators\MarkovChainsDictionary.h">
+      <Filter>Header Files\include\Generators</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Generators\CompanyTableGenerator.h">
+      <Filter>Header Files\include\Generators</Filter>
+    </ClInclude>
+    <ClInclude Include="include\DateTime.h">
+      <Filter>Header Files\include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Generators\DateTimeGenerator.h">
+      <Filter>Header Files\include\Generators</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Generators\DurationGenerator.h">
+      <Filter>Header Files\include\Generators</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Generators\PhoneNumberGenerator.h">
+      <Filter>Header Files\include\Generators</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Generators\PhoneNumberFormatGenerator.h">
+      <Filter>Header Files\include\Generators</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ConferenceDatabase\Tables\Country.h">
+      <Filter>Header Files\include\ConferenceDatabase\Tables</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Generators\Common.h">
+      <Filter>Header Files\include\Generators</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Generators\CountryTableGenerator.h">
+      <Filter>Header Files\include\Generators</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
