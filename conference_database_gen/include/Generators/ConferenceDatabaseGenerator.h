@@ -1,0 +1,162 @@
+#pragma once
+
+#include <vector>
+#include <fstream>
+
+#include "ConferenceDatabase/ConferenceDatabase.h"
+
+#include "CountryTableGenerator.h"
+#include "PersonTableGenerator.h"
+#include "CompanyTableGenerator.h"
+#include "NameGenerator.h"
+#include "MarkovChainsDictionary.h"
+#include "Common.h"
+
+class ConferenceDatabaseGenerator
+{
+    static constexpr int markovChainsDepth = 3;
+public:
+    using ResultType = ConferenceDatabase;
+    using DictionaryType = MarkovChainsDictionary<std::string>;
+
+    ConferenceDatabaseGenerator(int numFirstNames, int numLastNames, int numCountries, int numCitiesPerCountry) :
+        m_numFirstNames(numFirstNames),
+        m_numLastNames(numLastNames),
+        m_numCountries(numCountries),
+        m_numCitiesPerCountry(numCitiesPerCountry)
+    {
+
+    }
+
+    template <class TRng>
+    ConferenceDatabase operator()(TRng& rng) const
+    {
+        static constexpr int numPeople = 10000;
+        static constexpr int numCompanies = 100;
+
+        ConferenceDatabase database;
+
+        auto firstNames = Common::generate<NameGenerator>(rng, m_numFirstNames, createFirstNameDictionary(), 3, 3, 9);
+        auto lastNames = Common::generate<NameGenerator>(rng, m_numLastNames, createLastNameDictionary(), 4, 4, 11);
+
+        DictionaryType addressDictionary = createAddressDictionary();
+        DictionaryType postalCodeDictionary = createPostalCodeDictionary();
+
+        std::vector<std::vector<std::string>> cityNamesByCountry;
+        {
+            cityNamesByCountry.resize(m_numCountries);
+            DictionaryType cityDictionary = createCityDictionary();
+            for (int i = 0; i < m_numCountries; ++i)
+            {
+                cityNamesByCountry[i] = Common::generate<NameGenerator>(rng, m_numCitiesPerCountry, cityDictionary, 4, 18, 25);
+            }
+        }
+
+        auto phoneGeneratorFormats = Common::generate<PhoneNumberFormatGenerator>(rng, m_numCountries, 2, 4, 0, 4, 8, 10, 0.5f);
+        std::vector<PhoneNumberGenerator> phoneGenerators;
+        phoneGenerators.reserve(m_numCountries);
+        for (int i = 0; i < m_numCountries; ++i)
+        {
+            phoneGenerators.emplace_back(phoneGeneratorFormats[i]);
+        }
+
+        DateTimeGenerator birthDateGenerator(DateTime(Years{ 1950 }), DateTime(Years{ 1998 }));
+
+        DictionaryType countryDictionary = createCountryDictionary();
+        const auto& countries = database.table<Country>() = TableGenerator<Country>(
+            countryDictionary,
+            m_numCountries
+            )(rng);
+
+        database.table<Person>() = TableGenerator<Person>(
+            firstNames,
+            lastNames,
+            birthDateGenerator,
+            addressDictionary,
+            postalCodeDictionary,
+            countries,
+            cityNamesByCountry,
+            phoneGenerators,
+            numPeople
+            )(rng);
+
+        DictionaryType companyNameDictionary = createCompanyNameDictionary();
+
+        database.table<Company>() = TableGenerator<Company>(
+            companyNameDictionary,
+            firstNames,
+            lastNames,
+            addressDictionary,
+            postalCodeDictionary,
+            countries,
+            cityNamesByCountry,
+            phoneGenerators,
+            numCompanies
+            )(rng);
+
+
+        return database;
+    }
+
+private:
+    int m_numFirstNames;
+    int m_numLastNames;
+    int m_numCountries;
+    int m_numCitiesPerCountry;
+
+    static std::vector<std::string> readTrainingData(const std::string& path)
+    {
+        std::vector<std::string> lines;
+
+        std::ifstream file(path);
+        for (;;)
+        {
+            std::string line;
+            std::getline(file, line);
+            if (file.eof()) break;
+
+            lines.emplace_back(std::move(line));
+        }
+
+        return lines;
+    }
+
+    static void sortByLength(std::vector<std::string>& strings)
+    {
+        std::sort(strings.begin(), strings.end(), [](const std::string& lhs, const std::string& rhs) {return lhs.size() < rhs.size(); });
+    }
+
+    static DictionaryType createDictionary(const std::string& path)
+    {
+        std::vector<std::string> lines = readTrainingData(path);
+        return DictionaryType(lines.begin(), lines.end(), markovChainsDepth);
+    }
+    static DictionaryType createAddressDictionary()
+    {
+        return createDictionary("training_data/addresses.txt");
+    }
+    static DictionaryType createPostalCodeDictionary()
+    {
+        return createDictionary("training_data/postal_codes.txt");
+    }
+    static DictionaryType createCompanyNameDictionary()
+    {
+        return createDictionary("training_data/company_names.txt");
+    }
+    static DictionaryType createFirstNameDictionary()
+    {
+        return createDictionary("training_data/first.txt");
+    }
+    static DictionaryType createLastNameDictionary()
+    {
+        return createDictionary("training_data/last.txt");
+    }
+    static DictionaryType createCityDictionary()
+    {
+        return createDictionary("training_data/cities.txt");
+    }
+    static DictionaryType createCountryDictionary()
+    {
+        return createDictionary("training_data/countries.txt");
+    }
+};
