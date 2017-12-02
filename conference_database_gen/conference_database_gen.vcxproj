@@ -221,6 +221,8 @@
     <ClInclude Include="include\Generators\PersonTableGenerator.h" />
     <ClInclude Include="include\Generators\PhoneNumberFormatGenerator.h" />
     <ClInclude Include="include\Generators\PhoneNumberGenerator.h" />
+    <ClInclude Include="include\Generators\PriceGenerator.h" />
+    <ClInclude Include="include\Generators\PriceRangeTableGenerator.h" />
     <ClInclude Include="include\Generators\StudentTableGenerator.h" />
     <ClInclude Include="include\Generators\TableGenerator.h" />
     <ClInclude Include="include\Generators\ConferenceDayTableGenerator.h" />

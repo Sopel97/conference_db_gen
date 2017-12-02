@@ -13,6 +13,7 @@
 #include "ParticipantTableGenerator.h"
 #include "ConferenceTableGenerator.h"
 #include "ConferenceDayTableGenerator.h"
+#include "PriceRangeTableGenerator.h"
 #include "NameGenerator.h"
 #include "MarkovChainsDictionary.h"
 #include "Common.h"
@@ -129,6 +130,16 @@ public:
             4,
             50,
             100
+            )(rng);
+
+        const auto& priceRanges = database.table<PriceRange>() = TableGenerator<PriceRange>(
+            conferenceDays,
+            Price(10.0f),
+            Price(50.0f),
+            Days{ 70 },
+            Days{14},
+            0.5f,
+            4
             )(rng);
 
         return database;

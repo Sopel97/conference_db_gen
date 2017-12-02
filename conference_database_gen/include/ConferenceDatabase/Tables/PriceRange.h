@@ -20,7 +20,7 @@ public:
         m_priceRangeId(std::forward<TPriceRangeId>(priceRangeId)),
         m_conferenceDay(std::forward<TConferenceDay>(conferenceDay)),
         m_startDate(std::forward<TStartDate>(startDate)),
-        m_price(std::forward<TEntryPrice>(price))
+        m_price(std::forward<TPrice>(price))
     {
 
     }

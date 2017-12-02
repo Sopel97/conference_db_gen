@@ -13,6 +13,21 @@ public:
 
     std::string toString() const;
 
+    int cents() const
+    {
+        return m_cents;
+    }
+
+    Price rounded(int cents) const
+    {
+        return (m_cents + cents / 2) / cents * cents;
+    }
+
+    float units() const
+    {
+        return m_cents / static_cast<float>(centsPerUnit);
+    }
+
 private:
     int m_cents;
 };

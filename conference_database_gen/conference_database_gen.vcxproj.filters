@@ -241,5 +241,11 @@
     <ClInclude Include="include\Database\ForeignKey.h">
       <Filter>Header Files\include\Database</Filter>
     </ClInclude>
+    <ClInclude Include="include\Generators\PriceRangeTableGenerator.h">
+      <Filter>Header Files\include\Generators</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Generators\PriceGenerator.h">
+      <Filter>Header Files\include\Generators</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

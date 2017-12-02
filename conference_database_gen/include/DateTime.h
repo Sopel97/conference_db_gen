@@ -120,6 +120,23 @@ public:
         return DateTime(m_milliseconds + millis);
     }
 
+    DateTime operator-(Milliseconds millis) const
+    {
+        return DateTime(m_milliseconds - millis);
+    }
+
+    DateTime& operator+=(Milliseconds millis)
+    {
+        m_milliseconds = m_milliseconds + millis;
+        return *this;
+    }
+
+    DateTime& operator-=(Milliseconds millis)
+    {
+        m_milliseconds = m_milliseconds - millis;
+        return *this;
+    }
+
     Milliseconds milliseconds() const
     {
         return m_milliseconds;
