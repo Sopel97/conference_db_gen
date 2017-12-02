@@ -115,6 +115,11 @@ public:
 
     }
 
+    DateTime operator+(Milliseconds millis) const
+    {
+        return DateTime(m_milliseconds + millis);
+    }
+
     Milliseconds milliseconds() const
     {
         return m_milliseconds;

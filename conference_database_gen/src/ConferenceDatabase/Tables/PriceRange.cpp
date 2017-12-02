@@ -12,6 +12,11 @@ Record::IdType PriceRange::priceRangeId() const
     return m_priceRangeId;
 }
 
+Record::IdType PriceRange::conferenceDayId() const
+{
+    return m_conferenceDayId;
+}
+
 DateTime PriceRange::startDate() const
 {
     return m_startDate;

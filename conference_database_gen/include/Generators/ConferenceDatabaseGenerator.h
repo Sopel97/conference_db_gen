@@ -8,6 +8,11 @@
 #include "CountryTableGenerator.h"
 #include "PersonTableGenerator.h"
 #include "CompanyTableGenerator.h"
+#include "StudentTableGenerator.h"
+#include "ClientTableGenerator.h"
+#include "ParticipantTableGenerator.h"
+#include "ConferenceTableGenerator.h"
+#include "ConferenceDayTableGenerator.h"
 #include "NameGenerator.h"
 #include "MarkovChainsDictionary.h"
 #include "Common.h"
@@ -33,6 +38,7 @@ public:
     {
         static constexpr int numPeople = 10000;
         static constexpr int numCompanies = 100;
+        static constexpr int numConferences = 3 * 12 * 2;
 
         ConferenceDatabase database;
 
@@ -68,7 +74,7 @@ public:
             m_numCountries
             )(rng);
 
-        database.table<Person>() = TableGenerator<Person>(
+        const auto& people = database.table<Person>() = TableGenerator<Person>(
             firstNames,
             lastNames,
             birthDateGenerator,
@@ -82,7 +88,7 @@ public:
 
         DictionaryType companyNameDictionary = createCompanyNameDictionary();
 
-        database.table<Company>() = TableGenerator<Company>(
+        const auto& companies = database.table<Company>() = TableGenerator<Company>(
             companyNameDictionary,
             firstNames,
             lastNames,
@@ -94,6 +100,36 @@ public:
             numCompanies
             )(rng);
 
+        const auto& students = database.table<Student>() = TableGenerator<Student>(
+            people,
+            0.1f
+            )(rng);
+
+        const auto& clients = database.table<Client>() = TableGenerator<Client>(
+            people,
+            companies,
+            0.001f
+            )(rng);
+
+        const auto& participants = database.table<Participant>() = TableGenerator<Participant>(
+            people,
+            0.95f
+            )(rng);
+
+        DateTimeGenerator conferenceStartDateGenerator(DateTime(Years{ 2014 }), DateTime(Years{ 2017 }));
+
+        const auto& conferences = database.table<Conference>() = TableGenerator<Conference>(
+            clients,
+            conferenceStartDateGenerator,
+            numConferences
+            )(rng);
+
+        const auto& conferenceDays = database.table<ConferenceDay>() = TableGenerator<ConferenceDay>(
+            conferences,
+            4,
+            50,
+            100
+            )(rng);
 
         return database;
     }

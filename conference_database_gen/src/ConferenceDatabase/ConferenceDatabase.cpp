@@ -14,7 +14,6 @@ const ConferenceDatabase::NameArrayType& ConferenceDatabase::tableNames() const
             "Conferences",
             "ConferenceDays",
             "PriceRanges",
-            "ConferenceDayPrices",
             "Workshops",
             "ConferenceDayReservations",
             "WorkshopReservations"
@@ -59,10 +58,6 @@ const Table<ConferenceDay>& ConferenceDatabase::conferenceDays() const
 const Table<PriceRange>& ConferenceDatabase::priceRanges() const
 {
     return table<PriceRange>();
-}
-const Table<ConferenceDayPrice>& ConferenceDatabase::conferenceDayPrices() const
-{
-    return table<ConferenceDayPrice>();
 }
 const Table<Workshop>& ConferenceDatabase::workshops() const
 {

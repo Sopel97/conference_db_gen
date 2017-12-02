@@ -192,7 +192,6 @@
     <ClInclude Include="include\ConferenceDatabase\Tables\Company.h" />
     <ClInclude Include="include\ConferenceDatabase\Tables\Conference.h" />
     <ClInclude Include="include\ConferenceDatabase\Tables\ConferenceDay.h" />
-    <ClInclude Include="include\ConferenceDatabase\Tables\ConferenceDayPrice.h" />
     <ClInclude Include="include\ConferenceDatabase\Tables\ConferenceDayReservation.h" />
     <ClInclude Include="include\ConferenceDatabase\Tables\Country.h" />
     <ClInclude Include="include\ConferenceDatabase\Tables\Participant.h" />
@@ -207,18 +206,23 @@
     <ClInclude Include="include\Database\Record.h" />
     <ClInclude Include="include\Database\Table.h" />
     <ClInclude Include="include\DateTime.h" />
+    <ClInclude Include="include\Generators\ClientTableGenerator.h" />
     <ClInclude Include="include\Generators\Common.h" />
     <ClInclude Include="include\Generators\CompanyTableGenerator.h" />
     <ClInclude Include="include\Generators\ConferenceDatabaseGenerator.h" />
+    <ClInclude Include="include\Generators\ConferenceTableGenerator.h" />
     <ClInclude Include="include\Generators\CountryTableGenerator.h" />
     <ClInclude Include="include\Generators\DateTimeGenerator.h" />
     <ClInclude Include="include\Generators\DurationGenerator.h" />
     <ClInclude Include="include\Generators\MarkovChainsDictionary.h" />
     <ClInclude Include="include\Generators\NameGenerator.h" />
+    <ClInclude Include="include\Generators\ParticipantTableGenerator.h" />
     <ClInclude Include="include\Generators\PersonTableGenerator.h" />
     <ClInclude Include="include\Generators\PhoneNumberFormatGenerator.h" />
     <ClInclude Include="include\Generators\PhoneNumberGenerator.h" />
+    <ClInclude Include="include\Generators\StudentTableGenerator.h" />
     <ClInclude Include="include\Generators\TableGenerator.h" />
+    <ClInclude Include="include\Generators\ConferenceDayTableGenerator.h" />
     <ClInclude Include="include\Price.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

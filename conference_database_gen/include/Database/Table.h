@@ -9,6 +9,7 @@ class Table
 {
 public:
     using RecordType = T;
+    using ConstIterator = typename std::vector<RecordType>::const_iterator;
 
     void add(const T& record)
     {
@@ -44,6 +45,22 @@ public:
         return m_records.size();
     }
 
+    ConstIterator begin() const
+    {
+        return m_records.begin();
+    }
+    ConstIterator end() const
+    {
+        return m_records.end();
+    }
+    ConstIterator cbegin() const
+    {
+        return m_records.cbegin();
+    }
+    ConstIterator cend() const
+    {
+        return m_records.cend();
+    }
 private:
     std::vector<RecordType> m_records;
 };
