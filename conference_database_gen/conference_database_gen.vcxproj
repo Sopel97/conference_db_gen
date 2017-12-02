@@ -211,6 +211,7 @@
     <ClInclude Include="include\Generators\Common.h" />
     <ClInclude Include="include\Generators\CompanyTableGenerator.h" />
     <ClInclude Include="include\Generators\ConferenceDatabaseGenerator.h" />
+    <ClInclude Include="include\Generators\ConferenceDayReservationTableGenerator.h" />
     <ClInclude Include="include\Generators\ConferenceTableGenerator.h" />
     <ClInclude Include="include\Generators\CountryTableGenerator.h" />
     <ClInclude Include="include\Generators\DateTimeGenerator.h" />
@@ -226,6 +227,7 @@
     <ClInclude Include="include\Generators\StudentTableGenerator.h" />
     <ClInclude Include="include\Generators\TableGenerator.h" />
     <ClInclude Include="include\Generators\ConferenceDayTableGenerator.h" />
+    <ClInclude Include="include\Generators\WorkshopReservationTableGenerator.h" />
     <ClInclude Include="include\Generators\WorkshopTableGenerator.h" />
     <ClInclude Include="include\Price.h" />
   </ItemGroup>

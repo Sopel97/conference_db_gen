@@ -15,6 +15,21 @@ public:
 
     }
 
+    bool operator==(const ForeignKey<T>& rhs) const
+    {
+        return m_reference == rhs.m_reference;
+    }
+
+    bool operator!=(const ForeignKey<T>& rhs) const
+    {
+        return !operator==(rhs);
+    }
+
+    bool operator<(const ForeignKey<T>& rhs) const
+    {
+        return primaryKey() < rhs.primaryKey();
+    }
+
     std::string toString() const
     {
         return std::to_string(m_reference->primaryKey());

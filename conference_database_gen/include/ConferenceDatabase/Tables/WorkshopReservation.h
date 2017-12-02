@@ -20,21 +20,24 @@ public:
         class TWorkshopReservationId, 
         class TParticipant, 
         class TWorkshop, 
+        class TDate,
         class TCharge, 
-        class TIsPaid
+        class TPaidAmount
     >
     WorkshopReservation(
         TWorkshopReservationId&& workshopReservationId, 
         TParticipant&& participant, 
         TWorkshop&& workshop, 
+        TDate&& date,
         TCharge&& charge, 
-        TIsPaid&& isPaid
+        TPaidAmount&& paidAmount
     ) :
         m_workshopReservationId(std::forward<TWorkshopReservationId>(workshopReservationId)),
         m_participant(std::forward<TParticipant>(participant)),
         m_workshop(std::forward<TWorkshop>(workshop)),
+        m_date(std::forward<TDate>(date)),
         m_charge(std::forward<TCharge>(charge)),
-        m_isPaid(std::forward<TIsPaid>(isPaid))
+        m_paidAmount(std::forward<TPaidAmount>(paidAmount))
     {
 
     }
@@ -44,8 +47,9 @@ public:
     IdType workshopReservationId() const;
     ForeignKey<Participant> participant() const;
     ForeignKey<Workshop> workshop() const;
+    const DateTime& date() const;
     Price charge() const;
-    bool isPaid() const;
+    Price paidAmount() const;
 
     CsvRecord toCsvRecord() const override;
 
@@ -53,6 +57,7 @@ private:
     IdType m_workshopReservationId;
     ForeignKey<Participant> m_participant;
     ForeignKey<Workshop> m_workshop;
+    DateTime m_date;
     Price m_charge;
-    bool m_isPaid;
+    Price m_paidAmount;
 };

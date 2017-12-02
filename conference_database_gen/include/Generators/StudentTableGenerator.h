@@ -43,8 +43,8 @@ public:
 
             students.add(
                 Student(
-                    id++, 
-                    person, 
+                    id++,
+                    person,
                     std::to_string(dStudentCardNumber(rng))
                 )
             );

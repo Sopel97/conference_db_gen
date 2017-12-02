@@ -27,6 +27,11 @@ public:
         return { m_count * numUnits };
     }
 
+    Duration<TBaseUnit, NumUnits> operator-() const
+    {
+        return Duration<TBaseUnit, NumUnits>(-m_count);
+    }
+
 private:
     int64_t m_count;
 };

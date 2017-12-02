@@ -15,6 +15,8 @@
 #include "ConferenceDayTableGenerator.h"
 #include "PriceRangeTableGenerator.h"
 #include "WorkshopTableGenerator.h"
+#include "ConferenceDayReservationTableGenerator.h"
+#include "WorkshopReservationTableGenerator.h"
 #include "NameGenerator.h"
 #include "MarkovChainsDictionary.h"
 #include "Common.h"
@@ -155,6 +157,22 @@ public:
             PriceGenerator(Price(10.0f), Price(30.0f)),
             0.8f,
             4
+            )(rng);
+
+        const auto& conferenceDayReservations = database.table<ConferenceDayReservation>() = TableGenerator<ConferenceDayReservation>(
+            participants,
+            conferenceDays,
+            priceRanges,
+            students,
+            0.9f,
+            Days{ 14 } // same as in price ranges
+            )(rng);
+
+        const auto& workshopReservations = database.table<WorkshopReservation>() = TableGenerator<WorkshopReservation>(
+            conferenceDayReservations,
+            conferenceDays,
+            workshops,
+            0.9f
             )(rng);
 
         return database;

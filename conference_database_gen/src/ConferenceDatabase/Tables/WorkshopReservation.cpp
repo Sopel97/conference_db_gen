@@ -27,14 +27,19 @@ ForeignKey<Workshop> WorkshopReservation::workshop() const
     return m_workshop;
 }
 
+const DateTime& WorkshopReservation::date() const
+{
+    return m_date;
+}
+
 Price WorkshopReservation::charge() const
 {
     return m_charge;
 }
 
-bool WorkshopReservation::isPaid() const
+Price WorkshopReservation::paidAmount() const
 {
-    return m_isPaid;
+    return m_paidAmount;
 }
 
 CsvRecord WorkshopReservation::toCsvRecord() const
@@ -43,7 +48,8 @@ CsvRecord WorkshopReservation::toCsvRecord() const
         std::to_string(m_workshopReservationId),
         std::to_string(m_participant.primaryKey()),
         std::to_string(m_workshop.primaryKey()),
+        m_date.toString(),
         m_charge.toString(),
-        std::to_string(m_isPaid)
+        m_paidAmount.toString()
     );
 }

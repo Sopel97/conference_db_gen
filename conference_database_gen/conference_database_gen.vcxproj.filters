@@ -250,5 +250,11 @@
     <ClInclude Include="include\Generators\WorkshopTableGenerator.h">
       <Filter>Header Files\include\Generators</Filter>
     </ClInclude>
+    <ClInclude Include="include\Generators\ConferenceDayReservationTableGenerator.h">
+      <Filter>Header Files\include\Generators</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Generators\WorkshopReservationTableGenerator.h">
+      <Filter>Header Files\include\Generators</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

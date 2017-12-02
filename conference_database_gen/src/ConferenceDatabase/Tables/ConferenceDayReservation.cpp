@@ -27,14 +27,19 @@ ForeignKey<ConferenceDay> ConferenceDayReservation::conferenceDay() const
     return m_conferenceDay;
 }
 
+const DateTime& ConferenceDayReservation::date() const
+{
+    return m_date;
+}
+
 Price ConferenceDayReservation::charge() const
 {
     return m_charge;
 }
 
-bool ConferenceDayReservation::isPaid() const
+Price ConferenceDayReservation::paidAmount() const
 {
-    return m_isPaid;
+    return m_paidAmount;
 }
 
 CsvRecord ConferenceDayReservation::toCsvRecord() const
@@ -43,7 +48,8 @@ CsvRecord ConferenceDayReservation::toCsvRecord() const
         std::to_string(m_conferenceDayReservationId),
         std::to_string(m_participant.primaryKey()),
         std::to_string(m_conferenceDay.primaryKey()),
+        m_date.toString(),
         m_charge.toString(),
-        std::to_string(m_isPaid)
+        m_paidAmount.toString()
     );
 }
