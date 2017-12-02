@@ -114,7 +114,9 @@ public:
 
         const auto& participants = database.table<Participant>() = TableGenerator<Participant>(
             people,
-            0.95f
+            companies,
+            0.95f,
+            0.75f
             )(rng);
 
         DateTimeGenerator conferenceStartDateGenerator(DateTime(Years{ 2014 }), DateTime(Years{ 2017 }));

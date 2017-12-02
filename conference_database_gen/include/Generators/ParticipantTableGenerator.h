@@ -23,10 +23,14 @@ public:
 
     TableGenerator(
         const Table<Person>& people,
-        float participantSaturation
+        const Table<Company>& companies,
+        float participantSaturation,
+        float fromCompanySaturation
     ) :
         m_people(&people),
-        m_participantSaturation(participantSaturation)
+        m_companies(&companies),
+        m_participantSaturation(participantSaturation),
+        m_fromCompanySaturation(fromCompanySaturation)
     {
 
     }
@@ -35,6 +39,7 @@ public:
     Table<Participant> operator()(TRng& rng) const
     {
         std::bernoulli_distribution dIsParticipant(m_participantSaturation);
+        std::bernoulli_distribution dIsFromCompany(m_fromCompanySaturation);
         Table<Participant> participants;
 
         Record::IdType id = 0;
@@ -44,8 +49,9 @@ public:
 
             participants.add(
                 Participant(
-                    id++, 
-                    person
+                    id++,
+                    person,
+                    dIsFromCompany(rng) ? std::make_optional<ForeignKey<Company>>(Common::chooseSqr(m_companies->records(), rng)) : std::nullopt
                 )
             );
 
@@ -56,5 +62,7 @@ public:
 
 private:
     const Table<Person>* m_people;
+    const Table<Company>* m_companies;
     float m_participantSaturation;
+    float m_fromCompanySaturation;
 };

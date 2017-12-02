@@ -20,7 +20,16 @@ ForeignKey<Person> Participant::person() const
     return m_person;
 }
 
+std::optional<ForeignKey<Company>> Participant::company() const
+{
+    return m_company;
+}
+
 CsvRecord Participant::toCsvRecord() const
 {
-    return CsvRecord(std::to_string(m_participantId), std::to_string(m_person.primaryKey()));
+    return CsvRecord(
+        std::to_string(m_participantId),
+        std::to_string(m_person.primaryKey()),
+        m_company.has_value() ? std::to_string(m_company.value().primaryKey()) : "NULL"
+    );
 }
