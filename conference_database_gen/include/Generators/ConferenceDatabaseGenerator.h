@@ -14,6 +14,7 @@
 #include "ConferenceTableGenerator.h"
 #include "ConferenceDayTableGenerator.h"
 #include "PriceRangeTableGenerator.h"
+#include "WorkshopTableGenerator.h"
 #include "NameGenerator.h"
 #include "MarkovChainsDictionary.h"
 #include "Common.h"
@@ -129,7 +130,7 @@ public:
 
         const auto& conferenceDays = database.table<ConferenceDay>() = TableGenerator<ConferenceDay>(
             conferences,
-            4,
+            3,
             50,
             100
             )(rng);
@@ -141,6 +142,18 @@ public:
             Days{ 70 },
             Days{14},
             0.5f,
+            4
+            )(rng);
+
+        DictionaryType workshopNameDictionary = createWorkshopNameDictionary();
+
+        const auto& workshops = database.table<Workshop>() = TableGenerator<Workshop>(
+            conferenceDays,
+            workshopNameDictionary,
+            DurationGenerator(Minutes{30}, Hours{6}),
+            DurationGenerator(Minutes{60}, Minutes{180}),
+            PriceGenerator(Price(10.0f), Price(30.0f)),
+            0.8f,
             4
             )(rng);
 
@@ -207,5 +220,9 @@ private:
     static DictionaryType createCountryDictionary()
     {
         return createDictionary("training_data/countries.txt");
+    }
+    static DictionaryType createWorkshopNameDictionary()
+    {
+        return createDictionary("training_data/workshop_names.txt");
     }
 };

@@ -226,6 +226,7 @@
     <ClInclude Include="include\Generators\StudentTableGenerator.h" />
     <ClInclude Include="include\Generators\TableGenerator.h" />
     <ClInclude Include="include\Generators\ConferenceDayTableGenerator.h" />
+    <ClInclude Include="include\Generators\WorkshopTableGenerator.h" />
     <ClInclude Include="include\Price.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -22,6 +22,11 @@ ForeignKey<ConferenceDay> Workshop::conferenceDay() const
     return m_conferenceDay;
 }
 
+const std::string& Workshop::name() const
+{
+    return m_name;
+}
+
 const DateTime& Workshop::startDate() const
 {
     return m_startDate;
@@ -47,6 +52,7 @@ CsvRecord Workshop::toCsvRecord() const
     return CsvRecord(
         std::to_string(m_workshopId),
         std::to_string(m_conferenceDay.primaryKey()),
+        m_name,
         m_startDate.toString(),
         m_endDate.toString(),
         std::to_string(m_numSpots),
