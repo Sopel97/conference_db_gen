@@ -41,7 +41,13 @@ public:
         {
             if (!dIsStudent(rng)) continue;
 
-            students.add(Student(id++, person.personId(), std::to_string(dStudentCardNumber(rng))));
+            students.add(
+                Student(
+                    id++, 
+                    person, 
+                    std::to_string(dStudentCardNumber(rng))
+                )
+            );
         }
 
         return students;

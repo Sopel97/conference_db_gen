@@ -8,6 +8,8 @@
 class Country : public Record
 {
 public:
+    using PrimaryKeyType = IdType;
+
     template <class TCountryId, class TCountryName>
     Country(TCountryId&& countryId, TCountryName&& countryName) :
         m_countryId(std::forward<TCountryId>(countryId)),
@@ -15,6 +17,8 @@ public:
     {
 
     }
+
+    PrimaryKeyType primaryKey() const;
 
     IdType countryId() const;
     const std::string& countryName() const;

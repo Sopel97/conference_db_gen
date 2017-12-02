@@ -3,24 +3,32 @@
 #include <string>
 
 #include "Database/Record.h"
+#include "Database/ForeignKey.h"
+
 #include "DateTime.h"
 #include "Price.h"
+
+#include "ConferenceDay.h"
 
 class PriceRange : public Record
 {
 public:
-    template <class TPriceRangeId, class TConferenceDayId, class TStartDate, class TPrice>
-    PriceRange(TPriceRangeId&& priceRangeId, TConferenceDayId&& conferenceDayId, TStartDate&& startDate, TPrice&& price) :
+    using PrimaryKeyType = IdType;
+
+    template <class TPriceRangeId, class TConferenceDay, class TStartDate, class TPrice>
+    PriceRange(TPriceRangeId&& priceRangeId, TConferenceDay&& conferenceDay, TStartDate&& startDate, TPrice&& price) :
         m_priceRangeId(std::forward<TPriceRangeId>(priceRangeId)),
-        m_conferenceDayId(std::forward<TConferenceDayId>(conferenceDayId)),
+        m_conferenceDay(std::forward<TConferenceDay>(conferenceDay)),
         m_startDate(std::forward<TStartDate>(startDate)),
         m_price(std::forward<TEntryPrice>(price))
     {
 
     }
 
+    PrimaryKeyType primaryKey() const;
+
     IdType priceRangeId() const;
-    IdType conferenceDayId() const;
+    ForeignKey<ConferenceDay> conferenceDay() const;
     DateTime startDate() const;
     Price price() const;
 
@@ -28,7 +36,7 @@ public:
 
 private:
     IdType m_priceRangeId;
-    IdType m_conferenceDayId;
+    ForeignKey<ConferenceDay> m_conferenceDay;
     DateTime m_startDate;
     Price m_price;
 };

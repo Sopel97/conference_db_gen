@@ -203,6 +203,7 @@
     <ClInclude Include="include\Csv\CsvDocument.h" />
     <ClInclude Include="include\Csv\CsvRecord.h" />
     <ClInclude Include="include\Database\Database.h" />
+    <ClInclude Include="include\Database\ForeignKey.h" />
     <ClInclude Include="include\Database\Record.h" />
     <ClInclude Include="include\Database\Table.h" />
     <ClInclude Include="include\DateTime.h" />

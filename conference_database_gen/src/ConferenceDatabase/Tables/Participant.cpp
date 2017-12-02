@@ -5,17 +5,22 @@
 #include "Csv/CsvRecord.h"
 #include "Database/Record.h"
 
+Participant::PrimaryKeyType Participant::primaryKey() const
+{
+    return m_participantId;
+}
+
 Record::IdType Participant::participantId() const
 {
     return m_participantId;
 }
 
-Record::IdType Participant::personId() const
+ForeignKey<Person> Participant::person() const
 {
-    return m_personId;
+    return m_person;
 }
 
 CsvRecord Participant::toCsvRecord() const
 {
-    return CsvRecord(std::to_string(m_participantId), std::to_string(m_personId));
+    return CsvRecord(std::to_string(m_participantId), std::to_string(m_person.primaryKey()));
 }

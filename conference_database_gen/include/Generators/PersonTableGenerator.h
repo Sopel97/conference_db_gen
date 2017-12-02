@@ -47,7 +47,7 @@ public:
             const std::string& firstName = Common::chooseSqr(*m_firstNames, rng);
             const std::string& lastName = Common::chooseSqr(*m_lastNames, rng);
             const int countryIndex = Common::chooseSqrIndex(m_countries->size(), rng);
-            const Record::IdType countryId = (*m_countries)[countryIndex].countryId();
+            const auto& country = (*m_countries)[countryIndex];
             const std::string& cityName = Common::chooseSqr((*m_cityNamesByCountry)[countryIndex], rng);
             std::string email = Common::assembleEmailAddress(firstName, lastName, rng);
 
@@ -59,7 +59,7 @@ public:
                 addressGenerator(rng),
                 postalCodeGenerator(rng),
                 cityName,
-                countryId,
+                country,
                 (*m_phoneNumberGenerators)[countryIndex](rng),
                 std::move(email)
             );

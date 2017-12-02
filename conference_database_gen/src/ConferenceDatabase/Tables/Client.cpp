@@ -2,26 +2,31 @@
 
 #include "Csv/CsvRecord.h"
 
-int Client::clientId() const
+Client::PrimaryKeyType Client::primaryKey() const
 {
     return m_clientId;
 }
 
-std::optional<Record::IdType> Client::personId() const
+Record::IdType Client::clientId() const
 {
-    return m_personId;
+    return m_clientId;
 }
 
-std::optional<Record::IdType> Client::companyId() const
+std::optional<ForeignKey<Person>> Client::person() const
 {
-    return m_companyId;
+    return m_person;
+}
+
+std::optional<ForeignKey<Company>> Client::company() const
+{
+    return m_company;
 }
 
 CsvRecord Client::toCsvRecord() const
 {
     return CsvRecord(
         std::to_string(m_clientId),
-        m_personId.has_value() ? std::to_string(m_personId.value()) : "NULL",
-        m_companyId.has_value() ? std::to_string(m_companyId.value()) : "NULL"
+        m_person.has_value() ? std::to_string(m_person.value().primaryKey()) : "NULL",
+        m_company.has_value() ? std::to_string(m_company.value().primaryKey()) : "NULL"
     );
 }

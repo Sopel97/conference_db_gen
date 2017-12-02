@@ -7,19 +7,24 @@
 #include "DateTime.h"
 #include "Price.h"
 
+ConferenceDayReservation::PrimaryKeyType ConferenceDayReservation::primaryKey() const
+{
+    return m_conferenceDayReservationId;
+}
+
 Record::IdType ConferenceDayReservation::conferenceDayReservationId() const
 {
     return m_conferenceDayReservationId;
 }
 
-Record::IdType ConferenceDayReservation::participantId() const
+ForeignKey<Participant> ConferenceDayReservation::participant() const
 {
-    return m_participantId;
+    return m_participant;
 }
 
-Record::IdType ConferenceDayReservation::conferenceDayId() const
+ForeignKey<ConferenceDay> ConferenceDayReservation::conferenceDay() const
 {
-    return m_conferenceDayId;
+    return m_conferenceDay;
 }
 
 Price ConferenceDayReservation::charge() const
@@ -36,8 +41,8 @@ CsvRecord ConferenceDayReservation::toCsvRecord() const
 {
     return CsvRecord(
         std::to_string(m_conferenceDayReservationId),
-        std::to_string(m_participantId),
-        std::to_string(m_conferenceDayId),
+        std::to_string(m_participant.primaryKey()),
+        std::to_string(m_conferenceDay.primaryKey()),
         m_charge.toString(),
         std::to_string(m_isPaid)
     );

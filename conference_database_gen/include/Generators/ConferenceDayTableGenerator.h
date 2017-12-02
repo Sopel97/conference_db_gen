@@ -65,7 +65,7 @@ public:
                 conferenceDays.add(
                     ConferenceDay(
                         id++,
-                        conference.conferenceId(),
+                        conference,
                         (conference.startDate() + Days{ d } +startOffsetGenerator(rng)).rounded(Hours{ 1 }),
                         dNumSpotsActual(rng)
                     )

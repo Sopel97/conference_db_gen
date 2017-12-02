@@ -7,14 +7,19 @@
 #include "DateTime.h"
 #include "Price.h"
 
+Workshop::PrimaryKeyType Workshop::primaryKey() const
+{
+    return m_workshopId;
+}
+
 Record::IdType Workshop::workshopId() const
 {
     return m_workshopId;
 }
 
-Record::IdType Workshop::conferenceDayId() const
+ForeignKey<ConferenceDay> Workshop::conferenceDay() const
 {
-    return m_conferenceDayId;
+    return m_conferenceDay;
 }
 
 const DateTime& Workshop::startDate() const
@@ -41,7 +46,7 @@ CsvRecord Workshop::toCsvRecord() const
 {
     return CsvRecord(
         std::to_string(m_workshopId),
-        std::to_string(m_conferenceDayId),
+        std::to_string(m_conferenceDay.primaryKey()),
         m_startDate.toString(),
         m_endDate.toString(),
         std::to_string(m_numSpots),

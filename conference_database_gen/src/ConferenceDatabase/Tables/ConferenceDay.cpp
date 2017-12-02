@@ -6,14 +6,19 @@
 #include "Database/Record.h"
 #include "DateTime.h"
 
+ConferenceDay::PrimaryKeyType ConferenceDay::primaryKey() const
+{
+    return m_conferenceDayId;
+}
+
 Record::IdType ConferenceDay::conferenceDayId() const
 {
     return m_conferenceDayId;
 }
 
-Record::IdType ConferenceDay::conferenceId() const
+ForeignKey<Conference> ConferenceDay::conference() const
 {
-    return m_conferenceId;
+    return m_conference;
 }
 
 DateTime ConferenceDay::date() const
@@ -28,5 +33,5 @@ int ConferenceDay::numSpots() const
 
 CsvRecord ConferenceDay::toCsvRecord() const
 {
-    return CsvRecord(std::to_string(m_conferenceDayId), std::to_string(m_conferenceId), m_date.toString(), std::to_string(m_numSpots));
+    return CsvRecord(std::to_string(m_conferenceDayId), std::to_string(m_conference.primaryKey()), m_date.toString(), std::to_string(m_numSpots));
 }

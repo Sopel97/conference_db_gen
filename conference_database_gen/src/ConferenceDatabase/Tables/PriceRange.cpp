@@ -7,14 +7,19 @@
 #include "DateTime.h"
 #include "Price.h"
 
+PriceRange::PrimaryKeyType PriceRange::primaryKey() const
+{
+    return m_priceRangeId;
+}
+
 Record::IdType PriceRange::priceRangeId() const
 {
     return m_priceRangeId;
 }
 
-Record::IdType PriceRange::conferenceDayId() const
+ForeignKey<ConferenceDay> PriceRange::conferenceDay() const
 {
-    return m_conferenceDayId;
+    return m_conferenceDay;
 }
 
 DateTime PriceRange::startDate() const
@@ -29,5 +34,5 @@ Price PriceRange::price() const
 
 CsvRecord PriceRange::toCsvRecord() const
 {
-    return CsvRecord(std::to_string(m_priceRangeId), m_startDate.toString(), m_price.toString());
+    return CsvRecord(std::to_string(m_priceRangeId), std::to_string(m_conferenceDay.primaryKey()), m_startDate.toString(), m_price.toString());
 }

@@ -42,7 +42,12 @@ public:
         {
             if (!dIsParticipant(rng)) continue;
 
-            participants.add(Participant(id++, person.personId()));
+            participants.add(
+                Participant(
+                    id++, 
+                    person
+                )
+            );
 
         }
 

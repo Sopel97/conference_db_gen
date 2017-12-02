@@ -5,6 +5,11 @@
 #include "Csv/CsvRecord.h"
 #include "Database/Record.h"
 
+Company::PrimaryKeyType Company::primaryKey() const
+{
+    return m_companyId;
+}
+
 Record::IdType Company::companyId() const
 {
     return m_companyId;
@@ -31,9 +36,9 @@ const std::string& Company::city() const
 {
     return m_city;
 }
-Record::IdType Company::countryId() const
+ForeignKey<Country> Company::country() const
 {
-    return m_countryId;
+    return m_country;
 }
 const std::string& Company::phone() const
 {
@@ -46,5 +51,5 @@ const std::string& Company::email() const
 
 CsvRecord Company::toCsvRecord() const
 {
-    return CsvRecord(std::to_string(m_companyId), m_companyName, m_contactPersonName, m_address, m_postalCode, m_city, std::to_string(m_countryId), m_phone, m_email);
+    return CsvRecord(std::to_string(m_companyId), m_companyName, m_contactPersonName, m_address, m_postalCode, m_city, std::to_string(m_country.primaryKey()), m_phone, m_email);
 }

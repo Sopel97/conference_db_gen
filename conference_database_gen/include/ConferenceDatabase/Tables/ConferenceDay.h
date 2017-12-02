@@ -3,23 +3,30 @@
 #include <string>
 
 #include "Database/Record.h"
+#include "Database/ForeignKey.h"
 #include "DateTime.h"
+
+#include "Conference.h"
 
 class ConferenceDay : public Record
 {
 public:
-    template <class TConferenceDayId, class TConferenceId, class TDate, class TNumSpots>
-    ConferenceDay(TConferenceDayId&& conferenceDayId, TConferenceId&& conferenceId, TDate&& date, TNumSpots&& numSpots) :
+    using PrimaryKeyType = IdType;
+
+    template <class TConferenceDayId, class TConference, class TDate, class TNumSpots>
+    ConferenceDay(TConferenceDayId&& conferenceDayId, TConference&& conference, TDate&& date, TNumSpots&& numSpots) :
         m_conferenceDayId(std::forward<TConferenceDayId>(conferenceDayId)),
-        m_conferenceId(std::forward<TConferenceId>(conferenceId)),
+        m_conference(std::forward<TConference>(conference)),
         m_date(std::forward<TDate>(date)),
         m_numSpots(std::forward<TNumSpots>(numSpots))
     {
 
     }
 
+    PrimaryKeyType primaryKey() const;
+
     IdType conferenceDayId() const;
-    IdType conferenceId() const;
+    ForeignKey<Conference> conference() const;
     DateTime date() const;
     int numSpots() const;
 
@@ -27,7 +34,7 @@ public:
 
 private:
     IdType m_conferenceDayId;
-    IdType m_conferenceId;
+    ForeignKey<Conference> m_conference;
     DateTime m_date;
     int m_numSpots;
 };

@@ -7,19 +7,24 @@
 #include "DateTime.h"
 #include "Price.h"
 
+WorkshopReservation::PrimaryKeyType WorkshopReservation::primaryKey() const
+{
+    return m_workshopReservationId;
+}
+
 Record::IdType WorkshopReservation::workshopReservationId() const
 {
     return m_workshopReservationId;
 }
 
-Record::IdType WorkshopReservation::participantId() const
+ForeignKey<Participant> WorkshopReservation::participant() const
 {
-    return m_participantId;
+    return m_participant;
 }
 
-Record::IdType WorkshopReservation::workshopId() const
+ForeignKey<Workshop> WorkshopReservation::workshop() const
 {
-    return m_workshopId;
+    return m_workshop;
 }
 
 Price WorkshopReservation::charge() const
@@ -36,8 +41,8 @@ CsvRecord WorkshopReservation::toCsvRecord() const
 {
     return CsvRecord(
         std::to_string(m_workshopReservationId),
-        std::to_string(m_participantId),
-        std::to_string(m_workshopId),
+        std::to_string(m_participant.primaryKey()),
+        std::to_string(m_workshop.primaryKey()),
         m_charge.toString(),
         std::to_string(m_isPaid)
     );

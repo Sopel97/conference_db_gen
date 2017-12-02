@@ -43,12 +43,12 @@ public:
         {
             if (!dIsIndividualClient(rng)) continue;
 
-            clients.add(Client(id++, person.personId(), std::nullopt));
+            clients.add(Client(id++, person, std::nullopt));
         }
 
         for (const auto& company : *m_companies)
         {
-            clients.add(Client(id++, std::nullopt, company.companyId()));
+            clients.add(Client(id++, std::nullopt, company));
         }
 
         return clients;

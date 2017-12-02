@@ -2,6 +2,11 @@
 
 #include "Csv/CsvRecord.h"
 
+Country::PrimaryKeyType Country::primaryKey() const
+{
+    return m_countryId;
+}
+
 Record::IdType Country::countryId() const
 {
     return m_countryId;

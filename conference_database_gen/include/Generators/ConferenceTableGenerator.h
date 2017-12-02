@@ -43,7 +43,13 @@ public:
         Record::IdType id = 0;
         for (int i = 0; i < m_numConferences; ++i)
         {
-            conferences.add(Conference(id++, Common::chooseSqr(m_clients->records(), rng).clientId(), m_startingDateGenerator(rng).rounded(Days{ 1 })));
+            conferences.add(
+                Conference(
+                    id++, 
+                    Common::chooseSqr(m_clients->records(), rng), 
+                    m_startingDateGenerator(rng).rounded(Days{ 1 })
+                )
+            );
         }
 
         return conferences;
