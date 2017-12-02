@@ -165,7 +165,6 @@
     <ClCompile Include="src\ConferenceDatabase\Tables\Company.cpp" />
     <ClCompile Include="src\ConferenceDatabase\Tables\Conference.cpp" />
     <ClCompile Include="src\ConferenceDatabase\Tables\ConferenceDay.cpp" />
-    <ClCompile Include="src\ConferenceDatabase\Tables\ConferenceDayPrice.cpp" />
     <ClCompile Include="src\ConferenceDatabase\Tables\ConferenceDayReservation.cpp" />
     <ClCompile Include="src\ConferenceDatabase\Tables\Country.cpp" />
     <ClCompile Include="src\ConferenceDatabase\Tables\Participant.cpp" />
@@ -175,20 +174,34 @@
     <ClCompile Include="src\ConferenceDatabase\Tables\Workshop.cpp" />
     <ClCompile Include="src\ConferenceDatabase\Tables\WorkshopReservation.cpp" />
     <ClCompile Include="src\Csv\CsvDocument.cpp" />
-    <ClCompile Include="src\Database\Database.cpp" />
+    <ClCompile Include="src\Csv\CsvRecord.cpp" />
     <ClCompile Include="src\Database\Record.cpp" />
     <ClCompile Include="src\Database\Table.cpp" />
     <ClCompile Include="src\DateTime.cpp" />
+    <ClCompile Include="src\Generators\CustomerTableGenerator.cpp" />
     <ClCompile Include="src\Generators\CompanyTableGenerator.cpp" />
     <ClCompile Include="src\Generators\ConferenceDatabaseGenerator.cpp" />
+    <ClCompile Include="src\Generators\ConferenceDayReservationTableGenerator.cpp" />
+    <ClCompile Include="src\Generators\ConferenceDayTableGenerator.cpp" />
+    <ClCompile Include="src\Generators\ConferenceTableGenerator.cpp" />
     <ClCompile Include="src\Generators\CountryTableGenerator.cpp" />
+    <ClCompile Include="src\Generators\DateTimeGenerator.cpp" />
+    <ClCompile Include="src\Generators\DurationGenerator.cpp" />
     <ClCompile Include="src\Generators\NameGenerator.cpp" />
+    <ClCompile Include="src\Generators\ParticipantTableGenerator.cpp" />
     <ClCompile Include="src\Generators\PersonTableGenerator.cpp" />
+    <ClCompile Include="src\Generators\PhoneNumberFormatGenerator.cpp" />
+    <ClCompile Include="src\Generators\PhoneNumberGenerator.cpp" />
+    <ClCompile Include="src\Generators\PriceGenerator.cpp" />
+    <ClCompile Include="src\Generators\PriceRangeTableGenerator.cpp" />
+    <ClCompile Include="src\Generators\StudentTableGenerator.cpp" />
+    <ClCompile Include="src\Generators\WorkshopReservationTableGenerator.cpp" />
+    <ClCompile Include="src\Generators\WorkshopTableGenerator.cpp" />
     <ClCompile Include="src\Price.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\ConferenceDatabase\ConferenceDatabase.h" />
-    <ClInclude Include="include\ConferenceDatabase\Tables\Client.h" />
+    <ClInclude Include="include\ConferenceDatabase\Tables\Customer.h" />
     <ClInclude Include="include\ConferenceDatabase\Tables\Company.h" />
     <ClInclude Include="include\ConferenceDatabase\Tables\Conference.h" />
     <ClInclude Include="include\ConferenceDatabase\Tables\ConferenceDay.h" />
@@ -207,7 +220,7 @@
     <ClInclude Include="include\Database\Record.h" />
     <ClInclude Include="include\Database\Table.h" />
     <ClInclude Include="include\DateTime.h" />
-    <ClInclude Include="include\Generators\ClientTableGenerator.h" />
+    <ClInclude Include="include\Generators\CustomerTableGenerator.h" />
     <ClInclude Include="include\Generators\Common.h" />
     <ClInclude Include="include\Generators\CompanyTableGenerator.h" />
     <ClInclude Include="include\Generators\ConferenceDatabaseGenerator.h" />

@@ -5,16 +5,15 @@
 
 #include "ConferenceDatabase/Tables/Workshop.h"
 #include "ConferenceDatabase/Tables/ConferenceDay.h"
+#include "ConferenceDatabase/Tables/ConferenceDayReservation.h"
 #include "Database/Table.h"
 
 #include "TableGenerator.h"
 
 #include "MarkovChainsDictionary.h"
 #include "NameGenerator.h"
-#include "DateTimeGenerator.h"
 #include "DurationGenerator.h"
 #include "PriceGenerator.h"
-#include "Common.h"
 
 #include "DateTime.h"
 
@@ -34,17 +33,7 @@ public:
         const PriceGenerator& priceGenerator,
         float priceSaturation,
         int avgNumWorkshopsPerDay
-    ) :
-        m_conferenceDays(&conferenceDays),
-        m_nameDictionary(&nameDictionary),
-        m_offsetFromStartGenerator(offsetFromStartGenerator),
-        m_durationGenerator(durationGenerator),
-        m_priceGenerator(priceGenerator),
-        m_priceSaturation(priceSaturation),
-        m_avgNumWorkshopsPerDay(avgNumWorkshopsPerDay)
-    {
-
-    }
+    );
 
     template <class TRng>
     Table<Workshop> operator()(TRng& rng) const

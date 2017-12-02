@@ -9,11 +9,7 @@ class DateTimeGenerator
 public:
     using ResultType = DateTime;
 
-    DateTimeGenerator(DateTime min, DateTime max) :
-        m_distr(min.milliseconds().count(), max.milliseconds().count())
-    {
-
-    }
+    DateTimeGenerator(DateTime min, DateTime max);
 
     template <class TRng>
     ResultType operator()(TRng& rng) const

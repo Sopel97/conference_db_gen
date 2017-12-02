@@ -17,14 +17,8 @@ public:
 
     CsvRecord() = default;
 
-    void add(const std::string& string)
-    {
-        m_columns.emplace_back(string);
-    }
-    void add(std::string&& string)
-    {
-        m_columns.emplace_back(std::move(string));
-    }
+    void add(const std::string& string);
+    void add(std::string&& string);
 
     template <class T>
     void add(T&& val)
@@ -34,56 +28,13 @@ public:
         m_columns.emplace_back(to_string(std::forward<T>(val)));
     }
 
-    // TODO: replace " to ""
-    std::string toString() const
-    {
-        std::string buffer;
+    std::string toString() const;
 
-        bool isFirst = true;
-        for (const auto& str : m_columns)
-        {
-            if (!isFirst)
-            {
-                buffer += ',';
-            }
-            isFirst = false;
+    friend std::ostream& operator<< (std::ostream& stream, const CsvRecord& record);
 
-            buffer += '\"';
-            buffer += str;
-            buffer += '\"';
-        }
-
-        return buffer;
-    }
-
-    friend std::ostream& operator<< (std::ostream& stream, const CsvRecord& record)
-    {
-        bool isFirst = true;
-        for (const auto& str : record.m_columns)
-        {
-            if (!isFirst)
-            {
-                stream << ',';
-            }
-            isFirst = false;
-
-            stream << '\"';
-            stream << str;
-            stream << '\"';
-        }
-
-        return stream;
-    }
-
-    int numColumns() const
-    {
-        return m_columns.size();
-    }
+    int numColumns() const;
 private:
     std::vector<std::string> m_columns;
 
-    int totalLength() const
-    {
-        return std::accumulate(m_columns.begin(), m_columns.end(), 0, [](int acc, const std::string& str) {return acc + str.size() + 2; }) + m_columns.size() - 1;
-    }
+    int totalLength() const;
 };

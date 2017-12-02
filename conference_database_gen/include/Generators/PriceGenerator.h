@@ -9,11 +9,7 @@ class PriceGenerator
 public:
     using ResultType = Price;
 
-    PriceGenerator(Price min, Price max) :
-        m_distr(min.cents(), max.cents())
-    {
-
-    }
+    PriceGenerator(Price min, Price max);
 
     template <class TRng>
     ResultType operator()(TRng& rng) const

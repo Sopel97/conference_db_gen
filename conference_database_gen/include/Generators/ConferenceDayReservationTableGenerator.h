@@ -11,11 +11,7 @@
 
 #include "TableGenerator.h"
 
-#include "MarkovChainsDictionary.h"
-#include "NameGenerator.h"
-#include "PhoneNumberGenerator.h"
 #include "DurationGenerator.h"
-#include "Common.h"
 
 template <>
 class TableGenerator<ConferenceDayReservation>
@@ -31,16 +27,7 @@ public:
         const Table<Student>& students,
         float paymentSaturation,
         Milliseconds priceRangeDuration // price ranges only hold starting date, this may need to be changed in the future
-    ) :
-        m_participants(&participants),
-        m_conferenceDays(&conferenceDays),
-        m_priceRanges(&priceRanges),
-        m_students(&students),
-        m_paymentSaturation(paymentSaturation),
-        m_priceRangeDuration(priceRangeDuration)
-    {
-
-    }
+    );
 
     template <class TRng>
     Table<ConferenceDayReservation> operator()(TRng& rng) const

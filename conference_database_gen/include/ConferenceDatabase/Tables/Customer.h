@@ -9,14 +9,14 @@
 #include "Person.h"
 #include "Company.h"
 
-class Client : public Record
+class Customer : public Record
 {
 public:
     using PrimaryKeyType = IdType;
 
-    template <class TClientId, class TPerson, class TCompany>
-    Client(TClientId&& clientId, TPerson&& person, TCompany&& company) :
-        m_clientId(std::forward<TClientId>(clientId)),
+    template <class TCustomerId, class TPerson, class TCompany>
+    Customer(TCustomerId&& customerId, TPerson&& person, TCompany&& company) :
+        m_customerId(std::forward<TCustomerId>(customerId)),
         m_person(std::forward<TPerson>(person)),
         m_company(std::forward<TCompany>(company))
     {
@@ -25,14 +25,14 @@ public:
 
     PrimaryKeyType primaryKey() const;
 
-    IdType clientId() const;
+    IdType customerId() const;
     std::optional<ForeignKey<Person>> person() const;
     std::optional<ForeignKey<Company>> company() const;
 
     CsvRecord toCsvRecord() const override;
 
 private:
-    IdType m_clientId;
+    IdType m_customerId;
     std::optional<ForeignKey<Person>> m_person;
     std::optional<ForeignKey<Company>> m_company;
 };

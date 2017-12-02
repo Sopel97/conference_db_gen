@@ -13,20 +13,11 @@ public:
 
     std::string toString() const;
 
-    int cents() const
-    {
-        return m_cents;
-    }
+    int cents() const;
 
-    Price rounded(int cents) const
-    {
-        return (m_cents + cents / 2) / cents * cents;
-    }
+    Price rounded(int cents) const;
 
-    float units() const
-    {
-        return m_cents / static_cast<float>(centsPerUnit);
-    }
+    float units() const;
 
 private:
     int m_cents;

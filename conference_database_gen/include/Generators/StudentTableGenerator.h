@@ -8,10 +8,6 @@
 
 #include "TableGenerator.h"
 
-#include "MarkovChainsDictionary.h"
-#include "NameGenerator.h"
-#include "Common.h"
-
 template <>
 class TableGenerator<Student>
 {
@@ -22,12 +18,7 @@ public:
     TableGenerator(
         const Table<Person>& people,
         float studentSaturation
-    ) :
-        m_people(&people),
-        m_studentSaturation(studentSaturation)
-    {
-
-    }
+    );
 
     template <class TRng>
     Table<Student> operator()(TRng& rng) const

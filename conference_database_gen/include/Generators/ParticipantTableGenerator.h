@@ -10,8 +10,6 @@
 
 #include "TableGenerator.h"
 
-#include "MarkovChainsDictionary.h"
-#include "NameGenerator.h"
 #include "Common.h"
 
 template <>
@@ -26,14 +24,7 @@ public:
         const Table<Company>& companies,
         float participantSaturation,
         float fromCompanySaturation
-    ) :
-        m_people(&people),
-        m_companies(&companies),
-        m_participantSaturation(participantSaturation),
-        m_fromCompanySaturation(fromCompanySaturation)
-    {
-
-    }
+    );
 
     template <class TRng>
     Table<Participant> operator()(TRng& rng) const

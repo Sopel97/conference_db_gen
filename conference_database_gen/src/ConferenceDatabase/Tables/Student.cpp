@@ -27,5 +27,9 @@ const std::string& Student::cardNumber() const
 
 CsvRecord Student::toCsvRecord() const
 {
-    return CsvRecord(std::to_string(m_studentId), std::to_string(m_person.primaryKey()), m_cardNumber);
+    return CsvRecord(
+        std::to_string(m_studentId), 
+        std::to_string(m_person.primaryKey()), 
+        m_cardNumber
+    );
 }

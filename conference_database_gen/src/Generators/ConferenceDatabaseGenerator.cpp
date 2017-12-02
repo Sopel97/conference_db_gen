@@ -1,11 +1,10 @@
-#include "Generators/CountryTableGenerator.h"
+#include "Generators/ConferenceDatabaseGenerator.h"
 
-TableGenerator<Country>::TableGenerator(
-    DictionaryType& countryDictionary,
-    int numCountries
-) :
-    m_countryDictionary(&countryDictionary),
-    m_numCountries(numCountries)
+ConferenceDatabaseGenerator::ConferenceDatabaseGenerator(int numFirstNames, int numLastNames, int numCountries, int numCitiesPerCountry) :
+    m_numFirstNames(numFirstNames),
+    m_numLastNames(numLastNames),
+    m_numCountries(numCountries),
+    m_numCitiesPerCountry(numCitiesPerCountry)
 {
 
 }

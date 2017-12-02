@@ -4,13 +4,11 @@
 #include <optional>
 
 #include "ConferenceDatabase/Tables/Conference.h"
-#include "ConferenceDatabase/Tables/Client.h"
+#include "ConferenceDatabase/Tables/Customer.h"
 #include "Database/Table.h"
 
 #include "TableGenerator.h"
 
-#include "MarkovChainsDictionary.h"
-#include "NameGenerator.h"
 #include "DateTimeGenerator.h"
 #include "Common.h"
 
@@ -24,16 +22,10 @@ public:
     using ResultType = Table<Conference>;
 
     TableGenerator(
-        const Table<Client>& clients,
+        const Table<Customer>& customers,
         const DateTimeGenerator& startingDateGenerator,
         int numConferences
-    ) :
-        m_clients(&clients),
-        m_startingDateGenerator(startingDateGenerator),
-        m_numConferences(numConferences)
-    {
-
-    }
+    );
 
     template <class TRng>
     Table<Conference> operator()(TRng& rng) const
@@ -46,7 +38,7 @@ public:
             conferences.add(
                 Conference(
                     id++, 
-                    Common::chooseSqr(m_clients->records(), rng), 
+                    Common::chooseSqr(m_customers->records(), rng), 
                     m_startingDateGenerator(rng).rounded(Days{ 1 })
                 )
             );
@@ -56,7 +48,7 @@ public:
     }
 
 private:
-    const Table<Client>* m_clients;
+    const Table<Customer>* m_customers;
     DateTimeGenerator m_startingDateGenerator;
     int m_numConferences;
 };

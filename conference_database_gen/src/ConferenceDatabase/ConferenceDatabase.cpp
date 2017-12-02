@@ -9,7 +9,7 @@ const ConferenceDatabase::NameArrayType& ConferenceDatabase::tableNames() const
             "People",
             "Students",
             "Companies",
-            "Clients",
+            "Customers",
             "Participants",
             "Conferences",
             "ConferenceDays",
@@ -39,9 +39,9 @@ const Table<Company>& ConferenceDatabase::companies() const
 {
     return table<Company>();
 }
-const Table<Client>& ConferenceDatabase::clients() const
+const Table<Customer>& ConferenceDatabase::customers() const
 {
-    return table<Client>();
+    return table<Customer>();
 }
 const Table<Participant>& ConferenceDatabase::participants() const
 {

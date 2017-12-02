@@ -53,9 +53,6 @@
     <ClCompile Include="src\Csv\CsvDocument.cpp">
       <Filter>Source Files\src\Csv</Filter>
     </ClCompile>
-    <ClCompile Include="src\Database\Database.cpp">
-      <Filter>Source Files\src\Database</Filter>
-    </ClCompile>
     <ClCompile Include="src\Database\Record.cpp">
       <Filter>Source Files\src\Database</Filter>
     </ClCompile>
@@ -72,9 +69,6 @@
       <Filter>Source Files\src\ConferenceDatabase\Tables</Filter>
     </ClCompile>
     <ClCompile Include="src\ConferenceDatabase\Tables\ConferenceDay.cpp">
-      <Filter>Source Files\src\ConferenceDatabase\Tables</Filter>
-    </ClCompile>
-    <ClCompile Include="src\ConferenceDatabase\Tables\ConferenceDayPrice.cpp">
       <Filter>Source Files\src\ConferenceDatabase\Tables</Filter>
     </ClCompile>
     <ClCompile Include="src\ConferenceDatabase\Tables\ConferenceDayReservation.cpp">
@@ -125,6 +119,51 @@
     <ClCompile Include="src\Generators\CountryTableGenerator.cpp">
       <Filter>Source Files\src\Generators</Filter>
     </ClCompile>
+    <ClCompile Include="src\Csv\CsvRecord.cpp">
+      <Filter>Source Files\src\Csv</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Generators\ConferenceDayReservationTableGenerator.cpp">
+      <Filter>Source Files\src\Generators</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Generators\ConferenceDayTableGenerator.cpp">
+      <Filter>Source Files\src\Generators</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Generators\ConferenceTableGenerator.cpp">
+      <Filter>Source Files\src\Generators</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Generators\DateTimeGenerator.cpp">
+      <Filter>Source Files\src\Generators</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Generators\DurationGenerator.cpp">
+      <Filter>Source Files\src\Generators</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Generators\ParticipantTableGenerator.cpp">
+      <Filter>Source Files\src\Generators</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Generators\PhoneNumberFormatGenerator.cpp">
+      <Filter>Source Files\src\Generators</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Generators\PhoneNumberGenerator.cpp">
+      <Filter>Source Files\src\Generators</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Generators\PriceGenerator.cpp">
+      <Filter>Source Files\src\Generators</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Generators\PriceRangeTableGenerator.cpp">
+      <Filter>Source Files\src\Generators</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Generators\StudentTableGenerator.cpp">
+      <Filter>Source Files\src\Generators</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Generators\WorkshopTableGenerator.cpp">
+      <Filter>Source Files\src\Generators</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Generators\WorkshopReservationTableGenerator.cpp">
+      <Filter>Source Files\src\Generators</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Generators\CustomerTableGenerator.cpp">
+      <Filter>Source Files\src\Generators</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\Csv\CsvDocument.h">
@@ -141,9 +180,6 @@
     </ClInclude>
     <ClInclude Include="include\Database\Table.h">
       <Filter>Header Files\include\Database</Filter>
-    </ClInclude>
-    <ClInclude Include="include\ConferenceDatabase\Tables\Client.h">
-      <Filter>Header Files\include\ConferenceDatabase\Tables</Filter>
     </ClInclude>
     <ClInclude Include="include\ConferenceDatabase\Tables\Company.h">
       <Filter>Header Files\include\ConferenceDatabase\Tables</Filter>
@@ -226,9 +262,6 @@
     <ClInclude Include="include\Generators\StudentTableGenerator.h">
       <Filter>Header Files\include\Generators</Filter>
     </ClInclude>
-    <ClInclude Include="include\Generators\ClientTableGenerator.h">
-      <Filter>Header Files\include\Generators</Filter>
-    </ClInclude>
     <ClInclude Include="include\Generators\ParticipantTableGenerator.h">
       <Filter>Header Files\include\Generators</Filter>
     </ClInclude>
@@ -254,6 +287,12 @@
       <Filter>Header Files\include\Generators</Filter>
     </ClInclude>
     <ClInclude Include="include\Generators\WorkshopReservationTableGenerator.h">
+      <Filter>Header Files\include\Generators</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ConferenceDatabase\Tables\Customer.h">
+      <Filter>Header Files\include\ConferenceDatabase\Tables</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Generators\CustomerTableGenerator.h">
       <Filter>Header Files\include\Generators</Filter>
     </ClInclude>
   </ItemGroup>

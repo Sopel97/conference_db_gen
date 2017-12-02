@@ -1,31 +1,31 @@
-#include "ConferenceDatabase/Tables/Client.h"
+#include "ConferenceDatabase/Tables/Customer.h"
 
 #include "Csv/CsvRecord.h"
 
-Client::PrimaryKeyType Client::primaryKey() const
+Customer::PrimaryKeyType Customer::primaryKey() const
 {
-    return m_clientId;
+    return m_customerId;
 }
 
-Record::IdType Client::clientId() const
+Record::IdType Customer::customerId() const
 {
-    return m_clientId;
+    return m_customerId;
 }
 
-std::optional<ForeignKey<Person>> Client::person() const
+std::optional<ForeignKey<Person>> Customer::person() const
 {
     return m_person;
 }
 
-std::optional<ForeignKey<Company>> Client::company() const
+std::optional<ForeignKey<Company>> Customer::company() const
 {
     return m_company;
 }
 
-CsvRecord Client::toCsvRecord() const
+CsvRecord Customer::toCsvRecord() const
 {
     return CsvRecord(
-        std::to_string(m_clientId),
+        std::to_string(m_customerId),
         m_person.has_value() ? std::to_string(m_person.value().primaryKey()) : "NULL",
         m_company.has_value() ? std::to_string(m_company.value().primaryKey()) : "NULL"
     );

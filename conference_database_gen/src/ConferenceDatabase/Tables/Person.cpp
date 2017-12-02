@@ -62,5 +62,15 @@ const std::string& Person::email() const
 
 CsvRecord Person::toCsvRecord() const
 {
-    return CsvRecord(std::to_string(m_personId), m_firstName, m_lastName, m_birthDate.toString(), m_address, m_postalCode, m_city, std::to_string(m_country.primaryKey()), m_phone, m_email);
+    return CsvRecord(
+        std::to_string(m_personId), 
+        m_firstName, m_lastName, 
+        m_birthDate.toString(), 
+        m_address, 
+        m_postalCode, 
+        m_city, 
+        std::to_string(m_country.primaryKey()), 
+        m_phone, 
+        m_email
+    );
 }

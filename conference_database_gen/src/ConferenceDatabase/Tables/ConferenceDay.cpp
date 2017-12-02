@@ -33,5 +33,10 @@ int ConferenceDay::numSpots() const
 
 CsvRecord ConferenceDay::toCsvRecord() const
 {
-    return CsvRecord(std::to_string(m_conferenceDayId), std::to_string(m_conference.primaryKey()), m_date.toString(), std::to_string(m_numSpots));
+    return CsvRecord(
+        std::to_string(m_conferenceDayId), 
+        std::to_string(m_conference.primaryKey()), 
+        m_date.toString(), 
+        std::to_string(m_numSpots)
+    );
 }

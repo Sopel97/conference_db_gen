@@ -34,5 +34,10 @@ Price PriceRange::price() const
 
 CsvRecord PriceRange::toCsvRecord() const
 {
-    return CsvRecord(std::to_string(m_priceRangeId), std::to_string(m_conferenceDay.primaryKey()), m_startDate.toString(), m_price.toString());
+    return CsvRecord(
+        std::to_string(m_priceRangeId), 
+        std::to_string(m_conferenceDay.primaryKey()), 
+        m_startDate.toString(), 
+        m_price.toString()
+    );
 }

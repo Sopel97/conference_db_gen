@@ -9,11 +9,7 @@ class DurationGenerator
 public:
     using ResultType = Milliseconds;
 
-    DurationGenerator(Milliseconds min, Milliseconds max) :
-        m_distr(min.count(), max.count())
-    {
-
-    }
+    DurationGenerator(Milliseconds min, Milliseconds max);
 
     template <class TRng>
     ResultType operator()(TRng& rng) const

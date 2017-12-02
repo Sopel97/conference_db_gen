@@ -10,7 +10,7 @@
 #include "ConferenceDatabase/Tables/Person.h"
 #include "ConferenceDatabase/Tables/Student.h"
 #include "ConferenceDatabase/Tables/Company.h"
-#include "ConferenceDatabase/Tables/Client.h"
+#include "ConferenceDatabase/Tables/Customer.h"
 #include "ConferenceDatabase/Tables/Conference.h"
 #include "ConferenceDatabase/Tables/ConferenceDay.h"
 #include "ConferenceDatabase/Tables/ConferenceDayReservation.h"
@@ -25,7 +25,7 @@ class ConferenceDatabase :
         Person,
         Student,
         Company,
-        Client,
+        Customer,
         Participant,
         Conference,
         ConferenceDay,
@@ -45,7 +45,7 @@ public:
     const Table<Person>& people() const;
     const Table<Student>& students() const;
     const Table<Company>& companies() const;
-    const Table<Client>& clients() const;
+    const Table<Customer>& customers() const;
     const Table<Participant>& participants() const;
     const Table<Conference>& conferences() const;
     const Table<ConferenceDay>& conferenceDays() const;

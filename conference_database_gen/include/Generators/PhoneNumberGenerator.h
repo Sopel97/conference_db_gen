@@ -8,16 +8,8 @@ class PhoneNumberGenerator
 public:
     using ResultType = std::string;
 
-    PhoneNumberGenerator(const std::string& format) :
-        m_format(format)
-    {
-
-    }
-    PhoneNumberGenerator(std::string&& format) :
-        m_format(std::move(format))
-    {
-
-    }
+    PhoneNumberGenerator(const std::string& format);
+    PhoneNumberGenerator(std::string&& format);
 
     template <class TRng>
     ResultType operator()(TRng& rng) const

@@ -16,9 +16,9 @@ Record::IdType Conference::conferenceId() const
     return m_conferenceId;
 }
 
-ForeignKey<Client> Conference::client() const
+ForeignKey<Customer> Conference::customer() const
 {
-    return m_client;
+    return m_customer;
 }
 
 const DateTime& Conference::startDate() const
@@ -28,5 +28,9 @@ const DateTime& Conference::startDate() const
 
 CsvRecord Conference::toCsvRecord() const
 {
-    return CsvRecord(std::to_string(m_conferenceId), std::to_string(m_client.primaryKey()), m_startDate.toString());
+    return CsvRecord(
+        std::to_string(m_conferenceId), 
+        std::to_string(m_customer.primaryKey()), 
+        m_startDate.toString()
+    );
 }

@@ -9,7 +9,7 @@
 #include "PersonTableGenerator.h"
 #include "CompanyTableGenerator.h"
 #include "StudentTableGenerator.h"
-#include "ClientTableGenerator.h"
+#include "CustomerTableGenerator.h"
 #include "ParticipantTableGenerator.h"
 #include "ConferenceTableGenerator.h"
 #include "ConferenceDayTableGenerator.h"
@@ -28,14 +28,7 @@ public:
     using ResultType = ConferenceDatabase;
     using DictionaryType = MarkovChainsDictionary<std::string>;
 
-    ConferenceDatabaseGenerator(int numFirstNames, int numLastNames, int numCountries, int numCitiesPerCountry) :
-        m_numFirstNames(numFirstNames),
-        m_numLastNames(numLastNames),
-        m_numCountries(numCountries),
-        m_numCitiesPerCountry(numCitiesPerCountry)
-    {
-
-    }
+    ConferenceDatabaseGenerator(int numFirstNames, int numLastNames, int numCountries, int numCitiesPerCountry);
 
     template <class TRng>
     ConferenceDatabase operator()(TRng& rng) const
@@ -109,7 +102,7 @@ public:
             0.1f
             )(rng);
 
-        const auto& clients = database.table<Client>() = TableGenerator<Client>(
+        const auto& customers = database.table<Customer>() = TableGenerator<Customer>(
             people,
             companies,
             0.001f
@@ -125,7 +118,7 @@ public:
         DateTimeGenerator conferenceStartDateGenerator(DateTime(Years{ 2014 }), DateTime(Years{ 2017 }));
 
         const auto& conferences = database.table<Conference>() = TableGenerator<Conference>(
-            clients,
+            customers,
             conferenceStartDateGenerator,
             numConferences
             )(rng);

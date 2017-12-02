@@ -9,12 +9,7 @@
 
 #include "TableGenerator.h"
 
-#include "MarkovChainsDictionary.h"
-#include "NameGenerator.h"
-#include "DateTimeGenerator.h"
-#include "DurationGenerator.h"
 #include "PriceGenerator.h"
-#include "Common.h"
 
 #include "DateTime.h"
 
@@ -33,17 +28,7 @@ public:
         Milliseconds priceIncreaseAfter,
         float percentIcrease,
         int numIncreases
-    ) :
-        m_conferenceDays(&conferenceDays),
-        m_minInitialPrice(minInitialPrice),
-        m_maxInitialPrice(maxInitialPrice),
-        m_firstAvailableBefore(firstAvailableBefore),
-        m_priceIncreaseAfter(priceIncreaseAfter),
-        m_percentIcrease(percentIcrease),
-        m_numIncreases(numIncreases)
-    {
-
-    }
+    );
 
     template <class TRng>
     Table<PriceRange> operator()(TRng& rng) const

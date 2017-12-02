@@ -9,9 +9,6 @@
 
 #include "TableGenerator.h"
 
-#include "MarkovChainsDictionary.h"
-#include "NameGenerator.h"
-#include "DateTimeGenerator.h"
 #include "DurationGenerator.h"
 #include "Common.h"
 
@@ -29,14 +26,7 @@ public:
         int avgNumDays,
         int minNumSpots,
         int maxNumSpots
-    ) :
-        m_conferences(&conferences),
-        m_avgNumDays(avgNumDays),
-        m_minNumSpots(minNumSpots),
-        m_maxNumSpots(maxNumSpots)
-    {
-
-    }
+    );
 
     template <class TRng>
     Table<ConferenceDay> operator()(TRng& rng) const

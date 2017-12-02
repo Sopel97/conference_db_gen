@@ -51,5 +51,15 @@ const std::string& Company::email() const
 
 CsvRecord Company::toCsvRecord() const
 {
-    return CsvRecord(std::to_string(m_companyId), m_companyName, m_contactPersonName, m_address, m_postalCode, m_city, std::to_string(m_country.primaryKey()), m_phone, m_email);
+    return CsvRecord(
+        std::to_string(m_companyId), 
+        m_companyName, 
+        m_contactPersonName, 
+        m_address, 
+        m_postalCode, 
+        m_city, 
+        std::to_string(m_country.primaryKey()), 
+        m_phone, 
+        m_email
+    );
 }

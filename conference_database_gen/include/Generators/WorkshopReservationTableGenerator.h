@@ -12,11 +12,7 @@
 
 #include "TableGenerator.h"
 
-#include "MarkovChainsDictionary.h"
-#include "NameGenerator.h"
-#include "PhoneNumberGenerator.h"
 #include "DurationGenerator.h"
-#include "Common.h"
 
 template <>
 class TableGenerator<WorkshopReservation>
@@ -30,14 +26,7 @@ public:
         const Table<ConferenceDay>& conferenceDays,
         const Table<Workshop>& workshops,
         float paymentSaturation
-    ) :
-        m_conferenceDayReservations(&conferenceDayReservations),
-        m_conferenceDays(&conferenceDays),
-        m_workshops(&workshops),
-        m_paymentSaturation(paymentSaturation)
-    {
-
-    }
+    );
 
     template <class TRng>
     Table<WorkshopReservation> operator()(TRng& rng) const
