@@ -38,9 +38,12 @@ public:
         
         DurationGenerator startOffsetGenerator(minStartOffsetDuration, maxStartOffsetDuration);
 
-        Table<ConferenceDay> conferenceDays;
+        const int maxNumDays = m_avgNumDays * 2 - 1;
 
-        std::uniform_int_distribution<int> dNumDays(1, m_avgNumDays * 2 - 1);
+        Table<ConferenceDay> conferenceDays;
+        conferenceDays.reserve(m_conferences->size() * maxNumDays);
+
+        std::uniform_int_distribution<int> dNumDays(1, maxNumDays);
         std::uniform_int_distribution<int> dNumSpots(m_minNumSpots, m_maxNumSpots);
 
         Record::IdType id = 0;

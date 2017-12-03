@@ -33,6 +33,7 @@ public:
         static constexpr Milliseconds dateRounding = Hours{ 1 };
 
         Table<Conference> conferences;
+        conferences.reserve(m_numConferences);
 
         Record::IdType id = 0;
         for (int i = 0; i < m_numConferences; ++i)

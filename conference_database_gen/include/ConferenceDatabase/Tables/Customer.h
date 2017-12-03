@@ -23,6 +23,12 @@ public:
 
     }
 
+    Customer(const Customer&) = default;
+    Customer(Customer&&) noexcept = default;
+
+    Customer& operator=(const Customer&) = default;
+    Customer& operator=(Customer&&) noexcept = default;
+
     PrimaryKeyType primaryKey() const;
 
     IdType customerId() const;

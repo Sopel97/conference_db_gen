@@ -36,6 +36,7 @@ public:
         PriceGenerator priceGenerator(m_minInitialPrice, m_maxInitialPrice);
 
         Table<PriceRange> priceRanges;
+        priceRanges.reserve(m_conferenceDays->size() * m_numIncreases);
 
         Record::IdType id = 0;
         for (const auto& conferenceDay : *m_conferenceDays)

@@ -21,6 +21,12 @@ public:
 
     }
 
+    Student(const Student&) = default;
+    Student(Student&&) noexcept = default;
+
+    Student& operator=(const Student&) = default;
+    Student& operator=(Student&&) noexcept = default;
+
     PrimaryKeyType primaryKey() const;
 
     IdType studentId() const;

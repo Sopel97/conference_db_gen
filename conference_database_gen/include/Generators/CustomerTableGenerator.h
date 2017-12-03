@@ -27,6 +27,11 @@ public:
     {
         std::bernoulli_distribution dIsIndividualCustomer(m_individualCustomerSaturation);
         Table<Customer> customers;
+        {
+            float f = 1.0f - m_individualCustomerSaturation;
+            f *= f; // since we're dealing with probability reserving is done with a margin
+            customers.reserve(static_cast<int>(m_people->size() * (1.0f - f)) + m_companies->size());
+        }
 
         Record::IdType id = 0;
         for (const auto& person : *m_people)

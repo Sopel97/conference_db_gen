@@ -52,6 +52,12 @@ public:
 
     }
 
+    Person(const Person&) = default;
+    Person(Person&&) noexcept = default;
+
+    Person& operator=(const Person&) = default;
+    Person& operator=(Person&&) noexcept = default;
+
     PrimaryKeyType primaryKey() const;
 
     IdType personId() const;

@@ -47,6 +47,12 @@ public:
 
     }
 
+    Company(const Company&) = default;
+    Company(Company&&) noexcept = default;
+
+    Company& operator=(const Company&) = default;
+    Company& operator=(Company&&) noexcept = default;
+
     PrimaryKeyType primaryKey() const;
 
     IdType companyId() const;

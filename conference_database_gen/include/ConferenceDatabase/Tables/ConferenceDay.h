@@ -23,6 +23,12 @@ public:
 
     }
 
+    ConferenceDay(const ConferenceDay&) = default;
+    ConferenceDay(ConferenceDay&&) noexcept = default;
+
+    ConferenceDay& operator=(const ConferenceDay&) = default;
+    ConferenceDay& operator=(ConferenceDay&&) noexcept = default;
+
     PrimaryKeyType primaryKey() const;
 
     IdType conferenceDayId() const;

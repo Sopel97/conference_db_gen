@@ -49,6 +49,7 @@ public:
         NameGenerator postalCodeGenerator(*m_postalCodeDictionary, minPostalCodeLength, maxOptimalPostalCodeLength, maxPostalCodeLength);
 
         Table<Person> people;
+        people.reserve(m_numRecords);
 
         for (int i = 0; i < m_numRecords; ++i)
         {

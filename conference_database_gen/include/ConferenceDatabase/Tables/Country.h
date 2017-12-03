@@ -18,6 +18,12 @@ public:
 
     }
 
+    Country(const Country&) = default;
+    Country(Country&&) noexcept = default;
+
+    Country& operator=(const Country&) = default;
+    Country& operator=(Country&&) noexcept = default;
+
     PrimaryKeyType primaryKey() const;
 
     IdType countryId() const;

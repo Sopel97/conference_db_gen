@@ -41,6 +41,14 @@ public:
         std::bernoulli_distribution dIsPaid(m_paymentSaturation);
 
         Table<ConferenceDayReservation> conferenceDayReservations;
+        {
+            int maxReservations = 0;
+            for (const auto& conferenceDay : *m_conferenceDays)
+            {
+                maxReservations += conferenceDay.numSpots();
+            }
+            conferenceDayReservations.reserve(maxReservations);
+        }
 
         std::vector<int> participantIndices; // used for choosing a set of participants for each day
         participantIndices.reserve(m_participants->size());
@@ -57,7 +65,7 @@ public:
 
             int numFreeSpots = currentConferenceDay->numSpots();
 
-            std::shuffle(participantIndices.begin(), participantIndices.end(), rng);
+            shuffleFirstN(participantIndices, rng, numFreeSpots);
 
             int participantIndexIndex = 0;
             while (priceRangeIter != m_priceRanges->end() && currentConferenceDay == lastConferenceDay)
@@ -106,4 +114,18 @@ private:
     const Table<Student>* m_students;
     float m_paymentSaturation;
     Milliseconds m_priceRangeDuration;
+
+    template <class T, class TRng>
+    static void shuffleFirstN(std::vector<T>& values, TRng&& rng, int n)
+    {
+        std::uniform_int_distribution<int> dIndex(0, values.size() - 1);
+
+        for(int i = 0; i < n; ++i)
+        {
+            const int i2 = dIndex(rng);
+            if (i == i2) continue;
+
+            std::swap(values[i], values[i2]);
+        }
+    }
 };

@@ -29,6 +29,11 @@ public:
         std::bernoulli_distribution dIsStudent(m_studentSaturation);
         std::uniform_int_distribution<int> dStudentCardNumber(minStudentCardNumber, maxStudentCardNumber);
         Table<Student> students;
+        {
+            float f = 1.0f - m_studentSaturation;
+            f *= f; // since we're dealing with probability reserving is done with a margin
+            students.reserve(static_cast<int>(m_people->size() * (1.0f - f)));
+        }
 
         Record::IdType id = 0;
         for (const auto& person : *m_people)

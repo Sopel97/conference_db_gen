@@ -22,6 +22,12 @@ public:
 
     }
 
+    Conference(const Conference&) = default;
+    Conference(Conference&&) noexcept = default;
+
+    Conference& operator=(const Conference&) = default;
+    Conference& operator=(Conference&&) noexcept = default;
+
     PrimaryKeyType primaryKey() const;
 
     IdType conferenceId() const;

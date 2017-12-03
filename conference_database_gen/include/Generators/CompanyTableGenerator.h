@@ -52,6 +52,7 @@ public:
         NameGenerator postalCodeGenerator(*m_postalCodeDictionary, minPostalCodeLength, maxOptimalPostalCodeLength, maxPostalCodeLength);
 
         Table<Company> companies;
+        companies.reserve(m_numCompanies);
 
         for (int i = 0; i < m_numCompanies; ++i)
         {

@@ -48,10 +48,12 @@ public:
         NameGenerator nameGenerator(*m_nameDictionary, minWorkshopNameLength, maxOptimalWorkshopNameLength, maxWorkshopNameLength);
 
         std::bernoulli_distribution dHasPrice(m_priceSaturation);
-        std::uniform_int_distribution<int> dNumWorkshops(1, m_avgNumWorkshopsPerDay * 2 - 1);
+        const int maxWorkshopsPerDay = m_avgNumWorkshopsPerDay * 2 - 1;
+        std::uniform_int_distribution<int> dNumWorkshops(1, maxWorkshopsPerDay);
         std::uniform_real_distribution<float> dNumSpotsRelative(minNumSpotsRelative, maxNumSpotsRelative);
 
         Table<Workshop> workshops;
+        workshops.reserve(m_conferenceDays->size() * maxWorkshopsPerDay);
 
         Record::IdType id = 0;
         for (const auto& conferenceDay : *m_conferenceDays)

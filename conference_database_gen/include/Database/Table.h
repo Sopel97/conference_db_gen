@@ -35,6 +35,11 @@ public:
         return m_records;
     }
 
+    void reserve(int n)
+    {
+        m_records.reserve(n);
+    }
+
     CsvDocument toCsvDocument() const
     {
         CsvDocument doc;

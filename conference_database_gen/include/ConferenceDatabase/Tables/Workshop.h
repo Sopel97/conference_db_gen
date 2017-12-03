@@ -44,6 +44,12 @@ public:
 
     }
 
+    Workshop(const Workshop&) = default;
+    Workshop(Workshop&&) noexcept = default;
+
+    Workshop& operator=(const Workshop&) = default;
+    Workshop& operator=(Workshop&&) noexcept = default;
+
     PrimaryKeyType primaryKey() const;
 
     IdType workshopId() const;

@@ -31,6 +31,7 @@ public:
         std::bernoulli_distribution dSep(m_separatorBias);
         const int preLen = dPreNumberLen(rng);
         const int numberLen = dNumberLen(rng);
+        format.reserve(numberLen);
         const char separator = dSep(rng) ? ' ' : '-';
         if (preLen > 0)
         {

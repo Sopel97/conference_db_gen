@@ -25,6 +25,12 @@ public:
 
     }
 
+    PriceRange(const PriceRange&) = default;
+    PriceRange(PriceRange&&) noexcept = default;
+
+    PriceRange& operator=(const PriceRange&) = default;
+    PriceRange& operator=(PriceRange&&) noexcept = default;
+
     PrimaryKeyType primaryKey() const;
 
     IdType priceRangeId() const;

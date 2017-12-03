@@ -36,6 +36,14 @@ public:
         static constexpr Milliseconds maxOffsetFromDayReservation = Days{ 1 };
 
         Table<WorkshopReservation> workshopReservations;
+        {
+            int maxWorkshopReservations = 0;
+            for (const auto& workshop : *m_workshops)
+            {
+                maxWorkshopReservations += workshop.numSpots();
+            }
+            workshopReservations.reserve(maxWorkshopReservations);
+        }
 
         DurationGenerator offsetFromDayReservationGenerator(minOffsetFromDayReservation, maxOffsetFromDayReservation);
         std::bernoulli_distribution dIsPaid(m_paymentSaturation);

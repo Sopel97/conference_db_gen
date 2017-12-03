@@ -34,6 +34,7 @@ public:
         auto countryNames = Common::generate<NameGenerator>(rng, m_numCountries, *m_countryDictionary, minCountryLength, maxOptimalCountryLength, maxCountryLength);
 
         Table<Country> countries;
+        countries.reserve(m_numCountries);
 
         Record::IdType id = 0;
         for (auto&& countryName : std::move(countryNames))

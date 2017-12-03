@@ -42,6 +42,12 @@ public:
 
     }
 
+    WorkshopReservation(const WorkshopReservation&) = default;
+    WorkshopReservation(WorkshopReservation&&) noexcept = default;
+
+    WorkshopReservation& operator=(const WorkshopReservation&) = default;
+    WorkshopReservation& operator=(WorkshopReservation&&) noexcept = default;
+
     PrimaryKeyType primaryKey() const;
 
     IdType workshopReservationId() const;

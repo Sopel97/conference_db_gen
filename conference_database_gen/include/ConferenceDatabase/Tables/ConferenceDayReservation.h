@@ -42,6 +42,12 @@ public:
 
     }
 
+    ConferenceDayReservation(const ConferenceDayReservation&) = default;
+    ConferenceDayReservation(ConferenceDayReservation&&) noexcept = default;
+
+    ConferenceDayReservation& operator=(const ConferenceDayReservation&) = default;
+    ConferenceDayReservation& operator=(ConferenceDayReservation&&) noexcept = default;
+
     PrimaryKeyType primaryKey() const;
 
     IdType conferenceDayReservationId() const;

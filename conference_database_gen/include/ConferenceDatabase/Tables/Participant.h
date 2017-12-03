@@ -23,6 +23,12 @@ public:
 
     }
 
+    Participant(const Participant&) = default;
+    Participant(Participant&&) noexcept = default;
+
+    Participant& operator=(const Participant&) = default;
+    Participant& operator=(Participant&&) noexcept = default;
+
     PrimaryKeyType primaryKey() const;
 
     IdType participantId() const;
