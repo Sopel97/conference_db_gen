@@ -11,23 +11,23 @@ public:
     using BaseUnitType = TBaseUnit;
     static constexpr int64_t numUnits = NumUnits;
 
-    Duration(int64_t c) :
+    constexpr Duration(int64_t c) :
         m_count(c)
     {
 
     }
 
-    int64_t count() const
+    constexpr int64_t count() const
     {
         return m_count;
     }
 
-    operator Duration<BaseUnitType, 1>()
+    constexpr operator Duration<BaseUnitType, 1>()
     {
         return { m_count * numUnits };
     }
 
-    Duration<TBaseUnit, NumUnits> operator-() const
+    constexpr Duration<TBaseUnit, NumUnits> operator-() const
     {
         return Duration<TBaseUnit, NumUnits>(-m_count);
     }
@@ -37,12 +37,12 @@ private:
 };
 
 template <class TBaseUnit, int64_t NumUnitsLhs, int64_t NumUnitsRhs>
-Duration<TBaseUnit, 1> operator+(Duration<TBaseUnit, NumUnitsLhs> lhs, Duration<TBaseUnit, NumUnitsRhs> rhs)
+constexpr Duration<TBaseUnit, 1> operator+(Duration<TBaseUnit, NumUnitsLhs> lhs, Duration<TBaseUnit, NumUnitsRhs> rhs)
 {
     return { lhs.count() * NumUnitsLhs + rhs.count() * NumUnitsRhs };
 }
 template <class TBaseUnit, int64_t NumUnitsLhs, int64_t NumUnitsRhs>
-Duration<TBaseUnit, 1> operator-(Duration<TBaseUnit, NumUnitsLhs> lhs, Duration<TBaseUnit, NumUnitsRhs> rhs)
+constexpr Duration<TBaseUnit, 1> operator-(Duration<TBaseUnit, NumUnitsLhs> lhs, Duration<TBaseUnit, NumUnitsRhs> rhs)
 {
     return { lhs.count() * NumUnitsLhs - rhs.count() * NumUnitsRhs };
 }
@@ -58,9 +58,9 @@ using LeapYears = Duration<Millisecond, Days::numUnits * 366>;
 class Months
 {
 public:
-    Months(int64_t c);
+    constexpr Months(int64_t c);
 
-    int64_t count() const;
+    constexpr int64_t count() const;
 
 private:
     int64_t m_count;
@@ -69,9 +69,9 @@ private:
 class Years
 {
 public:
-    Years(int64_t c);
+    constexpr Years(int64_t c);
 
-    int64_t count() const;
+    constexpr int64_t count() const;
 
 private:
     int64_t m_count;
@@ -80,9 +80,9 @@ private:
 class DateTime
 {
 public:
-    DateTime(Years year, Months month, Days day, Milliseconds milliseconds);
+    constexpr DateTime(Years year, Months month, Days day, Milliseconds milliseconds);
 
-    DateTime(
+    constexpr DateTime(
         Years year = Years{ 1900 }, 
         Months month = Months{ 0 }, 
         Days day = Days{ 0 }, 
@@ -92,24 +92,128 @@ public:
         Milliseconds millisecond = Milliseconds{ 0 }
     );
 
-    DateTime(Milliseconds duration);
+    constexpr DateTime(Milliseconds duration);
 
-    DateTime operator+(Milliseconds millis) const;
-    DateTime operator-(Milliseconds millis) const;
+    constexpr DateTime operator+(Milliseconds millis) const;
+    constexpr DateTime operator-(Milliseconds millis) const;
 
-    DateTime& operator+=(Milliseconds millis);
-    DateTime& operator-=(Milliseconds millis);
+    constexpr DateTime& operator+=(Milliseconds millis);
+    constexpr DateTime& operator-=(Milliseconds millis);
 
-    Milliseconds milliseconds() const;
+    constexpr Milliseconds milliseconds() const;
 
     // must be an even number of milliseconds
-    DateTime rounded(Milliseconds roundTo) const;
+    constexpr DateTime rounded(Milliseconds roundTo) const;
 
     std::string toString() const;
 
 private:
     Milliseconds m_milliseconds;
 
-    static Milliseconds toMilliseconds(Years year, Months month, Days day, Milliseconds milliseconds);
-    static Milliseconds toMilliseconds(Years year, Months month, Days day, Hours hour, Minutes minute, Seconds second, Milliseconds millisecond);
+    constexpr static Milliseconds toMilliseconds(Years year, Months month, Days day, Milliseconds milliseconds);
+    constexpr static Milliseconds toMilliseconds(Years year, Months month, Days day, Hours hour, Minutes minute, Seconds second, Milliseconds millisecond);
 };
+
+
+constexpr Months::Months(int64_t c) :
+    m_count(c)
+{
+
+}
+
+constexpr int64_t Months::count() const
+{
+    return m_count;
+}
+
+constexpr Years::Years(int64_t c) :
+    m_count(c)
+{
+
+}
+
+constexpr int64_t Years::count() const
+{
+    return m_count;
+}
+
+constexpr DateTime::DateTime(Years year, Months month, Days day, Milliseconds milliseconds) :
+    m_milliseconds(toMilliseconds(year, month, day, milliseconds))
+{
+
+}
+
+constexpr DateTime::DateTime(
+    Years year,
+    Months month,
+    Days day,
+    Hours hour,
+    Minutes minute,
+    Seconds second,
+    Milliseconds millisecond
+) :
+    m_milliseconds(toMilliseconds(year, month, day, hour, minute, second, millisecond))
+{
+
+}
+
+constexpr DateTime::DateTime(Milliseconds duration) :
+    m_milliseconds(duration)
+{
+
+}
+
+constexpr DateTime DateTime::operator+(Milliseconds millis) const
+{
+    return DateTime(m_milliseconds + millis);
+}
+
+constexpr DateTime DateTime::operator-(Milliseconds millis) const
+{
+    return DateTime(m_milliseconds - millis);
+}
+
+constexpr DateTime& DateTime::operator+=(Milliseconds millis)
+{
+    m_milliseconds = m_milliseconds + millis;
+    return *this;
+}
+
+constexpr DateTime& DateTime::operator-=(Milliseconds millis)
+{
+    m_milliseconds = m_milliseconds - millis;
+    return *this;
+}
+
+constexpr Milliseconds DateTime::milliseconds() const
+{
+    return m_milliseconds;
+}
+
+// must be an even number of milliseconds
+constexpr DateTime DateTime::rounded(Milliseconds roundTo) const
+{
+    const int64_t r = roundTo.count();
+    const int64_t m = m_milliseconds.count();
+
+    return Milliseconds((m + r / 2) / r * r);
+}
+
+constexpr Milliseconds DateTime::toMilliseconds(Years year, Months month, Days day, Milliseconds milliseconds)
+{
+    int64_t y = year.count();
+    int64_t m = month.count() + 1;
+    int64_t d = day.count() + 1;
+
+    y -= m <= 2;
+    const int64_t era = (y >= 0 ? y : y - 399) / 400;
+    const int64_t yoe = y - era * 400;      // [0, 399]
+    const int64_t doy = (153 * (m + (m > 2 ? -3 : 9)) + 2) / 5 + d - 1;  // [0, 365]
+    const int64_t doe = yoe * 365 + yoe / 4 - yoe / 100 + doy;         // [0, 146096]
+    return Milliseconds{ (era * 146097 + doe - 719468) * Days::numUnits } +milliseconds; // 719468 = days from 0000-03-01 to 1970-01-01
+}
+
+constexpr Milliseconds DateTime::toMilliseconds(Years year, Months month, Days day, Hours hour, Minutes minute, Seconds second, Milliseconds millisecond)
+{
+    return toMilliseconds(year, month, day, hour + minute + second + millisecond);
+}

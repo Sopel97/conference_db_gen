@@ -35,12 +35,26 @@ public:
     {
         static constexpr int numPeople = 10000;
         static constexpr int numCompanies = 100;
-        static constexpr int numConferences = 3 * 12 * 2;
+
+        static constexpr int minConferenceYear = 2014;
+        static constexpr int maxConferenceYear = 2017;
+        static constexpr int years = maxConferenceYear - minConferenceYear;
+        static constexpr int numConferencesPerMonth = 2;
+        static constexpr int numConferences = years * 12 * numConferencesPerMonth;
+
+        static constexpr int minFirstNameLength = 3;
+        static constexpr int maxFirstNameLength = 9;
+        static constexpr int minLastNameLength = 4;
+        static constexpr int maxLastNameLength = 11;
+
+        static constexpr int minCityNameLength = 4;
+        static constexpr int maxOptimalCityNameLength = 18;
+        static constexpr int maxCityNameLength = 25;
 
         ConferenceDatabase database;
 
-        auto firstNames = Common::generate<NameGenerator>(rng, m_numFirstNames, createFirstNameDictionary(), 3, 3, 9);
-        auto lastNames = Common::generate<NameGenerator>(rng, m_numLastNames, createLastNameDictionary(), 4, 4, 11);
+        auto firstNames = Common::generate<NameGenerator>(rng, m_numFirstNames, createFirstNameDictionary(), minFirstNameLength, minFirstNameLength, maxFirstNameLength);
+        auto lastNames = Common::generate<NameGenerator>(rng, m_numLastNames, createLastNameDictionary(), minLastNameLength, minLastNameLength, maxLastNameLength);
 
         DictionaryType addressDictionary = createAddressDictionary();
         DictionaryType postalCodeDictionary = createPostalCodeDictionary();
@@ -51,11 +65,29 @@ public:
             DictionaryType cityDictionary = createCityDictionary();
             for (int i = 0; i < m_numCountries; ++i)
             {
-                cityNamesByCountry[i] = Common::generate<NameGenerator>(rng, m_numCitiesPerCountry, cityDictionary, 4, 18, 25);
+                cityNamesByCountry[i] = Common::generate<NameGenerator>(rng, m_numCitiesPerCountry, cityDictionary, minCityNameLength, maxOptimalCityNameLength, maxCityNameLength);
             }
         }
 
-        auto phoneGeneratorFormats = Common::generate<PhoneNumberFormatGenerator>(rng, m_numCountries, 2, 4, 0, 4, 8, 10, 0.5f);
+        static constexpr int minPhoneSegmentLength = 2;
+        static constexpr int maxPhoneSegmentLength = 4;
+        static constexpr int minAreaCodeLength = 0;
+        static constexpr int maxAreaCodeLength = 4;
+        static constexpr int minPhoneNumberLength = 8;
+        static constexpr int maxPhoneNumberLength = 10;
+        static constexpr float phoneNumberSeparatorBias = 0.5f;
+
+        auto phoneGeneratorFormats = Common::generate<PhoneNumberFormatGenerator>(
+            rng, 
+            m_numCountries, 
+            minPhoneSegmentLength,
+            maxPhoneSegmentLength,
+            minAreaCodeLength,
+            maxAreaCodeLength,
+            minPhoneNumberLength,
+            maxPhoneNumberLength,
+            phoneNumberSeparatorBias
+            );
         std::vector<PhoneNumberGenerator> phoneGenerators;
         phoneGenerators.reserve(m_numCountries);
         for (int i = 0; i < m_numCountries; ++i)
@@ -63,7 +95,10 @@ public:
             phoneGenerators.emplace_back(phoneGeneratorFormats[i]);
         }
 
-        DateTimeGenerator birthDateGenerator(DateTime(Years{ 1950 }), DateTime(Years{ 1998 }));
+        static constexpr DateTime minBirthDate = DateTime(Years{ 1950 });
+        static constexpr DateTime maxBirthDate = DateTime(Years{ 1998 });
+
+        DateTimeGenerator birthDateGenerator(minBirthDate, maxBirthDate);
 
         DictionaryType countryDictionary = createCountryDictionary();
         const auto& countries = database.table<Country>() = TableGenerator<Country>(
@@ -97,25 +132,32 @@ public:
             numCompanies
             )(rng);
 
+        static constexpr float studentSaturation = 0.1f;
+
         const auto& students = database.table<Student>() = TableGenerator<Student>(
             people,
-            0.1f
+            studentSaturation
             )(rng);
+
+        static constexpr float personalCustomersSaturation = 0.001f;
 
         const auto& customers = database.table<Customer>() = TableGenerator<Customer>(
             people,
             companies,
-            0.001f
+            personalCustomersSaturation
             )(rng);
+
+        static constexpr float participantSaturation = 0.95f;
+        static constexpr float participantsWithCompanySaturation = 0.75f;
 
         const auto& participants = database.table<Participant>() = TableGenerator<Participant>(
             people,
             companies,
-            0.95f,
-            0.75f
+            participantSaturation,
+            participantsWithCompanySaturation
             )(rng);
 
-        DateTimeGenerator conferenceStartDateGenerator(DateTime(Years{ 2014 }), DateTime(Years{ 2017 }));
+        DateTimeGenerator conferenceStartDateGenerator(DateTime(Years{ minConferenceYear }), DateTime(Years{ maxConferenceYear }));
 
         const auto& conferences = database.table<Conference>() = TableGenerator<Conference>(
             customers,
@@ -123,49 +165,73 @@ public:
             numConferences
             )(rng);
 
+        static constexpr int avgNumConferenceDays = 3;
+        static constexpr int minConferenceDaySpots = 50;
+        static constexpr int maxConferenceDaySpots = 100;
+
         const auto& conferenceDays = database.table<ConferenceDay>() = TableGenerator<ConferenceDay>(
             conferences,
-            3,
-            50,
-            100
+            avgNumConferenceDays,
+            minConferenceDaySpots,
+            maxConferenceDaySpots
             )(rng);
+
+        static constexpr float minConferenceDayPrice = 10.0f;
+        static constexpr float maxConferenceDayPrice = 50.0f;
+        static constexpr Milliseconds availableBefore = Days{ 70 };
+        static constexpr Milliseconds paymentIncreaseAfter = Days{ 14 };
+        static constexpr float percentPaymentIncrease = 0.5f;
+        static constexpr int numPaymentRangesPerDay = 4;
 
         const auto& priceRanges = database.table<PriceRange>() = TableGenerator<PriceRange>(
             conferenceDays,
-            Price(10.0f),
-            Price(50.0f),
-            Days{ 70 },
-            Days{14},
-            0.5f,
-            4
+            Price(minConferenceDayPrice),
+            Price(maxConferenceDayPrice),
+            availableBefore,
+            paymentIncreaseAfter,
+            percentPaymentIncrease,
+            numPaymentRangesPerDay
             )(rng);
 
         DictionaryType workshopNameDictionary = createWorkshopNameDictionary();
 
+        static constexpr Milliseconds minWorkshopOffsetFromDayStart = Minutes{ 30 };
+        static constexpr Milliseconds maxWorkshopOffsetFromDayStart = Hours{ 6 };
+        static constexpr Milliseconds minWorkshopDuration = Minutes{ 60 };
+        static constexpr Milliseconds maxWorkshopDuration = Minutes{ 180 };
+        static constexpr float minWorkshopPrice = 10.0f;
+        static constexpr float maxWorkshopPrice = 30.0f;
+        static constexpr float workshopPriceSaturation = 0.8f;
+        static constexpr int avgNumWorkshopsPerDay = 4;
+
         const auto& workshops = database.table<Workshop>() = TableGenerator<Workshop>(
             conferenceDays,
             workshopNameDictionary,
-            DurationGenerator(Minutes{30}, Hours{6}),
-            DurationGenerator(Minutes{60}, Minutes{180}),
-            PriceGenerator(Price(10.0f), Price(30.0f)),
-            0.8f,
-            4
+            DurationGenerator(minWorkshopOffsetFromDayStart, maxWorkshopOffsetFromDayStart),
+            DurationGenerator(minWorkshopDuration, maxWorkshopDuration),
+            PriceGenerator(Price(minWorkshopPrice), Price(maxWorkshopPrice)),
+            workshopPriceSaturation,
+            avgNumWorkshopsPerDay
             )(rng);
+
+        static constexpr float conferenceDayPaymentSaturation = 0.9f;
 
         const auto& conferenceDayReservations = database.table<ConferenceDayReservation>() = TableGenerator<ConferenceDayReservation>(
             participants,
             conferenceDays,
             priceRanges,
             students,
-            0.9f,
-            Days{ 14 } // same as in price ranges
+            conferenceDayPaymentSaturation,
+            paymentIncreaseAfter // same as in price ranges
             )(rng);
+
+        static constexpr float workshopPaymentSaturation = 0.9f;
 
         const auto& workshopReservations = database.table<WorkshopReservation>() = TableGenerator<WorkshopReservation>(
             conferenceDayReservations,
             conferenceDays,
             workshops,
-            0.9f
+            workshopPaymentSaturation
             )(rng);
 
         return database;

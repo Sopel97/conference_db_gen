@@ -8,6 +8,8 @@ class PhoneNumberFormatGenerator
 public:
     using ResultType = std::string;
 
+    static constexpr char digitWildcard = 'd';
+
     PhoneNumberFormatGenerator(
         int minSegmentLength,
         int maxSegmentLength,
@@ -35,7 +37,7 @@ public:
             format += '(';
             for (int i = 0; i < preLen; ++i)
             {
-                format += 'd';
+                format += digitWildcard;
             }
             format += ") ";
         }
@@ -44,7 +46,7 @@ public:
         int nextSeparator = dSeparatorAfter(rng);
         for (int i = 0; i < numberLen; ++i)
         {
-            format += 'd';
+            format += digitWildcard;
             ++withoutSeparator;
 
             if (i < numberLen - 1 && withoutSeparator == nextSeparator)

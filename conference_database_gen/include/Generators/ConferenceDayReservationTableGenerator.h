@@ -34,8 +34,9 @@ public:
     {
         static constexpr float percentFillPerPriceRange = 0.7f;
         static constexpr float studentDiscount = 0.3f;
+        static constexpr Milliseconds maxReservationTimeOffset = Days{ 8 }; // some will be after 7 day payment time, they should be cancelled by the DB
 
-        DurationGenerator reservationTimeOffsetGenerator(-m_priceRangeDuration, Days{ 8 }); // some will be after 7 day payment time, they should be cancelled by the DB
+        DurationGenerator reservationTimeOffsetGenerator(-m_priceRangeDuration, maxReservationTimeOffset);
 
         std::bernoulli_distribution dIsPaid(m_paymentSaturation);
 
@@ -49,9 +50,9 @@ public:
         }
 
         Record::IdType id = 0;
-        for (auto iter = m_priceRanges->begin(); iter != m_priceRanges->end();)
+        for (auto priceRangeIter = m_priceRanges->begin(); priceRangeIter != m_priceRanges->end();)
         {
-            auto currentConferenceDay = iter->conferenceDay();
+            auto currentConferenceDay = priceRangeIter->conferenceDay();
             auto lastConferenceDay = currentConferenceDay;
 
             int numFreeSpots = currentConferenceDay->numSpots();
@@ -59,9 +60,9 @@ public:
             std::shuffle(participantIndices.begin(), participantIndices.end(), rng);
 
             int participantIndexIndex = 0;
-            while (iter != m_priceRanges->end() && currentConferenceDay == lastConferenceDay)
+            while (priceRangeIter != m_priceRanges->end() && currentConferenceDay == lastConferenceDay)
             {
-                const auto& priceRange = *iter;
+                const auto& priceRange = *priceRangeIter;
 
                 // one price range at one the same conference day
                 const int numSpotsToFill = static_cast<int>(numFreeSpots * percentFillPerPriceRange);
@@ -90,8 +91,8 @@ public:
                 }
 
                 lastConferenceDay = currentConferenceDay;
-                ++iter;
-                currentConferenceDay = iter->conferenceDay();
+                ++priceRangeIter;
+                currentConferenceDay = priceRangeIter->conferenceDay();
             }
         }
 

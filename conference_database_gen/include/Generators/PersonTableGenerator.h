@@ -37,8 +37,16 @@ public:
     template <class TRng>
     Table<Person> operator()(TRng& rng) const
     {
-        NameGenerator addressGenerator(*m_addressDictionary, 8, 20, 30);
-        NameGenerator postalCodeGenerator(*m_postalCodeDictionary, 5, 6, 8);
+        static constexpr int minAddressLength = 8;
+        static constexpr int maxOptimalAddressLength = 20;
+        static constexpr int maxAddressLength = 30;
+        static constexpr int minPostalCodeLength = 5;
+        static constexpr int maxOptimalPostalCodeLength = 6;
+        static constexpr int maxPostalCodeLength = 8;
+        static constexpr Milliseconds dateRounding = Hours{ 1 };
+
+        NameGenerator addressGenerator(*m_addressDictionary, minAddressLength, maxOptimalAddressLength, maxAddressLength);
+        NameGenerator postalCodeGenerator(*m_postalCodeDictionary, minPostalCodeLength, maxOptimalPostalCodeLength, maxPostalCodeLength);
 
         Table<Person> people;
 
@@ -55,7 +63,7 @@ public:
                 i,
                 firstName,
                 lastName,
-                m_birthDateGenerator(rng).rounded(Days{ 1 }),
+                m_birthDateGenerator(rng).rounded(dateRounding),
                 addressGenerator(rng),
                 postalCodeGenerator(rng),
                 cityName,

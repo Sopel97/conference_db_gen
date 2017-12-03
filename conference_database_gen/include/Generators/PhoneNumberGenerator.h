@@ -3,6 +3,8 @@
 #include <string>
 #include <random>
 
+#include "PhoneNumberFormatGenerator.h"
+
 class PhoneNumberGenerator
 {
 public:
@@ -19,7 +21,7 @@ public:
 
         for (char& ch : phone)
         {
-            if (ch == 'd')
+            if (ch == PhoneNumberFormatGenerator::digitWildcard)
             {
                 ch = dDigit(rng);
             }

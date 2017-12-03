@@ -30,6 +30,8 @@ public:
     template <class TRng>
     Table<Conference> operator()(TRng& rng) const
     {
+        static constexpr Milliseconds dateRounding = Hours{ 1 };
+
         Table<Conference> conferences;
 
         Record::IdType id = 0;
@@ -39,7 +41,7 @@ public:
                 Conference(
                     id++, 
                     Common::chooseSqr(m_customers->records(), rng), 
-                    m_startingDateGenerator(rng).rounded(Days{ 1 })
+                    m_startingDateGenerator(rng).rounded(dateRounding)
                 )
             );
         }

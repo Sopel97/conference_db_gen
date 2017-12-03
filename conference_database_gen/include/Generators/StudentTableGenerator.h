@@ -23,8 +23,11 @@ public:
     template <class TRng>
     Table<Student> operator()(TRng& rng) const
     {
+        static constexpr int minStudentCardNumber = 100000;
+        static constexpr int maxStudentCardNumber = 999999;
+
         std::bernoulli_distribution dIsStudent(m_studentSaturation);
-        std::uniform_int_distribution<int> dStudentCardNumber(100000, 999999);
+        std::uniform_int_distribution<int> dStudentCardNumber(minStudentCardNumber, maxStudentCardNumber);
         Table<Student> students;
 
         Record::IdType id = 0;

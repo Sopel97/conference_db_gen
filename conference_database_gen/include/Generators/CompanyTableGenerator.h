@@ -36,10 +36,20 @@ public:
     template <class TRng>
     Table<Company> operator()(TRng& rng) const
     {
-        NameGenerator nameGenerator(*m_companyNameDictionary, 4, 20, 30);
+        static constexpr int minCompanyNameLength = 4;
+        static constexpr int maxOptimalCompanyNameLength = 20;
+        static constexpr int maxCompanyNameLength = 30;
+        static constexpr int minAddressLength = 8;
+        static constexpr int maxOptimalAddressLength = 20;
+        static constexpr int maxAddressLength = 30;
+        static constexpr int minPostalCodeLength = 5;
+        static constexpr int maxOptimalPostalCodeLength = 6;
+        static constexpr int maxPostalCodeLength = 8;
 
-        NameGenerator addressGenerator(*m_addressDictionary, 8, 20, 30);
-        NameGenerator postalCodeGenerator(*m_postalCodeDictionary, 5, 6, 8);
+        NameGenerator nameGenerator(*m_companyNameDictionary, minCompanyNameLength, maxOptimalCompanyNameLength, maxCompanyNameLength);
+
+        NameGenerator addressGenerator(*m_addressDictionary, minAddressLength, maxOptimalAddressLength, maxAddressLength);
+        NameGenerator postalCodeGenerator(*m_postalCodeDictionary, minPostalCodeLength, maxOptimalPostalCodeLength, maxPostalCodeLength);
 
         Table<Company> companies;
 

@@ -40,8 +40,12 @@ public:
     {
         static constexpr float minNumSpotsRelative = 0.4f;
         static constexpr float maxNumSpotsRelative = 1.0f;
+        static constexpr int minWorkshopNameLength = 20;
+        static constexpr int maxOptimalWorkshopNameLength = 35;
+        static constexpr int maxWorkshopNameLength = 45;
+        static constexpr Milliseconds dateRounding = Minutes{ 5 };
 
-        NameGenerator nameGenerator(*m_nameDictionary, 20, 35, 45);
+        NameGenerator nameGenerator(*m_nameDictionary, minWorkshopNameLength, maxOptimalWorkshopNameLength, maxWorkshopNameLength);
 
         std::bernoulli_distribution dHasPrice(m_priceSaturation);
         std::uniform_int_distribution<int> dNumWorkshops(1, m_avgNumWorkshopsPerDay * 2 - 1);
@@ -57,8 +61,8 @@ public:
 
             for (int i = 0; i < numWorkshops; ++i)
             {
-                const DateTime workshopStartDate = (conferenceStartDate + m_offsetFromStartGenerator(rng)).rounded(Minutes{ 5 });
-                const DateTime workshopEndDate = (workshopStartDate + m_durationGenerator(rng)).rounded(Minutes{ 5 });
+                const DateTime workshopStartDate = (conferenceStartDate + m_offsetFromStartGenerator(rng)).rounded(dateRounding);
+                const DateTime workshopEndDate = (workshopStartDate + m_durationGenerator(rng)).rounded(dateRounding);
                 const Price price = dHasPrice(rng) ? m_priceGenerator(rng) : Price(0);
 
                 workshops.add(

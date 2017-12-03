@@ -27,7 +27,11 @@ public:
     template <class TRng>
     Table<Country> operator()(TRng& rng) const
     {
-        auto countryNames = Common::generate<NameGenerator>(rng, m_numCountries, *m_countryDictionary, 5, 7, 15);
+        static constexpr int minCountryLength = 5;
+        static constexpr int maxOptimalCountryLength = 7;
+        static constexpr int maxCountryLength = 15;
+
+        auto countryNames = Common::generate<NameGenerator>(rng, m_numCountries, *m_countryDictionary, minCountryLength, maxOptimalCountryLength, maxCountryLength);
 
         Table<Country> countries;
 

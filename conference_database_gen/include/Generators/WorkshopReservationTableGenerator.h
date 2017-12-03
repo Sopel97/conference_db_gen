@@ -32,10 +32,12 @@ public:
     Table<WorkshopReservation> operator()(TRng& rng) const
     {
         static constexpr float spotSaturation = 0.9f;
+        static constexpr Milliseconds minOffsetFromDayReservation = Minutes{ 1 };
+        static constexpr Milliseconds maxOffsetFromDayReservation = Days{ 1 };
 
         Table<WorkshopReservation> workshopReservations;
 
-        DurationGenerator offsetFromDayReservationGenerator(Minutes{ 1 }, Days{ 1 });
+        DurationGenerator offsetFromDayReservationGenerator(minOffsetFromDayReservation, maxOffsetFromDayReservation);
         std::bernoulli_distribution dIsPaid(m_paymentSaturation);
 
         Record::IdType id = 0;

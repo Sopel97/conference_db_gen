@@ -32,8 +32,11 @@ public:
     Table<ConferenceDay> operator()(TRng& rng) const
     {
         static constexpr float numSpotsVariationWithinConference = 0.1f;
+        static constexpr Milliseconds minStartOffsetDuration = Hours{ 8 };
+        static constexpr Milliseconds maxStartOffsetDuration = Hours{ 12 };
+        static constexpr Milliseconds dateRounding = Hours{ 1 };
         
-        DurationGenerator startOffsetGenerator(Hours{ 8 }, Hours{ 12 });
+        DurationGenerator startOffsetGenerator(minStartOffsetDuration, maxStartOffsetDuration);
 
         Table<ConferenceDay> conferenceDays;
 
@@ -56,7 +59,7 @@ public:
                     ConferenceDay(
                         id++,
                         conference,
-                        (conference.startDate() + Days{ d } +startOffsetGenerator(rng)).rounded(Hours{ 1 }),
+                        (conference.startDate() + Days{ d } +startOffsetGenerator(rng)).rounded(dateRounding),
                         dNumSpotsActual(rng)
                     )
                 );
