@@ -45,11 +45,15 @@ public:
         static constexpr int minPostalCodeLength = 5;
         static constexpr int maxOptimalPostalCodeLength = 6;
         static constexpr int maxPostalCodeLength = 8;
+        static constexpr int64_t minVatin = 100'000'000'000ll;
+        static constexpr int64_t maxVatin = 999'999'999'999ll;
 
         NameGenerator nameGenerator(*m_companyNameDictionary, minCompanyNameLength, maxOptimalCompanyNameLength, maxCompanyNameLength);
 
         NameGenerator addressGenerator(*m_addressDictionary, minAddressLength, maxOptimalAddressLength, maxAddressLength);
         NameGenerator postalCodeGenerator(*m_postalCodeDictionary, minPostalCodeLength, maxOptimalPostalCodeLength, maxPostalCodeLength);
+
+        std::uniform_int_distribution<int64_t> dVatin(minVatin, maxVatin);
 
         Table<Company> companies;
         companies.reserve(m_numCompanies);
@@ -67,6 +71,7 @@ public:
                 i,
                 nameGenerator(rng),
                 firstName + ' ' + lastName,
+                std::to_string(dVatin(rng)),
                 addressGenerator(rng),
                 postalCodeGenerator(rng),
                 cityName,

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <optional>
 
 #include "Database/Record.h"
 #include "Database/ForeignKey.h"
@@ -16,6 +17,7 @@ public:
         class TCompanyId, 
         class TCompanyName, 
         class TContactPersonName,
+        class TVatin,
         class TAddress, 
         class TPostalCode, 
         class TCity, 
@@ -27,6 +29,7 @@ public:
         TCompanyId&& companyId, 
         TCompanyName&& companyName, 
         TContactPersonName&& contactPersonName, 
+        TVatin&& vatin,
         TAddress&& address, 
         TPostalCode&& postalCode, 
         TCity&& city,
@@ -37,6 +40,7 @@ public:
         m_companyId(std::forward<TCompanyId>(companyId)),
         m_companyName(std::forward<TCompanyName>(companyName)),
         m_contactPersonName(std::forward<TContactPersonName>(contactPersonName)),
+        m_vatin(std::forward<TVatin>(vatin)),
         m_address(std::forward<TAddress>(address)),
         m_postalCode(std::forward<TPostalCode>(postalCode)),
         m_city(std::forward<TCity>(city)),
@@ -58,6 +62,7 @@ public:
     IdType companyId() const;
     const std::string& companyName() const;
     const std::string& contactPersonName() const;
+    const std::optional<std::string>& vatin() const;
     const std::string& address() const;
     const std::string& postalCode() const;
     const std::string& city() const;
@@ -71,6 +76,7 @@ private:
     IdType m_companyId;
     std::string m_companyName;
     std::string m_contactPersonName;
+    std::optional<std::string> m_vatin;
     std::string m_address;
     std::string m_postalCode;
     std::string m_city;

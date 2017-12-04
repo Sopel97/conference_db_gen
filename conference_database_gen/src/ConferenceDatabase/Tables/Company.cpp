@@ -24,6 +24,12 @@ const std::string& Company::contactPersonName() const
 {
     return m_contactPersonName;
 }
+
+const std::optional<std::string>& Company::vatin() const
+{
+    return m_vatin;
+}
+
 const std::string& Company::address() const
 {
     return m_address;
@@ -52,9 +58,10 @@ const std::string& Company::email() const
 CsvRecord Company::toCsvRecord() const
 {
     return CsvRecord(
-        std::to_string(m_companyId), 
-        m_companyName, 
-        m_contactPersonName, 
+        std::to_string(m_companyId),
+        m_companyName,
+        m_contactPersonName,
+        m_vatin.has_value() ? m_vatin.value() : "NULL",
         m_address, 
         m_postalCode, 
         m_city, 
