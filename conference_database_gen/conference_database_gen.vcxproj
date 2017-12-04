@@ -161,7 +161,7 @@
   <ItemGroup>
     <ClCompile Include="conference_database_gen.cpp" />
     <ClCompile Include="src\ConferenceDatabase\ConferenceDatabase.cpp" />
-    <ClCompile Include="src\ConferenceDatabase\Tables\Client.cpp" />
+    <ClCompile Include="src\ConferenceDatabase\Tables\Customer.cpp" />
     <ClCompile Include="src\ConferenceDatabase\Tables\Company.cpp" />
     <ClCompile Include="src\ConferenceDatabase\Tables\Conference.cpp" />
     <ClCompile Include="src\ConferenceDatabase\Tables\ConferenceDay.cpp" />

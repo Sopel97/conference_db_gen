@@ -44,6 +44,7 @@ public:
         static constexpr int maxOptimalWorkshopNameLength = 35;
         static constexpr int maxWorkshopNameLength = 45;
         static constexpr Milliseconds dateRounding = Minutes{ 5 };
+        static constexpr float percentSpotsReserved = 0.2f;
 
         NameGenerator nameGenerator(*m_nameDictionary, minWorkshopNameLength, maxOptimalWorkshopNameLength, maxWorkshopNameLength);
 
@@ -67,6 +68,9 @@ public:
                 const DateTime workshopEndDate = (workshopStartDate + m_durationGenerator(rng)).rounded(dateRounding);
                 const Price price = dHasPrice(rng) ? m_priceGenerator(rng) : Price(0);
 
+                const int numSpots = static_cast<int>(dNumSpotsRelative(rng) * conferenceDay.numSpots());
+                const int numSpotsReserved = static_cast<int>(numSpots * percentSpotsReserved);
+
                 workshops.add(
                     Workshop(
                         id++,
@@ -74,7 +78,9 @@ public:
                         nameGenerator(rng),
                         workshopStartDate,
                         workshopEndDate,
-                        static_cast<int>(dNumSpotsRelative(rng) * conferenceDay.numSpots()),
+                        numSpots,
+                        numSpotsReserved,
+                        true, // all reservations are assumed to be filled
                         price.rounded(Price::centsPerUnit)
                     )
                 );

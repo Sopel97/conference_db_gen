@@ -30,6 +30,15 @@ int ConferenceDay::numSpots() const
 {
     return m_numSpots;
 }
+int ConferenceDay::numReservedSpots() const
+{
+    return m_numReservedSpots;
+}
+
+bool ConferenceDay::isReservationFilled() const
+{
+    return m_isReservationFilled;
+}
 
 CsvRecord ConferenceDay::toCsvRecord() const
 {
@@ -37,6 +46,8 @@ CsvRecord ConferenceDay::toCsvRecord() const
         std::to_string(m_conferenceDayId), 
         std::to_string(m_conference.primaryKey()), 
         m_date.toString(), 
-        std::to_string(m_numSpots)
+        std::to_string(m_numSpots),
+        std::to_string(m_numReservedSpots),
+        std::to_string(m_isReservationFilled)
     );
 }

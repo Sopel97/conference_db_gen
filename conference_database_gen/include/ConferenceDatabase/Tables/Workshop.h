@@ -21,7 +21,9 @@ public:
         class TName,
         class TStartDate, 
         class TEndDate, 
-        class TNumSpots, 
+        class TNumSpots,
+        class TNumReservedSpots,
+        class TIsReservationFilled,
         class TEntryPrice
     >
     Workshop(
@@ -30,7 +32,9 @@ public:
         TName&& name,
         TStartDate&& startDate, 
         TEndDate&& endDate, 
-        TNumSpots&& numSpots, 
+        TNumSpots&& numSpots,
+        TNumReservedSpots&& numReservedSpots,
+        TIsReservationFilled&& isReservationFilled,
         TEntryPrice&& entryPrice
     ) :
         m_workshopId(std::forward<TWorkshopId>(workshopId)),
@@ -39,6 +43,8 @@ public:
         m_startDate(std::forward<TStartDate>(startDate)),
         m_endDate(std::forward<TEndDate>(endDate)),
         m_numSpots(std::forward<TNumSpots>(numSpots)),
+        m_numReservedSpots(std::forward<TNumReservedSpots>(numReservedSpots)),
+        m_isReservationFilled(std::forward<TIsReservationFilled>(isReservationFilled)),
         m_entryPrice(std::forward<TEntryPrice>(entryPrice))
     {
 
@@ -59,6 +65,8 @@ public:
     const DateTime& endDate() const;
     int numSpots() const;
     Price entryPrice() const;
+    int numReservedSpots() const;
+    bool isReservationFilled() const;
 
     CsvRecord toCsvRecord() const override;
 
@@ -69,5 +77,7 @@ private:
     DateTime m_startDate;
     DateTime m_endDate;
     int m_numSpots;
+    int m_numReservedSpots;
+    bool m_isReservationFilled;
     Price m_entryPrice;
 };

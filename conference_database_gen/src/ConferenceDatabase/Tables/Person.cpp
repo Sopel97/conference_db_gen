@@ -64,7 +64,8 @@ CsvRecord Person::toCsvRecord() const
 {
     return CsvRecord(
         std::to_string(m_personId), 
-        m_firstName, m_lastName, 
+        m_firstName, 
+        m_lastName, 
         m_birthDate.toString(), 
         m_address, 
         m_postalCode, 

@@ -59,9 +59,6 @@
     <ClCompile Include="src\Database\Table.cpp">
       <Filter>Source Files\src\Database</Filter>
     </ClCompile>
-    <ClCompile Include="src\ConferenceDatabase\Tables\Client.cpp">
-      <Filter>Source Files\src\ConferenceDatabase\Tables</Filter>
-    </ClCompile>
     <ClCompile Include="src\ConferenceDatabase\Tables\Company.cpp">
       <Filter>Source Files\src\ConferenceDatabase\Tables</Filter>
     </ClCompile>
@@ -163,6 +160,9 @@
     </ClCompile>
     <ClCompile Include="src\Generators\CustomerTableGenerator.cpp">
       <Filter>Source Files\src\Generators</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ConferenceDatabase\Tables\Customer.cpp">
+      <Filter>Source Files\src\ConferenceDatabase\Tables</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

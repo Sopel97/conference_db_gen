@@ -31,10 +31,11 @@ public:
     template <class TRng>
     Table<ConferenceDay> operator()(TRng& rng) const
     {
-        static constexpr float numSpotsVariationWithinConference = 0.1f;
+        static constexpr float percentSpotsVariationWithinConference = 0.1f;
         static constexpr Milliseconds minStartOffsetDuration = Hours{ 8 };
         static constexpr Milliseconds maxStartOffsetDuration = Hours{ 12 };
         static constexpr Milliseconds dateRounding = Hours{ 1 };
+        static constexpr float percentSpotsReserved = 0.2f;
         
         DurationGenerator startOffsetGenerator(minStartOffsetDuration, maxStartOffsetDuration);
 
@@ -49,21 +50,26 @@ public:
         Record::IdType id = 0;
         for(const auto& conference : *m_conferences)
         {
-            const int numSpotsAround = dNumSpots(rng);
+            const int numSpotsApproximate = dNumSpots(rng);
             std::uniform_int_distribution<int> dNumSpotsActual(
-                std::max(m_minNumSpots, static_cast<int>(numSpotsAround * (1.0f - numSpotsVariationWithinConference))),
-                std::min(m_maxNumSpots, static_cast<int>(numSpotsAround * (1.0f + numSpotsVariationWithinConference)))
+                std::max(m_minNumSpots, static_cast<int>(numSpotsApproximate * (1.0f - percentSpotsVariationWithinConference))),
+                std::min(m_maxNumSpots, static_cast<int>(numSpotsApproximate * (1.0f + percentSpotsVariationWithinConference)))
             );
 
             const int numDays = dNumDays(rng);
             for (int d = 0; d < numDays; ++d)
             {
+                const int numActualSpots = dNumSpotsActual(rng);
+                const int numSpotsReserved = static_cast<int>(numActualSpots * percentSpotsReserved);
+
                 conferenceDays.add(
                     ConferenceDay(
                         id++,
                         conference,
                         (conference.startDate() + Days{ d } +startOffsetGenerator(rng)).rounded(dateRounding),
-                        dNumSpotsActual(rng)
+                        numActualSpots,
+                        numSpotsReserved,
+                        true // all reservations are assumed to be filled
                     )
                 );
             }
