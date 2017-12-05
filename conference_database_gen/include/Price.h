@@ -9,6 +9,7 @@ public:
 
     Price() = default;
     Price(float units);
+    Price(double units);
     constexpr Price(int cents);
 
     std::string toString() const;

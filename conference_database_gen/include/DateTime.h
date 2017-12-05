@@ -11,6 +11,8 @@ public:
     using BaseUnitType = TBaseUnit;
     static constexpr int64_t numUnits = NumUnits;
 
+    Duration() = default;
+
     constexpr Duration(int64_t c) :
         m_count(c)
     {
@@ -30,6 +32,19 @@ public:
     constexpr Duration<TBaseUnit, NumUnits> operator-() const
     {
         return Duration<TBaseUnit, NumUnits>(-m_count);
+    }
+
+    template <int64_t NumUnitsRhs>
+    constexpr Duration& operator+=(Duration<TBaseUnit, NumUnitsRhs> rhs)
+    {
+        m_count += rhs.count() * NumUnitsRhs;
+        return *this;
+    }
+    template <int64_t NumUnitsRhs>
+    constexpr Duration& operator-=(Duration<TBaseUnit, NumUnitsRhs> rhs)
+    {
+        m_count -= rhs.count() * NumUnitsRhs;
+        return *this;
     }
 
 private:
@@ -58,6 +73,8 @@ using LeapYears = Duration<Millisecond, Days::numUnits * 366>;
 class Months
 {
 public:
+    Months() = default;
+
     constexpr Months(int64_t c);
 
     constexpr int64_t count() const;
@@ -69,6 +86,8 @@ private:
 class Years
 {
 public:
+    Years() = default;
+
     constexpr Years(int64_t c);
 
     constexpr int64_t count() const;
@@ -80,10 +99,12 @@ private:
 class DateTime
 {
 public:
+    DateTime() = default;
+
     constexpr DateTime(Years year, Months month, Days day, Milliseconds milliseconds);
 
     constexpr DateTime(
-        Years year = Years{ 1900 }, 
+        Years year, 
         Months month = Months{ 0 }, 
         Days day = Days{ 0 }, 
         Hours hour = Hours{ 0 }, 

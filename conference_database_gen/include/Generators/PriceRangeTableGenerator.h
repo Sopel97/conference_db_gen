@@ -20,34 +20,37 @@ public:
     using RecordType = PriceRange;
     using ResultType = Table<PriceRange>;
 
-    TableGenerator(
-        const Table<ConferenceDay>& conferenceDays,
-        Price minInitialPrice,
-        Price maxInitialPrice,
-        Milliseconds firstAvailableBefore,
-        Milliseconds priceIncreaseAfter,
-        float percentIcrease,
-        int numIncreases
-    );
+    struct Params
+    {
+        const Table<ConferenceDay>* conferenceDays;
+        Price minInitialPrice;
+        Price maxInitialPrice;
+        Milliseconds firstAvailableBefore;
+        Milliseconds priceIncreaseAfter;
+        float percentIcrease;
+        int numIncreases;
+    };
+
+    TableGenerator(const Params& params);
 
     template <class TRng>
     Table<PriceRange> operator()(TRng& rng) const
     {
-        PriceGenerator priceGenerator(m_minInitialPrice, m_maxInitialPrice);
+        PriceGenerator priceGenerator(m_params.minInitialPrice, m_params.maxInitialPrice);
 
         Table<PriceRange> priceRanges;
-        priceRanges.reserve(m_conferenceDays->size() * m_numIncreases);
+        priceRanges.reserve(m_params.conferenceDays->size() * m_params.numIncreases);
 
         Record::IdType id = 0;
-        for (const auto& conferenceDay : *m_conferenceDays)
+        for (const auto& conferenceDay : *m_params.conferenceDays)
         {
             const auto& startDate = conferenceDay.date();
-            const DateTime firstPriceDate = startDate - m_firstAvailableBefore;
+            const DateTime firstPriceDate = startDate - m_params.firstAvailableBefore;
             const Price firstPrice = priceGenerator(rng).rounded(Price::centsPerUnit);
 
             DateTime date = firstPriceDate;
             Price price = firstPrice;
-            for (int i = 0; i < m_numIncreases; ++i)
+            for (int i = 0; i < m_params.numIncreases; ++i)
             {
                 priceRanges.add(
                     PriceRange(
@@ -58,8 +61,8 @@ public:
                     )
                 );
 
-                date += m_priceIncreaseAfter;
-                price = Price(price.units() * (1.0f + m_percentIcrease)).rounded(Price::centsPerUnit);
+                date += m_params.priceIncreaseAfter;
+                price = Price(price.units() * (1.0f + m_params.percentIcrease)).rounded(Price::centsPerUnit);
             }
         }
 
@@ -67,11 +70,5 @@ public:
     }
 
 private:
-    const Table<ConferenceDay>* m_conferenceDays;
-    Price m_minInitialPrice;
-    Price m_maxInitialPrice;
-    Milliseconds m_firstAvailableBefore;
-    Milliseconds m_priceIncreaseAfter;
-    float m_percentIcrease;
-    int m_numIncreases;
+    Params m_params;
 };

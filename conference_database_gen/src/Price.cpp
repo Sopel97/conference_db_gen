@@ -8,6 +8,13 @@ Price::Price(float units) :
 
 }
 
+Price::Price(double units) :
+    m_cents(static_cast<int>(std::round(units * centsPerUnit)))
+{
+
+}
+
+
 std::string Price::toString() const
 {
     return std::to_string(m_cents / centsPerUnit) + '.' + std::to_string(m_cents % centsPerUnit);

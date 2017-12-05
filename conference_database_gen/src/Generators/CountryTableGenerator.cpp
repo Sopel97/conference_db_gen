@@ -1,11 +1,7 @@
 #include "Generators/CountryTableGenerator.h"
 
-TableGenerator<Country>::TableGenerator(
-    DictionaryType& countryDictionary,
-    int numCountries
-) :
-    m_countryDictionary(&countryDictionary),
-    m_numCountries(numCountries)
+TableGenerator<Country>::TableGenerator(const Params& params) :
+    m_params(params)
 {
 
 }

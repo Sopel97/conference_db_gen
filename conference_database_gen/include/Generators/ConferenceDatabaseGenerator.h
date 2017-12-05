@@ -28,220 +28,324 @@ public:
     using ResultType = ConferenceDatabase;
     using DictionaryType = MarkovChainsDictionary<std::string>;
 
-    ConferenceDatabaseGenerator(int numFirstNames, int numLastNames, int numCountries, int numCitiesPerCountry);
+    struct Params
+    {
+        int numFirstNames;
+        int numLastNames;
+        int numCountries;
+        int numCitiesPerCountry;
+
+        int numPeople;
+        int numCompanies;
+
+        Years minConferenceYear;
+        Years maxConferenceYear;
+        int avgNumConferencesPerMonth;
+
+        int minFirstNameLength;
+        int maxFirstNameLength;
+        int minLastNameLength;
+        int maxLastNameLength;
+
+        int minCityNameLength;
+        int maxOptimalCityNameLength;
+        int maxCityNameLength;
+
+        int minAddressLength;
+        int maxOptimalAddressLength;
+        int maxAddressLength;
+
+        int minPostalCodeLength;
+        int maxOptimalPostalCodeLength;
+        int maxPostalCodeLength;
+
+        int minPhoneSegmentLength;
+        int maxPhoneSegmentLength;
+        int minAreaCodeLength;
+        int maxAreaCodeLength;
+        int minPhoneNumberLength;
+        int maxPhoneNumberLength;
+        float phoneNumberSeparatorBias;
+
+        DateTime minBirthDate;
+        DateTime maxBirthDate;
+
+        int minCountryLength;
+        int maxOptimalCountryLength;
+        int maxCountryLength;
+
+        Milliseconds personBirthDateRounding;
+
+        int minCompanyNameLength;
+        int maxOptimalCompanyNameLength;
+        int maxCompanyNameLength;
+
+        int64_t minVatin;
+        int64_t maxVatin;
+
+        float studentSaturation;
+
+        int minStudentCardNumber;
+        int maxStudentCardNumber;
+
+        float individualCustomersSaturation;
+
+        float participantSaturation;
+        float participantsWithCompanySaturation;
+
+        Milliseconds conferenceStartDateRounding;
+
+        int avgNumConferenceDays;
+        int minConferenceDaySpots;
+        int maxConferenceDaySpots;
+
+        float percentConferenceDaySpotsVariation;
+        Milliseconds minConferenceDayStartOffset;
+        Milliseconds maxConferenceDayStartOffset;
+        Milliseconds conferenceDayStartDateRounding;
+        float percentConferenceDaySpotsReserved;
+
+        Price minConferenceDayPrice;
+        Price maxConferenceDayPrice;
+        Milliseconds availableBefore;
+        Milliseconds paymentIncreaseAfter;
+        float percentPaymentIncrease;
+        int numPaymentRangesPerDay;
+
+        int minWorkshopNameLength;
+        int maxOptimalWorkshopNameLength;
+        int maxWorkshopNameLength;
+
+        Milliseconds minWorkshopOffsetFromDayStart;
+        Milliseconds maxWorkshopOffsetFromDayStart;
+        Milliseconds minWorkshopDuration;
+        Milliseconds maxWorkshopDuration;
+        Price minWorkshopPrice;
+        Price maxWorkshopPrice;
+        float workshopPriceSaturation;
+        int avgNumWorkshopsPerDay;
+
+        float minNumWorkshopSpotsRelativeToConferenceDay;
+        float maxNumWorkshopSpotsRelativeToConferenceDay;
+        Milliseconds workshopStartDateRounding;
+        float percentWorkshopSpotsReserved;
+
+        float conferenceDayPaymentSaturation;
+        float percentFillPerConferenceDayPriceRange;
+        float studentConferenceDayDiscount;
+        Milliseconds maxConferenceDayReservationTimeOffset;
+
+        float workshopPaymentSaturation;
+        float workshopSpotSaturation;
+        Milliseconds minOffsetFromConferenceDayReservation;
+        Milliseconds maxOffsetFromConferenceDayReservation;
+    };
+
+    ConferenceDatabaseGenerator(const Params& params);
 
     template <class TRng>
     ConferenceDatabase operator()(TRng& rng) const
     {
-        static constexpr int numPeople = 10000;
-        static constexpr int numCompanies = 100;
-
-        static constexpr int minConferenceYear = 2014;
-        static constexpr int maxConferenceYear = 2017;
-        static constexpr int years = maxConferenceYear - minConferenceYear;
-        static constexpr int numConferencesPerMonth = 2;
-        static constexpr int numConferences = years * 12 * numConferencesPerMonth;
-
-        static constexpr int minFirstNameLength = 3;
-        static constexpr int maxFirstNameLength = 9;
-        static constexpr int minLastNameLength = 4;
-        static constexpr int maxLastNameLength = 11;
-
-        static constexpr int minCityNameLength = 4;
-        static constexpr int maxOptimalCityNameLength = 18;
-        static constexpr int maxCityNameLength = 25;
+        const int conferenceYears = static_cast<int>(m_params.maxConferenceYear.count() - m_params.minConferenceYear.count());
+        const int numConferences = m_params.avgNumConferencesPerMonth * conferenceYears * 12;
 
         ConferenceDatabase database;
 
-        auto firstNames = Common::generate<NameGenerator>(rng, m_numFirstNames, createFirstNameDictionary(), minFirstNameLength, minFirstNameLength, maxFirstNameLength);
-        auto lastNames = Common::generate<NameGenerator>(rng, m_numLastNames, createLastNameDictionary(), minLastNameLength, minLastNameLength, maxLastNameLength);
+        auto firstNames = Common::generate<NameGenerator>(
+            rng, 
+            m_params.numFirstNames, 
+            createFirstNameDictionary(), 
+            m_params.minFirstNameLength, 
+            m_params.minFirstNameLength,
+            m_params.maxFirstNameLength
+            );
+
+        auto lastNames = Common::generate<NameGenerator>(
+            rng, 
+            m_params.numLastNames, 
+            createLastNameDictionary(), 
+            m_params.minLastNameLength, 
+            m_params.minLastNameLength, 
+            m_params.maxLastNameLength
+            );
 
         DictionaryType addressDictionary = createAddressDictionary();
+        NameGenerator addressGenerator(addressDictionary, m_params.minAddressLength, m_params.maxOptimalAddressLength, m_params.maxAddressLength);
+
         DictionaryType postalCodeDictionary = createPostalCodeDictionary();
+        NameGenerator postalCodeGenerator(postalCodeDictionary, m_params.minPostalCodeLength, m_params.maxOptimalPostalCodeLength, m_params.maxPostalCodeLength);
 
         std::vector<std::vector<std::string>> cityNamesByCountry;
         {
-            cityNamesByCountry.resize(m_numCountries);
+            cityNamesByCountry.resize(m_params.numCountries);
             DictionaryType cityDictionary = createCityDictionary();
-            for (int i = 0; i < m_numCountries; ++i)
+            for (int i = 0; i < m_params.numCountries; ++i)
             {
-                cityNamesByCountry[i] = Common::generate<NameGenerator>(rng, m_numCitiesPerCountry, cityDictionary, minCityNameLength, maxOptimalCityNameLength, maxCityNameLength);
+                cityNamesByCountry[i] = Common::generate<NameGenerator>(
+                    rng, 
+                    m_params.numCitiesPerCountry, 
+                    cityDictionary, 
+                    m_params.minCityNameLength, 
+                    m_params.maxOptimalCityNameLength, 
+                    m_params.maxCityNameLength
+                    );
             }
         }
 
-        static constexpr int minPhoneSegmentLength = 2;
-        static constexpr int maxPhoneSegmentLength = 4;
-        static constexpr int minAreaCodeLength = 0;
-        static constexpr int maxAreaCodeLength = 4;
-        static constexpr int minPhoneNumberLength = 8;
-        static constexpr int maxPhoneNumberLength = 10;
-        static constexpr float phoneNumberSeparatorBias = 0.5f;
-
         auto phoneGeneratorFormats = Common::generate<PhoneNumberFormatGenerator>(
-            rng, 
-            m_numCountries, 
-            minPhoneSegmentLength,
-            maxPhoneSegmentLength,
-            minAreaCodeLength,
-            maxAreaCodeLength,
-            minPhoneNumberLength,
-            maxPhoneNumberLength,
-            phoneNumberSeparatorBias
+            rng,
+            m_params.numCountries,
+            m_params.minPhoneSegmentLength,
+            m_params.maxPhoneSegmentLength,
+            m_params.minAreaCodeLength,
+            m_params.maxAreaCodeLength,
+            m_params.minPhoneNumberLength,
+            m_params.maxPhoneNumberLength,
+            m_params.phoneNumberSeparatorBias
             );
+
         std::vector<PhoneNumberGenerator> phoneGenerators;
-        phoneGenerators.reserve(m_numCountries);
-        for (int i = 0; i < m_numCountries; ++i)
+        phoneGenerators.reserve(m_params.numCountries);
+        for (int i = 0; i < m_params.numCountries; ++i)
         {
             phoneGenerators.emplace_back(phoneGeneratorFormats[i]);
         }
 
-        static constexpr DateTime minBirthDate = DateTime(Years{ 1950 });
-        static constexpr DateTime maxBirthDate = DateTime(Years{ 1998 });
-
-        DateTimeGenerator birthDateGenerator(minBirthDate, maxBirthDate);
+        DateTimeGenerator birthDateGenerator(m_params.minBirthDate, m_params.maxBirthDate);
 
         DictionaryType countryDictionary = createCountryDictionary();
-        const auto& countries = database.table<Country>() = TableGenerator<Country>(
-            countryDictionary,
-            m_numCountries
-            )(rng);
+        NameGenerator countryGenerator(countryDictionary, m_params.minCountryLength, m_params.maxOptimalCountryLength, m_params.maxCountryLength);
 
-        const auto& people = database.table<Person>() = TableGenerator<Person>(
-            firstNames,
-            lastNames,
+        const auto& countries = database.table<Country>() = TableGenerator<Country>({
+            countryGenerator,
+            m_params.numCountries
+        })(rng);
+
+        const auto& people = database.table<Person>() = TableGenerator<Person>({
+            &firstNames,
+            &lastNames,
             birthDateGenerator,
-            addressDictionary,
-            postalCodeDictionary,
-            countries,
-            cityNamesByCountry,
-            phoneGenerators,
-            numPeople
-            )(rng);
+            addressGenerator,
+            postalCodeGenerator,
+            &countries,
+            &cityNamesByCountry,
+            &phoneGenerators,
+            m_params.personBirthDateRounding,
+            m_params.numPeople
+        })(rng);
 
         DictionaryType companyNameDictionary = createCompanyNameDictionary();
+        NameGenerator companyNameGenerator(companyNameDictionary, m_params.minCompanyNameLength, m_params.maxOptimalCompanyNameLength, m_params.maxCompanyNameLength);
 
-        const auto& companies = database.table<Company>() = TableGenerator<Company>(
-            companyNameDictionary,
-            firstNames,
-            lastNames,
-            addressDictionary,
-            postalCodeDictionary,
-            countries,
-            cityNamesByCountry,
-            phoneGenerators,
-            numCompanies
-            )(rng);
+        const auto& companies = database.table<Company>() = TableGenerator<Company>({
+            companyNameGenerator,
+            &firstNames,
+            &lastNames,
+            addressGenerator,
+            postalCodeGenerator,
+            &countries,
+            &cityNamesByCountry,
+            &phoneGenerators,
+            m_params.minVatin,
+            m_params.maxVatin,
+            m_params.numCompanies
+        })(rng);
 
-        static constexpr float studentSaturation = 0.1f;
+        const auto& students = database.table<Student>() = TableGenerator<Student>({
+            &people,
+            m_params.studentSaturation,
+            m_params.minStudentCardNumber,
+            m_params.maxStudentCardNumber
+        })(rng);
 
-        const auto& students = database.table<Student>() = TableGenerator<Student>(
-            people,
-            studentSaturation
-            )(rng);
+        const auto& customers = database.table<Customer>() = TableGenerator<Customer>({
+            &people,
+            &companies,
+            m_params.individualCustomersSaturation
+        })(rng);
 
-        static constexpr float personalCustomersSaturation = 0.001f;
+        const auto& participants = database.table<Participant>() = TableGenerator<Participant>({
+            &people,
+            &companies,
+            m_params.participantSaturation,
+            m_params.participantsWithCompanySaturation
+        })(rng);
 
-        const auto& customers = database.table<Customer>() = TableGenerator<Customer>(
-            people,
-            companies,
-            personalCustomersSaturation
-            )(rng);
+        DateTimeGenerator conferenceStartDateGenerator(DateTime(m_params.minConferenceYear), DateTime(m_params.maxConferenceYear));
 
-        static constexpr float participantSaturation = 0.95f;
-        static constexpr float participantsWithCompanySaturation = 0.75f;
-
-        const auto& participants = database.table<Participant>() = TableGenerator<Participant>(
-            people,
-            companies,
-            participantSaturation,
-            participantsWithCompanySaturation
-            )(rng);
-
-        DateTimeGenerator conferenceStartDateGenerator(DateTime(Years{ minConferenceYear }), DateTime(Years{ maxConferenceYear }));
-
-        const auto& conferences = database.table<Conference>() = TableGenerator<Conference>(
-            customers,
+        const auto& conferences = database.table<Conference>() = TableGenerator<Conference>({
+            &customers,
             conferenceStartDateGenerator,
-            numConferences
-            )(rng);
+            numConferences,
+            m_params.conferenceStartDateRounding
+        })(rng);
 
-        static constexpr int avgNumConferenceDays = 3;
-        static constexpr int minConferenceDaySpots = 50;
-        static constexpr int maxConferenceDaySpots = 100;
+        const auto& conferenceDays = database.table<ConferenceDay>() = TableGenerator<ConferenceDay>({
+            &conferences,
+            m_params.avgNumConferenceDays,
+            m_params.minConferenceDaySpots,
+            m_params.maxConferenceDaySpots,
+            m_params.percentConferenceDaySpotsVariation,
+            m_params.minConferenceDayStartOffset,
+            m_params.maxConferenceDayStartOffset,
+            m_params.conferenceDayStartDateRounding,
+            m_params.percentConferenceDaySpotsReserved
+        })(rng);
 
-        const auto& conferenceDays = database.table<ConferenceDay>() = TableGenerator<ConferenceDay>(
-            conferences,
-            avgNumConferenceDays,
-            minConferenceDaySpots,
-            maxConferenceDaySpots
-            )(rng);
-
-        static constexpr float minConferenceDayPrice = 10.0f;
-        static constexpr float maxConferenceDayPrice = 50.0f;
-        static constexpr Milliseconds availableBefore = Days{ 70 };
-        static constexpr Milliseconds paymentIncreaseAfter = Days{ 14 };
-        static constexpr float percentPaymentIncrease = 0.5f;
-        static constexpr int numPaymentRangesPerDay = 4;
-
-        const auto& priceRanges = database.table<PriceRange>() = TableGenerator<PriceRange>(
-            conferenceDays,
-            Price(minConferenceDayPrice),
-            Price(maxConferenceDayPrice),
-            availableBefore,
-            paymentIncreaseAfter,
-            percentPaymentIncrease,
-            numPaymentRangesPerDay
-            )(rng);
+        const auto& priceRanges = database.table<PriceRange>() = TableGenerator<PriceRange>({
+            &conferenceDays,
+            m_params.minConferenceDayPrice,
+            m_params.maxConferenceDayPrice,
+            m_params.availableBefore,
+            m_params.paymentIncreaseAfter,
+            m_params.percentPaymentIncrease,
+            m_params.numPaymentRangesPerDay
+        })(rng);
 
         DictionaryType workshopNameDictionary = createWorkshopNameDictionary();
+        NameGenerator workshopNameGenerator(workshopNameDictionary, m_params.minWorkshopNameLength, m_params.maxOptimalWorkshopNameLength, m_params.maxWorkshopNameLength);
 
-        static constexpr Milliseconds minWorkshopOffsetFromDayStart = Minutes{ 30 };
-        static constexpr Milliseconds maxWorkshopOffsetFromDayStart = Hours{ 6 };
-        static constexpr Milliseconds minWorkshopDuration = Minutes{ 60 };
-        static constexpr Milliseconds maxWorkshopDuration = Minutes{ 180 };
-        static constexpr float minWorkshopPrice = 10.0f;
-        static constexpr float maxWorkshopPrice = 30.0f;
-        static constexpr float workshopPriceSaturation = 0.8f;
-        static constexpr int avgNumWorkshopsPerDay = 4;
+        const auto& workshops = database.table<Workshop>() = TableGenerator<Workshop>({
+            &conferenceDays,
+            workshopNameGenerator,
+            DurationGenerator(m_params.minWorkshopOffsetFromDayStart, m_params.maxWorkshopOffsetFromDayStart),
+            DurationGenerator(m_params.minWorkshopDuration, m_params.maxWorkshopDuration),
+            PriceGenerator(m_params.minWorkshopPrice, m_params.maxWorkshopPrice),
+            m_params.workshopPriceSaturation,
+            m_params.avgNumWorkshopsPerDay,
+            m_params.minNumWorkshopSpotsRelativeToConferenceDay,
+            m_params.maxNumWorkshopSpotsRelativeToConferenceDay,
+            m_params.workshopStartDateRounding,
+            m_params.percentWorkshopSpotsReserved
+        })(rng);
 
-        const auto& workshops = database.table<Workshop>() = TableGenerator<Workshop>(
-            conferenceDays,
-            workshopNameDictionary,
-            DurationGenerator(minWorkshopOffsetFromDayStart, maxWorkshopOffsetFromDayStart),
-            DurationGenerator(minWorkshopDuration, maxWorkshopDuration),
-            PriceGenerator(Price(minWorkshopPrice), Price(maxWorkshopPrice)),
-            workshopPriceSaturation,
-            avgNumWorkshopsPerDay
-            )(rng);
+        const auto& conferenceDayReservations = database.table<ConferenceDayReservation>() = TableGenerator<ConferenceDayReservation>({
+            &participants,
+            &conferenceDays,
+            &priceRanges,
+            &students,
+            m_params.conferenceDayPaymentSaturation,
+            m_params.paymentIncreaseAfter, // same as in price ranges
+            m_params.percentFillPerConferenceDayPriceRange,
+            m_params.studentConferenceDayDiscount,
+            m_params.maxConferenceDayReservationTimeOffset
+        })(rng);
 
-        static constexpr float conferenceDayPaymentSaturation = 0.9f;
-
-        const auto& conferenceDayReservations = database.table<ConferenceDayReservation>() = TableGenerator<ConferenceDayReservation>(
-            participants,
-            conferenceDays,
-            priceRanges,
-            students,
-            conferenceDayPaymentSaturation,
-            paymentIncreaseAfter // same as in price ranges
-            )(rng);
-
-        static constexpr float workshopPaymentSaturation = 0.9f;
-
-        const auto& workshopReservations = database.table<WorkshopReservation>() = TableGenerator<WorkshopReservation>(
-            conferenceDayReservations,
-            conferenceDays,
-            workshops,
-            workshopPaymentSaturation
-            )(rng);
+        const auto& workshopReservations = database.table<WorkshopReservation>() = TableGenerator<WorkshopReservation>({
+            &conferenceDayReservations,
+            &conferenceDays,
+            &workshops,
+            m_params.workshopPaymentSaturation,
+            m_params.workshopSpotSaturation,
+            m_params.minOffsetFromConferenceDayReservation,
+            m_params.maxOffsetFromConferenceDayReservation
+        })(rng);
 
         return database;
     }
 
 private:
-    int m_numFirstNames;
-    int m_numLastNames;
-    int m_numCountries;
-    int m_numCitiesPerCountry;
+    Params m_params;
 
     static std::vector<std::string> readTrainingData(const std::string& path)
     {

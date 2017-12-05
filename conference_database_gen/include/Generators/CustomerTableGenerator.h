@@ -16,32 +16,35 @@ public:
     using RecordType = Customer;
     using ResultType = Table<Customer>;
 
-    TableGenerator(
-        const Table<Person>& people,
-        const Table<Company>& companies,
-        float individualCustomerSaturation
-    );
+    struct Params
+    {
+        const Table<Person>* people;
+        const Table<Company>* companies;
+        float individualCustomerSaturation;
+    };
+
+    TableGenerator(const Params& params);
 
     template <class TRng>
     Table<Customer> operator()(TRng& rng) const
     {
-        std::bernoulli_distribution dIsIndividualCustomer(m_individualCustomerSaturation);
+        std::bernoulli_distribution dIsIndividualCustomer(m_params.individualCustomerSaturation);
         Table<Customer> customers;
         {
-            float f = 1.0f - m_individualCustomerSaturation;
+            float f = 1.0f - m_params.individualCustomerSaturation;
             f *= f; // since we're dealing with probability reserving is done with a margin
-            customers.reserve(static_cast<int>(m_people->size() * (1.0f - f)) + m_companies->size());
+            customers.reserve(static_cast<int>(m_params.people->size() * (1.0f - f)) + m_params.companies->size());
         }
 
         Record::IdType id = 0;
-        for (const auto& person : *m_people)
+        for (const auto& person : *m_params.people)
         {
             if (!dIsIndividualCustomer(rng)) continue;
 
             customers.add(Customer(id++, person, std::nullopt));
         }
 
-        for (const auto& company : *m_companies)
+        for (const auto& company : *m_params.companies)
         {
             customers.add(Customer(id++, std::nullopt, company));
         }
@@ -50,7 +53,5 @@ public:
     }
 
 private:
-    const Table<Person>* m_people;
-    const Table<Company>* m_companies;
-    float m_individualCustomerSaturation;
+    Params m_params;
 };

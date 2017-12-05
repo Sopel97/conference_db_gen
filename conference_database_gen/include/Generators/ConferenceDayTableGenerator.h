@@ -21,52 +21,54 @@ public:
     using RecordType = ConferenceDay;
     using ResultType = Table<ConferenceDay>;
 
-    TableGenerator(
-        const Table<Conference>& conferences,
-        int avgNumDays,
-        int minNumSpots,
-        int maxNumSpots
-    );
+    struct Params
+    {
+        const Table<Conference>* conferences;
+        int avgNumDays;
+        int minNumSpots;
+        int maxNumSpots;
+        float percentSpotsVariationWithinConference;
+        Milliseconds minStartOffset;
+        Milliseconds maxStartOffset;
+        Milliseconds dateRounding;
+        float percentSpotsReserved;
+    };
+
+    TableGenerator(const Params& params);
 
     template <class TRng>
     Table<ConferenceDay> operator()(TRng& rng) const
     {
-        static constexpr float percentSpotsVariationWithinConference = 0.1f;
-        static constexpr Milliseconds minStartOffsetDuration = Hours{ 8 };
-        static constexpr Milliseconds maxStartOffsetDuration = Hours{ 12 };
-        static constexpr Milliseconds dateRounding = Hours{ 1 };
-        static constexpr float percentSpotsReserved = 0.2f;
-        
-        DurationGenerator startOffsetGenerator(minStartOffsetDuration, maxStartOffsetDuration);
+        DurationGenerator startOffsetGenerator(m_params.minStartOffset, m_params.maxStartOffset);
 
-        const int maxNumDays = m_avgNumDays * 2 - 1;
+        const int maxNumDays = m_params.avgNumDays * 2 - 1;
 
         Table<ConferenceDay> conferenceDays;
-        conferenceDays.reserve(m_conferences->size() * maxNumDays);
+        conferenceDays.reserve(m_params.conferences->size() * maxNumDays);
 
         std::uniform_int_distribution<int> dNumDays(1, maxNumDays);
-        std::uniform_int_distribution<int> dNumSpots(m_minNumSpots, m_maxNumSpots);
+        std::uniform_int_distribution<int> dNumSpots(m_params.minNumSpots, m_params.maxNumSpots);
 
         Record::IdType id = 0;
-        for(const auto& conference : *m_conferences)
+        for(const auto& conference : *m_params.conferences)
         {
             const int numSpotsApproximate = dNumSpots(rng);
             std::uniform_int_distribution<int> dNumSpotsActual(
-                std::max(m_minNumSpots, static_cast<int>(numSpotsApproximate * (1.0f - percentSpotsVariationWithinConference))),
-                std::min(m_maxNumSpots, static_cast<int>(numSpotsApproximate * (1.0f + percentSpotsVariationWithinConference)))
+                std::max(m_params.minNumSpots, static_cast<int>(numSpotsApproximate * (1.0f - m_params.percentSpotsVariationWithinConference))),
+                std::min(m_params.maxNumSpots, static_cast<int>(numSpotsApproximate * (1.0f + m_params.percentSpotsVariationWithinConference)))
             );
 
             const int numDays = dNumDays(rng);
             for (int d = 0; d < numDays; ++d)
             {
                 const int numActualSpots = dNumSpotsActual(rng);
-                const int numSpotsReserved = static_cast<int>(numActualSpots * percentSpotsReserved);
+                const int numSpotsReserved = static_cast<int>(numActualSpots * m_params.percentSpotsReserved);
 
                 conferenceDays.add(
                     ConferenceDay(
                         id++,
                         conference,
-                        (conference.startDate() + Days{ d } +startOffsetGenerator(rng)).rounded(dateRounding),
+                        (conference.startDate() + Days{ d } +startOffsetGenerator(rng)).rounded(m_params.dateRounding),
                         numActualSpots,
                         numSpotsReserved,
                         true // all reservations are assumed to be filled
@@ -79,8 +81,5 @@ public:
     }
 
 private:
-    const Table<Conference>* m_conferences;
-    int m_avgNumDays;
-    int m_minNumSpots;
-    int m_maxNumSpots;
+    Params m_params;
 };

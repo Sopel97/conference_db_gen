@@ -20,30 +20,32 @@ public:
     using RecordType = Company;
     using ResultType = Table<ConferenceDayReservation>;
 
-    TableGenerator(
-        const Table<Participant>& participants,
-        const Table<ConferenceDay>& conferenceDays,
-        const Table<PriceRange>& priceRanges,
-        const Table<Student>& students,
-        float paymentSaturation,
-        Milliseconds priceRangeDuration // price ranges only hold starting date, this may need to be changed in the future
-    );
+    struct Params
+    {
+        const Table<Participant>* participants;
+        const Table<ConferenceDay>* conferenceDays;
+        const Table<PriceRange>* priceRanges;
+        const Table<Student>* students;
+        float paymentSaturation;
+        Milliseconds priceRangeDuration;
+        float percentFillPerPriceRange;
+        float studentDiscount;
+        Milliseconds maxReservationTimeOffset;
+    };
+
+    TableGenerator(const Params& params);
 
     template <class TRng>
     Table<ConferenceDayReservation> operator()(TRng& rng) const
     {
-        static constexpr float percentFillPerPriceRange = 0.7f;
-        static constexpr float studentDiscount = 0.3f;
-        static constexpr Milliseconds maxReservationTimeOffset = Days{ 8 }; // some will be after 7 day payment time, they should be cancelled by the DB
+        DurationGenerator reservationTimeOffsetGenerator(-m_params.priceRangeDuration, m_params.maxReservationTimeOffset);
 
-        DurationGenerator reservationTimeOffsetGenerator(-m_priceRangeDuration, maxReservationTimeOffset);
-
-        std::bernoulli_distribution dIsPaid(m_paymentSaturation);
+        std::bernoulli_distribution dIsPaid(m_params.paymentSaturation);
 
         Table<ConferenceDayReservation> conferenceDayReservations;
         {
             int maxReservations = 0;
-            for (const auto& conferenceDay : *m_conferenceDays)
+            for (const auto& conferenceDay : *m_params.conferenceDays)
             {
                 maxReservations += conferenceDay.numSpots();
             }
@@ -51,14 +53,14 @@ public:
         }
 
         std::vector<int> participantIndices; // used for choosing a set of participants for each day
-        participantIndices.reserve(m_participants->size());
-        for (int i = 0; i < m_participants->size(); ++i)
+        participantIndices.reserve(m_params.participants->size());
+        for (int i = 0; i < m_params.participants->size(); ++i)
         {
             participantIndices.emplace_back(i);
         }
 
         Record::IdType id = 0;
-        for (auto priceRangeIter = m_priceRanges->begin(); priceRangeIter != m_priceRanges->end();)
+        for (auto priceRangeIter = m_params.priceRanges->begin(); priceRangeIter != m_params.priceRanges->end();)
         {
             auto currentConferenceDay = priceRangeIter->conferenceDay();
             auto lastConferenceDay = currentConferenceDay;
@@ -68,22 +70,22 @@ public:
             shuffleFirstN(participantIndices, rng, numFreeSpots);
 
             int participantIndexIndex = 0;
-            while (priceRangeIter != m_priceRanges->end() && currentConferenceDay == lastConferenceDay)
+            while (priceRangeIter != m_params.priceRanges->end() && currentConferenceDay == lastConferenceDay)
             {
                 const auto& priceRange = *priceRangeIter;
 
                 // one price range at one the same conference day
-                const int numSpotsToFill = static_cast<int>(numFreeSpots * percentFillPerPriceRange);
+                const int numSpotsToFill = static_cast<int>(numFreeSpots * m_params.percentFillPerPriceRange);
                 numFreeSpots -= numSpotsToFill;
 
                 for (int i = 0; i < numSpotsToFill; ++i)
                 {
-                    const auto& participant = (*m_participants)[participantIndices[participantIndexIndex++]];
+                    const auto& participant = (*m_params.participants)[participantIndices[participantIndexIndex++]];
 
                     const DateTime reservationDate = priceRange.startDate() - reservationTimeOffsetGenerator(rng);
-                    const bool isStudent = m_students->existsOrdered(&Student::primaryKey, participant.primaryKey());
+                    const bool isStudent = m_params.students->existsOrdered(&Student::primaryKey, participant.primaryKey());
                     const Price charge = Price(priceRange.price().units() * 
-                        (isStudent ? (1.0f - studentDiscount) : 1.0f)
+                        (isStudent ? (1.0f - m_params.studentDiscount) : 1.0f)
                     );
 
                     conferenceDayReservations.add(
@@ -108,12 +110,7 @@ public:
     }
 
 private:
-    const Table<Participant>* m_participants;
-    const Table<ConferenceDay>* m_conferenceDays;
-    const Table<PriceRange>* m_priceRanges;
-    const Table<Student>* m_students;
-    float m_paymentSaturation;
-    Milliseconds m_priceRangeDuration;
+    Params m_params;
 
     template <class T, class TRng>
     static void shuffleFirstN(std::vector<T>& values, TRng&& rng, int n)

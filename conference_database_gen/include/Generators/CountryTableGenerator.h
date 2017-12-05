@@ -19,33 +19,29 @@ public:
     using ResultType = Table<Country>;
     using DictionaryType = MarkovChainsDictionary<std::string>;
 
-    TableGenerator(
-        DictionaryType& countryDictionary,
-        int numCountries
-    );
+    struct Params
+    {
+        NameGenerator countryGenerator;
+        int numCountries;
+    };
+
+    TableGenerator(const Params& params);
 
     template <class TRng>
     Table<Country> operator()(TRng& rng) const
     {
-        static constexpr int minCountryLength = 5;
-        static constexpr int maxOptimalCountryLength = 7;
-        static constexpr int maxCountryLength = 15;
-
-        auto countryNames = Common::generate<NameGenerator>(rng, m_numCountries, *m_countryDictionary, minCountryLength, maxOptimalCountryLength, maxCountryLength);
-
         Table<Country> countries;
-        countries.reserve(m_numCountries);
+        countries.reserve(m_params.numCountries);
 
         Record::IdType id = 0;
-        for (auto&& countryName : std::move(countryNames))
+        for (int i = 0; i < m_params.numCountries; ++i)
         {
-            countries.add(Country(id++, std::move(countryName)));
+            countries.add(Country(id++, m_params.countryGenerator(rng)));
         }
 
         return countries;
     }
 
 private:
-    const DictionaryType* m_countryDictionary;
-    int m_numCountries;
+    Params m_params;
 };

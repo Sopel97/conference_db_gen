@@ -21,28 +21,30 @@ public:
     using RecordType = Conference;
     using ResultType = Table<Conference>;
 
-    TableGenerator(
-        const Table<Customer>& customers,
-        const DateTimeGenerator& startingDateGenerator,
-        int numConferences
-    );
+    struct Params
+    {
+        const Table<Customer>* customers;
+        DateTimeGenerator startingDateGenerator;
+        int numConferences;
+        Milliseconds dateRounding;
+    };
+
+    TableGenerator(const Params& params);
 
     template <class TRng>
     Table<Conference> operator()(TRng& rng) const
     {
-        static constexpr Milliseconds dateRounding = Hours{ 1 };
-
         Table<Conference> conferences;
-        conferences.reserve(m_numConferences);
+        conferences.reserve(m_params.numConferences);
 
         Record::IdType id = 0;
-        for (int i = 0; i < m_numConferences; ++i)
+        for (int i = 0; i < m_params.numConferences; ++i)
         {
             conferences.add(
                 Conference(
                     id++, 
-                    Common::chooseSqr(m_customers->records(), rng), 
-                    m_startingDateGenerator(rng).rounded(dateRounding)
+                    Common::chooseSqr(m_params.customers->records(), rng),
+                    m_params.startingDateGenerator(rng).rounded(m_params.dateRounding)
                 )
             );
         }
@@ -51,7 +53,5 @@ public:
     }
 
 private:
-    const Table<Customer>* m_customers;
-    DateTimeGenerator m_startingDateGenerator;
-    int m_numConferences;
+    Params m_params;
 };

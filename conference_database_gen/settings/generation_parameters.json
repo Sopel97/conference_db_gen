@@ -1,0 +1,111 @@
+{
+    "numFirstNames" : 300,
+    "numLastNames" : 2000,
+    "numCountries" : 10,
+    "numCitiesPerCountry" : 100,
+
+    "numPeople" : 10000,
+    "numCompanies" : 100,
+
+    "minConferenceYear" : 2014,
+    "maxConferenceYear" : 2017,
+    "avgNumConferencesPerMonth" : 2,
+
+    "minFirstNameLength" : 3,
+    "maxFirstNameLength" : 9,
+    "minLastNameLength" : 4,
+    "maxLastNameLength" : 11,
+
+    "minCityNameLength" : 4,
+    "maxOptimalCityNameLength" : 18,
+    "maxCityNameLength" : 25,
+
+    "minAddressLength" : 8,
+    "maxOptimalAddressLength" : 20,
+    "maxAddressLength" : 30,
+
+    "minPostalCodeLength" : 5,
+    "maxOptimalPostalCodeLength" : 6,
+    "maxPostalCodeLength" : 8,
+
+    "minPhoneSegmentLength" : 2,
+    "maxPhoneSegmentLength" : 4,
+    "minAreaCodeLength" : 0,
+    "maxAreaCodeLength" : 4,
+    "minPhoneNumberLength" : 8,
+    "maxPhoneNumberLength" : 10,
+    "phoneNumberSeparatorBias" : 0.5,
+
+    "minBirthDate" : {"year" : 1950},
+    "maxBirthDate" : {"year" : 1998},
+
+    "minCountryLength" : 5,
+    "maxOptimalCountryLength" : 7,
+    "maxCountryLength" : 15,
+
+    "personBirthDateRounding" : {"hours" : 1},
+
+    "minCompanyNameLength" : 4,
+    "maxOptimalCompanyNameLength" : 20,
+    "maxCompanyNameLength" : 30,
+
+    "minVatin" : 100000000000,
+    "maxVatin" : 999999999999,
+
+    "studentSaturation" : 0.1,
+
+    "minStudentCardNumber" : 100000,
+    "maxStudentCardNumber" : 999999,
+
+    "individualCustomersSaturation" : 0.001,
+
+    "participantSaturation" : 0.95,
+    "participantsWithCompanySaturation" : 0.75,
+
+    "conferenceStartDateRounding" : {"hours" : 1},
+
+    "avgNumConferenceDays" : 3,
+    "minConferenceDaySpots" : 50,
+    "maxConferenceDaySpots" : 100,
+
+    "percentConferenceDaySpotsVariation" : 0.1,
+    "minConferenceDayStartOffset" : {"hours" : 8},
+    "maxConferenceDayStartOffset" : {"hours" : 12},
+    "conferenceDayStartDateRounding" : {"hours" : 1},
+    "percentConferenceDaySpotsReserved" : 0.2,
+
+    "minConferenceDayPrice" : 10.0,
+    "maxConferenceDayPrice" : 50.0,
+    "availableBefore" : {"days" : 70},
+    "paymentIncreaseAfter" : {"days" : 14},
+    "percentPaymentIncrease" : 0.5,
+    "numPaymentRangesPerDay" : 4,
+
+    "minWorkshopNameLength" : 20,
+    "maxOptimalWorkshopNameLength" : 35,
+    "maxWorkshopNameLength" : 45,
+
+    "minWorkshopOffsetFromDayStart" : {"minutes" : 30},
+    "maxWorkshopOffsetFromDayStart" : {"hours" : 6},
+    "minWorkshopDuration" : {"minutes" : 60},
+    "maxWorkshopDuration" : {"minutes" : 180},
+    "minWorkshopPrice" : 10.0,
+    "maxWorkshopPrice" : 30.0,
+    "workshopPriceSaturation" : 0.8,
+    "avgNumWorkshopsPerDay" : 4,
+
+    "minNumWorkshopSpotsRelativeToConferenceDay" : 0.4,
+    "maxNumWorkshopSpotsRelativeToConferenceDay" : 1.0,
+    "workshopStartDateRounding" : {"minutes" : 5},
+    "percentWorkshopSpotsReserved" : 0.2,
+
+    "conferenceDayPaymentSaturation" : 0.9,
+    "percentFillPerConferenceDayPriceRange" : 0.7,
+    "studentConferenceDayDiscount" : 0.3,
+    "maxConferenceDayReservationTimeOffset" : {"days" : 8},
+
+    "workshopPaymentSaturation" : 0.9,
+    "workshopSpotSaturation" : 0.9,
+    "minOffsetFromConferenceDayReservation" : {"minutes" : 1},
+    "maxOffsetFromConferenceDayReservation" : {"days" : 1}
+}

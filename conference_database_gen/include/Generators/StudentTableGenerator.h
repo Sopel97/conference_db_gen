@@ -15,28 +15,30 @@ public:
     using RecordType = Student;
     using ResultType = Table<Student>;
 
-    TableGenerator(
-        const Table<Person>& people,
-        float studentSaturation
-    );
+    struct Params
+    {
+        const Table<Person>* people;
+        float studentSaturation;
+        int minStudentCardNumber;
+        int maxStudentCardNumber;
+    };
+
+    TableGenerator(const Params& params);
 
     template <class TRng>
     Table<Student> operator()(TRng& rng) const
     {
-        static constexpr int minStudentCardNumber = 100000;
-        static constexpr int maxStudentCardNumber = 999999;
-
-        std::bernoulli_distribution dIsStudent(m_studentSaturation);
-        std::uniform_int_distribution<int> dStudentCardNumber(minStudentCardNumber, maxStudentCardNumber);
+        std::bernoulli_distribution dIsStudent(m_params.studentSaturation);
+        std::uniform_int_distribution<int> dStudentCardNumber(m_params.minStudentCardNumber, m_params.maxStudentCardNumber);
         Table<Student> students;
         {
-            float f = 1.0f - m_studentSaturation;
+            float f = 1.0f - m_params.studentSaturation;
             f *= f; // since we're dealing with probability reserving is done with a margin
-            students.reserve(static_cast<int>(m_people->size() * (1.0f - f)));
+            students.reserve(static_cast<int>(m_params.people->size() * (1.0f - f)));
         }
 
         Record::IdType id = 0;
-        for (const auto& person : *m_people)
+        for (const auto& person : *m_params.people)
         {
             if (!dIsStudent(rng)) continue;
 
@@ -53,6 +55,5 @@ public:
     }
 
 private:
-    const Table<Person>* m_people;
-    float m_studentSaturation;
+    Params m_params;
 };
