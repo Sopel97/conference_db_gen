@@ -7,6 +7,10 @@
     "numPeople" : 10000,
     "numCompanies" : 100,
 
+    "minConferenceNameLength" : 20,
+    "maxOptimalConferenceNameLength" : 35,
+    "maxConferenceNameLength" : 45,
+
     "minConferenceYear" : 2014,
     "maxConferenceYear" : 2017,
     "avgNumConferencesPerMonth" : 2,
@@ -72,7 +76,6 @@
     "minConferenceDayStartOffset" : {"hours" : 8},
     "maxConferenceDayStartOffset" : {"hours" : 12},
     "conferenceDayStartDateRounding" : {"hours" : 1},
-    "percentConferenceDaySpotsReserved" : 0.2,
 
     "minConferenceDayPrice" : 10.0,
     "maxConferenceDayPrice" : 50.0,
@@ -98,6 +101,9 @@
     "maxNumWorkshopSpotsRelativeToConferenceDay" : 1.0,
     "workshopStartDateRounding" : {"minutes" : 5},
     "percentWorkshopSpotsReserved" : 0.2,
+
+    "percentConferenceDayFillFromEarlyReservations" : 0.8,
+    "avgEarlyReservationsPerConferenceDay" : 5,
 
     "conferenceDayPaymentSaturation" : 0.9,
     "percentFillPerConferenceDayPriceRange" : 0.7,

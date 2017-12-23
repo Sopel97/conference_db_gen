@@ -37,7 +37,6 @@ public:
         float minNumSpotsRelative;
         float maxNumSpotsRelative;
         Milliseconds dateRounding;
-        float percentSpotsReserved;
     };
 
     TableGenerator(const Params& params);
@@ -66,7 +65,6 @@ public:
                 const Price price = dHasPrice(rng) ? m_params.priceGenerator(rng) : Price(0);
 
                 const int numSpots = static_cast<int>(dNumSpotsRelative(rng) * conferenceDay.numSpots());
-                const int numSpotsReserved = static_cast<int>(numSpots * m_params.percentSpotsReserved);
 
                 workshops.add(
                     Workshop(
@@ -76,8 +74,6 @@ public:
                         workshopStartDate,
                         workshopEndDate,
                         numSpots,
-                        numSpotsReserved,
-                        true, // all reservations are assumed to be filled
                         price.rounded(Price::centsPerUnit)
                     )
                 );

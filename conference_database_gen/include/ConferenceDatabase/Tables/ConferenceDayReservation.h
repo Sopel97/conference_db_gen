@@ -10,6 +10,7 @@
 
 #include "Participant.h"
 #include "ConferenceDay.h"
+#include "ConferenceDayEarlyReservation.h"
 
 class ConferenceDayReservation : public Record
 {
@@ -21,6 +22,7 @@ public:
         class TParticipant, 
         class TConferenceDay,
         class TDate,
+        class TConferenceDayEarlyReservtion,
         class TCharge,
         class TPaidAmount
     >
@@ -29,6 +31,7 @@ public:
         TParticipant&& participant,
         TConferenceDay&& conferenceDay, 
         TDate&& date,
+        TConferenceDayEarlyReservtion&& conferenceDayEarlyReservation,
         TCharge&& charge, 
         TPaidAmount&& paidAmount
     ) :
@@ -36,6 +39,7 @@ public:
         m_participant(std::forward<TParticipant>(participant)),
         m_conferenceDay(std::forward<TConferenceDay>(conferenceDay)),
         m_date(std::forward<TDate>(date)),
+        m_conferenceDayEarlyReservation(std::forward<TConferenceDayEarlyReservtion>(conferenceDayEarlyReservation)),
         m_charge(std::forward<TCharge>(charge)),
         m_paidAmount(std::forward<TPaidAmount>(paidAmount))
     {
@@ -54,6 +58,7 @@ public:
     ForeignKey<Participant> participant() const;
     ForeignKey<ConferenceDay> conferenceDay() const;
     const DateTime& date() const;
+    std::optional<ForeignKey<ConferenceDayEarlyReservation>> conferenceDayEarlyReservation() const;
     Price charge() const;
     Price paidAmount() const;
 
@@ -63,6 +68,7 @@ private:
     IdType m_conferenceDayReservationId;
     ForeignKey<Participant> m_participant;
     ForeignKey<ConferenceDay> m_conferenceDay;
+    std::optional<ForeignKey<ConferenceDayEarlyReservation>> m_conferenceDayEarlyReservation;
     DateTime m_date;
     Price m_charge;
     Price m_paidAmount;

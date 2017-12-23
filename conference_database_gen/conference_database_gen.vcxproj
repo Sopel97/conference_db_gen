@@ -161,6 +161,7 @@
   <ItemGroup>
     <ClCompile Include="conference_database_gen.cpp" />
     <ClCompile Include="src\ConferenceDatabase\ConferenceDatabase.cpp" />
+    <ClCompile Include="src\ConferenceDatabase\Tables\ConferenceDayEarlyReservation.cpp" />
     <ClCompile Include="src\ConferenceDatabase\Tables\Customer.cpp" />
     <ClCompile Include="src\ConferenceDatabase\Tables\Company.cpp" />
     <ClCompile Include="src\ConferenceDatabase\Tables\Conference.cpp" />
@@ -178,6 +179,7 @@
     <ClCompile Include="src\Database\Record.cpp" />
     <ClCompile Include="src\Database\Table.cpp" />
     <ClCompile Include="src\DateTime.cpp" />
+    <ClCompile Include="src\Generators\ConferenceDayEarlyReservationTableGenerator.cpp" />
     <ClCompile Include="src\Generators\CustomerTableGenerator.cpp" />
     <ClCompile Include="src\Generators\CompanyTableGenerator.cpp" />
     <ClCompile Include="src\Generators\ConferenceDatabaseGenerator.cpp" />
@@ -201,6 +203,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\ConferenceDatabase\ConferenceDatabase.h" />
+    <ClInclude Include="include\ConferenceDatabase\Tables\ConferenceDayEarlyReservation.h" />
     <ClInclude Include="include\ConferenceDatabase\Tables\Customer.h" />
     <ClInclude Include="include\ConferenceDatabase\Tables\Company.h" />
     <ClInclude Include="include\ConferenceDatabase\Tables\Conference.h" />
@@ -220,6 +223,7 @@
     <ClInclude Include="include\Database\Record.h" />
     <ClInclude Include="include\Database\Table.h" />
     <ClInclude Include="include\DateTime.h" />
+    <ClInclude Include="include\Generators\ConferenceDayEarlyReservationTableGenerator.h" />
     <ClInclude Include="include\Generators\CustomerTableGenerator.h" />
     <ClInclude Include="include\Generators\Common.h" />
     <ClInclude Include="include\Generators\CompanyTableGenerator.h" />

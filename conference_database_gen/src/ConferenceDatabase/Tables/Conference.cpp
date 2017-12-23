@@ -21,6 +21,11 @@ ForeignKey<Customer> Conference::customer() const
     return m_customer;
 }
 
+const std::string& Conference::conferenceName() const
+{
+    return m_conferenceName;
+}
+
 const DateTime& Conference::startDate() const
 {
     return m_startDate;
@@ -31,6 +36,7 @@ CsvRecord Conference::toCsvRecord() const
     return CsvRecord(
         std::to_string(m_conferenceId), 
         std::to_string(m_customer.primaryKey()), 
+        m_conferenceName,
         m_startDate.toString()
     );
 }

@@ -31,7 +31,6 @@ public:
         Milliseconds minStartOffset;
         Milliseconds maxStartOffset;
         Milliseconds dateRounding;
-        float percentSpotsReserved;
     };
 
     TableGenerator(const Params& params);
@@ -62,16 +61,13 @@ public:
             for (int d = 0; d < numDays; ++d)
             {
                 const int numActualSpots = dNumSpotsActual(rng);
-                const int numSpotsReserved = static_cast<int>(numActualSpots * m_params.percentSpotsReserved);
 
                 conferenceDays.add(
                     ConferenceDay(
                         id++,
                         conference,
                         (conference.startDate() + Days{ d } +startOffsetGenerator(rng)).rounded(m_params.dateRounding),
-                        numActualSpots,
-                        numSpotsReserved,
-                        true // all reservations are assumed to be filled
+                        numActualSpots
                     )
                 );
             }

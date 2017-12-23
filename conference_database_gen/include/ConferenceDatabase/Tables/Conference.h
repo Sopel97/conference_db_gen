@@ -13,10 +13,11 @@ class Conference : public Record
 public:
     using PrimaryKeyType = IdType;
 
-    template <class TConferenceId, class TCustomer, class TStartDate>
-    Conference(TConferenceId&& conferenceId, TCustomer&& customer, TStartDate&& startDate) :
+    template <class TConferenceId, class TCustomer, class TName, class TStartDate>
+    Conference(TConferenceId&& conferenceId, TCustomer&& customer, TName&& conferenceName, TStartDate&& startDate) :
         m_conferenceId(std::forward<TConferenceId>(conferenceId)),
         m_customer(std::forward<TCustomer>(customer)),
+        m_conferenceName(std::forward<TName>(conferenceName)),
         m_startDate(std::forward<TStartDate>(startDate))
     {
 
@@ -32,6 +33,7 @@ public:
 
     IdType conferenceId() const;
     ForeignKey<Customer> customer() const;
+    const std::string& conferenceName() const;
     const DateTime& startDate() const;
 
     CsvRecord toCsvRecord() const override;
@@ -39,5 +41,6 @@ public:
 private:
     IdType m_conferenceId;
     ForeignKey<Customer> m_customer;
+    std::string m_conferenceName;
     DateTime m_startDate;
 };

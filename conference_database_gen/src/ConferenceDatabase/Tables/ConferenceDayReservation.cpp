@@ -32,6 +32,11 @@ const DateTime& ConferenceDayReservation::date() const
     return m_date;
 }
 
+std::optional<ForeignKey<ConferenceDayEarlyReservation>> ConferenceDayReservation::conferenceDayEarlyReservation() const
+{
+    return m_conferenceDayEarlyReservation;
+}
+
 Price ConferenceDayReservation::charge() const
 {
     return m_charge;
@@ -49,6 +54,7 @@ CsvRecord ConferenceDayReservation::toCsvRecord() const
         std::to_string(m_participant.primaryKey()),
         std::to_string(m_conferenceDay.primaryKey()),
         m_date.toString(),
+        m_conferenceDayEarlyReservation.has_value() ? std::to_string(m_conferenceDayEarlyReservation.value().primaryKey()) : "NULL",
         m_charge.toString(),
         m_paidAmount.toString()
     );

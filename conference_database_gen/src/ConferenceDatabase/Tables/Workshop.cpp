@@ -47,16 +47,6 @@ Price Workshop::entryPrice() const
     return m_entryPrice;
 }
 
-int Workshop::numReservedSpots() const
-{
-    return m_numReservedSpots;
-}
-
-bool Workshop::isReservationFilled() const
-{
-    return m_isReservationFilled;
-}
-
 CsvRecord Workshop::toCsvRecord() const
 {
     return CsvRecord(
@@ -66,8 +56,6 @@ CsvRecord Workshop::toCsvRecord() const
         m_startDate.toString(),
         m_endDate.toString(),
         std::to_string(m_numSpots),
-        std::to_string(m_numReservedSpots),
-        std::to_string(m_isReservationFilled),
         m_entryPrice.toString()
     );
 }

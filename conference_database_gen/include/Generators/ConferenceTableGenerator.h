@@ -10,6 +10,7 @@
 #include "TableGenerator.h"
 
 #include "DateTimeGenerator.h"
+#include "NameGenerator.h"
 #include "Common.h"
 
 #include "DateTime.h"
@@ -24,6 +25,7 @@ public:
     struct Params
     {
         const Table<Customer>* customers;
+        NameGenerator nameGenerator;
         DateTimeGenerator startingDateGenerator;
         int numConferences;
         Milliseconds dateRounding;
@@ -42,8 +44,9 @@ public:
         {
             conferences.add(
                 Conference(
-                    id++, 
+                    id++,
                     Common::chooseSqr(m_params.customers->records(), rng),
+                    m_params.nameGenerator(rng),
                     m_params.startingDateGenerator(rng).rounded(m_params.dateRounding)
                 )
             );

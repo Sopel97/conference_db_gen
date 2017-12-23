@@ -4,6 +4,7 @@
 #include <algorithm>
 
 #include "ConferenceDatabase/Tables/ConferenceDayReservation.h"
+#include "ConferenceDatabase/Tables/ConferenceDayEarlyReservation.h"
 #include "ConferenceDatabase/Tables/ConferenceDay.h"
 #include "ConferenceDatabase/Tables/PriceRange.h"
 #include "ConferenceDatabase/Tables/Student.h"
@@ -23,9 +24,9 @@ public:
     struct Params
     {
         const Table<Participant>* participants;
-        const Table<ConferenceDay>* conferenceDays;
         const Table<PriceRange>* priceRanges;
         const Table<Student>* students;
+        const Table<ConferenceDayEarlyReservation>* earlyReservations;
         float paymentSaturation;
         Milliseconds priceRangeDuration;
         float percentFillPerPriceRange;
@@ -43,14 +44,6 @@ public:
         std::bernoulli_distribution dIsPaid(m_params.paymentSaturation);
 
         Table<ConferenceDayReservation> conferenceDayReservations;
-        {
-            int maxReservations = 0;
-            for (const auto& conferenceDay : *m_params.conferenceDays)
-            {
-                maxReservations += conferenceDay.numSpots();
-            }
-            conferenceDayReservations.reserve(maxReservations);
-        }
 
         std::vector<int> participantIndices; // used for choosing a set of participants for each day
         participantIndices.reserve(m_params.participants->size());
@@ -60,49 +53,67 @@ public:
         }
 
         Record::IdType id = 0;
-        for (auto priceRangeIter = m_params.priceRanges->begin(); priceRangeIter != m_params.priceRanges->end();)
+        for (auto resIter = m_params.earlyReservations->begin(); resIter != m_params.earlyReservations->end();)
         {
-            auto currentConferenceDay = priceRangeIter->conferenceDay();
-            auto lastConferenceDay = currentConferenceDay;
+            const auto& earlyReservation = *resIter;
+            const ForeignKey<ConferenceDay> conferenceDay = earlyReservation.conferenceDay();
+            const int numConferenceDaySpots = conferenceDay->numSpots();
 
-            int numFreeSpots = currentConferenceDay->numSpots();
+            shuffleFirstN(participantIndices, rng, numConferenceDaySpots); // we only know an upper bound
 
-            shuffleFirstN(participantIndices, rng, numFreeSpots);
+            Table<PriceRange> priceRanges = m_params.priceRanges->queryOrdered(&PriceRange::conferenceDay, conferenceDay);
 
             int participantIndexIndex = 0;
-            while (priceRangeIter != m_params.priceRanges->end() && currentConferenceDay == lastConferenceDay)
+            for (; resIter != m_params.earlyReservations->end() && resIter->conferenceDay() == conferenceDay; ++resIter)
             {
-                const auto& priceRange = *priceRangeIter;
+                const auto& earlyReservation = *resIter;
 
-                // one price range at one the same conference day
-                const int numSpotsToFill = static_cast<int>(numFreeSpots * m_params.percentFillPerPriceRange);
-                numFreeSpots -= numSpotsToFill;
+                const int numSpots = earlyReservation.numReservedSpots();
 
-                for (int i = 0; i < numSpotsToFill; ++i)
+                int numFreeSpots = numSpots;
+                for(auto priceRangeIter = priceRanges.begin(); priceRangeIter != priceRanges.end(); ++priceRangeIter)
                 {
-                    const auto& participant = (*m_params.participants)[participantIndices[participantIndexIndex++]];
+                    const auto& priceRange = *priceRangeIter;
 
-                    const DateTime reservationDate = priceRange.startDate() - reservationTimeOffsetGenerator(rng);
-                    const bool isStudent = m_params.students->existsOrdered(&Student::primaryKey, participant.primaryKey());
-                    const Price charge = Price(priceRange.price().units() * 
-                        (isStudent ? (1.0f - m_params.studentDiscount) : 1.0f)
-                    );
+                    // one price range at one the same conference day
+                    int numSpotsToFill = static_cast<int>(numFreeSpots * m_params.percentFillPerPriceRange);
+                    if (numSpotsToFill <= 0)
+                    {
+                        if (numFreeSpots > 0)
+                        {
+                            numSpotsToFill = 1;
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
 
-                    conferenceDayReservations.add(
-                        ConferenceDayReservation(
-                            id++,
-                            participant,
-                            currentConferenceDay,
-                            reservationDate,
-                            charge,
-                            dIsPaid(rng) ? charge : Price(0)
-                        )
-                    );
+                    numFreeSpots -= numSpotsToFill;
+
+                    for (int i = 0; i < numSpotsToFill; ++i)
+                    {
+                        const auto& participant = (*m_params.participants)[participantIndices[participantIndexIndex++]];
+
+                        const DateTime reservationDate = priceRange.startDate() - reservationTimeOffsetGenerator(rng);
+                        const bool isStudent = m_params.students->existsOrdered(&Student::primaryKey, participant.primaryKey());
+                        const Price charge = Price(priceRange.price().units() *
+                            (isStudent ? (1.0f - m_params.studentDiscount) : 1.0f)
+                        );
+
+                        conferenceDayReservations.add(
+                            ConferenceDayReservation(
+                                id++,
+                                participant,
+                                conferenceDay,
+                                reservationDate,
+                                earlyReservation,
+                                charge,
+                                dIsPaid(rng) ? charge : Price(0)
+                            )
+                        );
+                    }
                 }
-
-                lastConferenceDay = currentConferenceDay;
-                ++priceRangeIter;
-                currentConferenceDay = priceRangeIter->conferenceDay();
             }
         }
 
@@ -117,7 +128,7 @@ private:
     {
         std::uniform_int_distribution<int> dIndex(0, values.size() - 1);
 
-        for(int i = 0; i < n; ++i)
+        for (int i = 0; i < n; ++i)
         {
             const int i2 = dIndex(rng);
             if (i == i2) continue;

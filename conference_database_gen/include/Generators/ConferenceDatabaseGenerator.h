@@ -15,6 +15,7 @@
 #include "ConferenceDayTableGenerator.h"
 #include "PriceRangeTableGenerator.h"
 #include "WorkshopTableGenerator.h"
+#include "ConferenceDayEarlyReservationTableGenerator.h"
 #include "ConferenceDayReservationTableGenerator.h"
 #include "WorkshopReservationTableGenerator.h"
 #include "NameGenerator.h"
@@ -37,6 +38,10 @@ public:
 
         int numPeople;
         int numCompanies;
+
+        int minConferenceNameLength;
+        int maxOptimalConferenceNameLength;
+        int maxConferenceNameLength;
 
         Years minConferenceYear;
         Years maxConferenceYear;
@@ -103,7 +108,6 @@ public:
         Milliseconds minConferenceDayStartOffset;
         Milliseconds maxConferenceDayStartOffset;
         Milliseconds conferenceDayStartDateRounding;
-        float percentConferenceDaySpotsReserved;
 
         Price minConferenceDayPrice;
         Price maxConferenceDayPrice;
@@ -128,7 +132,9 @@ public:
         float minNumWorkshopSpotsRelativeToConferenceDay;
         float maxNumWorkshopSpotsRelativeToConferenceDay;
         Milliseconds workshopStartDateRounding;
-        float percentWorkshopSpotsReserved;
+
+        float percentConferenceDayFillFromEarlyReservations;
+        int avgEarlyReservationsPerConferenceDay;
 
         float conferenceDayPaymentSaturation;
         float percentFillPerConferenceDayPriceRange;
@@ -271,10 +277,14 @@ public:
             m_params.participantsWithCompanySaturation
         })(rng);
 
+        DictionaryType conferenceNameDictionary = createConferenceNameDictionary();
+        NameGenerator conferenceNameGenerator(conferenceNameDictionary, m_params.minConferenceNameLength, m_params.maxOptimalConferenceNameLength, m_params.maxConferenceNameLength);
+
         DateTimeGenerator conferenceStartDateGenerator(DateTime(m_params.minConferenceYear), DateTime(m_params.maxConferenceYear));
 
         const auto& conferences = database.table<Conference>() = TableGenerator<Conference>({
             &customers,
+            conferenceNameGenerator,
             conferenceStartDateGenerator,
             numConferences,
             m_params.conferenceStartDateRounding
@@ -288,8 +298,7 @@ public:
             m_params.percentConferenceDaySpotsVariation,
             m_params.minConferenceDayStartOffset,
             m_params.maxConferenceDayStartOffset,
-            m_params.conferenceDayStartDateRounding,
-            m_params.percentConferenceDaySpotsReserved
+            m_params.conferenceDayStartDateRounding
         })(rng);
 
         const auto& priceRanges = database.table<PriceRange>() = TableGenerator<PriceRange>({
@@ -315,15 +324,21 @@ public:
             m_params.avgNumWorkshopsPerDay,
             m_params.minNumWorkshopSpotsRelativeToConferenceDay,
             m_params.maxNumWorkshopSpotsRelativeToConferenceDay,
-            m_params.workshopStartDateRounding,
-            m_params.percentWorkshopSpotsReserved
+            m_params.workshopStartDateRounding
+        })(rng);
+
+        const auto& conferenceDayEarlyReservations = database.table<ConferenceDayEarlyReservation>() = TableGenerator<ConferenceDayEarlyReservation>({
+            &conferenceDays,
+            &companies,
+            m_params.percentConferenceDayFillFromEarlyReservations,
+            m_params.avgEarlyReservationsPerConferenceDay
         })(rng);
 
         const auto& conferenceDayReservations = database.table<ConferenceDayReservation>() = TableGenerator<ConferenceDayReservation>({
             &participants,
-            &conferenceDays,
             &priceRanges,
             &students,
+            &conferenceDayEarlyReservations,
             m_params.conferenceDayPaymentSaturation,
             m_params.paymentIncreaseAfter, // same as in price ranges
             m_params.percentFillPerConferenceDayPriceRange,
@@ -385,6 +400,10 @@ private:
     static DictionaryType createCompanyNameDictionary()
     {
         return createDictionary("training_data/company_names.txt");
+    }
+    static DictionaryType createConferenceNameDictionary()
+    {
+        return createDictionary("training_data/conference_names.txt");
     }
     static DictionaryType createFirstNameDictionary()
     {

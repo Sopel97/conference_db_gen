@@ -128,8 +128,8 @@ public:
             m_records.begin(),
             m_records.end(),
             value,
-            [Getter](const RecordType& lhs, const TValue& rhs) {
-            return (lhs.*Getter)() < rhs;
+            [Getter](const TValue& lhs, const RecordType& rhs) {
+            return lhs < (rhs.*Getter)();
         }
         );
 
