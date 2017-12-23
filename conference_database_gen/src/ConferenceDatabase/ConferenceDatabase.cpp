@@ -17,6 +17,7 @@ const ConferenceDatabase::NameArrayType& ConferenceDatabase::tableNames() const
             "Workshops",
             "ConferenceDayEarlyReservations",
             "ConferenceDayReservations",
+            "WorkshopEarlyReservations",
             "WorkshopReservations"
         };
     }();
@@ -71,6 +72,10 @@ const Table<ConferenceDayEarlyReservation>& ConferenceDatabase::conferenceDayEar
 const Table<ConferenceDayReservation>& ConferenceDatabase::conferenceDayReservations() const
 {
     return table<ConferenceDayReservation>();
+}
+const Table<WorkshopEarlyReservation>& ConferenceDatabase::workshopEarlyReservations() const
+{
+    return table<WorkshopEarlyReservation>();
 }
 const Table<WorkshopReservation>& ConferenceDatabase::workshopReservations() const
 {

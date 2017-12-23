@@ -110,6 +110,8 @@
     "studentConferenceDayDiscount" : 0.3,
     "maxConferenceDayReservationTimeOffset" : {"days" : 8},
 
+    "avgNumWorkshopsPerPerson" : 2,
+
     "workshopPaymentSaturation" : 0.9,
     "workshopSpotSaturation" : 0.9,
     "minOffsetFromConferenceDayReservation" : {"minutes" : 1},

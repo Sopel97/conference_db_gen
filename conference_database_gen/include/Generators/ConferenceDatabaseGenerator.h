@@ -17,6 +17,7 @@
 #include "WorkshopTableGenerator.h"
 #include "ConferenceDayEarlyReservationTableGenerator.h"
 #include "ConferenceDayReservationTableGenerator.h"
+#include "WorkshopEarlyReservationTableGenerator.h"
 #include "WorkshopReservationTableGenerator.h"
 #include "NameGenerator.h"
 #include "MarkovChainsDictionary.h"
@@ -141,8 +142,9 @@ public:
         float studentConferenceDayDiscount;
         Milliseconds maxConferenceDayReservationTimeOffset;
 
+        int avgNumWorkshopsPerPerson;
+
         float workshopPaymentSaturation;
-        float workshopSpotSaturation;
         Milliseconds minOffsetFromConferenceDayReservation;
         Milliseconds maxOffsetFromConferenceDayReservation;
     };
@@ -346,12 +348,16 @@ public:
             m_params.maxConferenceDayReservationTimeOffset
         })(rng);
 
+        const auto& workshopEarlyReservations = database.table<WorkshopEarlyReservation>() = TableGenerator<WorkshopEarlyReservation>({
+            &conferenceDayEarlyReservations,
+            &workshops,
+            m_params.avgNumWorkshopsPerPerson
+        })(rng);
+
         const auto& workshopReservations = database.table<WorkshopReservation>() = TableGenerator<WorkshopReservation>({
             &conferenceDayReservations,
-            &conferenceDays,
-            &workshops,
+            &workshopEarlyReservations,
             m_params.workshopPaymentSaturation,
-            m_params.workshopSpotSaturation,
             m_params.minOffsetFromConferenceDayReservation,
             m_params.maxOffsetFromConferenceDayReservation
         })(rng);

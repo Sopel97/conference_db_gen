@@ -16,6 +16,15 @@ Record::IdType WorkshopReservation::workshopReservationId() const
 {
     return m_workshopReservationId;
 }
+ForeignKey<ConferenceDayReservation> WorkshopReservation::conferenceDayReservation() const
+{
+    return m_conferenceDayReservation;
+}
+
+std::optional<ForeignKey<WorkshopEarlyReservation>> WorkshopReservation::workshopEarlyReservation() const
+{
+    return m_workshopEarlyReservation;
+}
 
 ForeignKey<Participant> WorkshopReservation::participant() const
 {
@@ -46,6 +55,8 @@ CsvRecord WorkshopReservation::toCsvRecord() const
 {
     return CsvRecord(
         std::to_string(m_workshopReservationId),
+        std::to_string(m_conferenceDayReservation->primaryKey()),
+        m_workshopEarlyReservation.has_value() ? std::to_string(m_workshopEarlyReservation.value()->primaryKey()) : "NULL",
         std::to_string(m_participant.primaryKey()),
         std::to_string(m_workshop.primaryKey()),
         m_date.toString(),

@@ -6,6 +6,7 @@
 #include "ConferenceDatabase/Tables/ConferenceDayReservation.h"
 #include "ConferenceDatabase/Tables/ConferenceDay.h"
 #include "ConferenceDatabase/Tables/WorkshopReservation.h"
+#include "ConferenceDatabase/Tables/WorkshopEarlyReservation.h"
 #include "ConferenceDatabase/Tables/Workshop.h"
 #include "ConferenceDatabase/Tables/Participant.h"
 #include "Database/Table.h"
@@ -24,80 +25,69 @@ public:
     struct Params
     {
         const Table<ConferenceDayReservation>* conferenceDayReservations;
-        const Table<ConferenceDay>* conferenceDays;
-        const Table<Workshop>* workshops;
+        const Table<WorkshopEarlyReservation>* workshopEarlyReservations;
         float paymentSaturation;
-        float spotSaturation;
         Milliseconds minOffsetFromDayReservation;
         Milliseconds maxOffsetFromDayReservation;
     };
 
     TableGenerator(const Params& params);
 
+    // we can't really ensure that exact people being assigned to conference day by company A are the same as those assigned to workshops by company A
+    // in other words people from different companies' early day reservations are mixed here
+    // it is due to the fact that these follow from logical 
     template <class TRng>
     Table<WorkshopReservation> operator()(TRng& rng) const
     {
         Table<WorkshopReservation> workshopReservations;
-        {
-            int maxWorkshopReservations = 0;
-            for (const auto& workshop : *m_params.workshops)
-            {
-                maxWorkshopReservations += workshop.numSpots();
-            }
-            workshopReservations.reserve(maxWorkshopReservations);
-        }
 
         DurationGenerator offsetFromDayReservationGenerator(m_params.minOffsetFromDayReservation, m_params.maxOffsetFromDayReservation);
         std::bernoulli_distribution dIsPaid(m_params.paymentSaturation);
 
         Record::IdType id = 0;
-        for (const auto& conferenceDay : *m_params.conferenceDays)
+        for (auto iter = m_params.workshopEarlyReservations->begin(); iter != m_params.workshopEarlyReservations->end();)
         {
-            const int firstReservationIndex = m_params.conferenceDayReservations->findFirstIndexOrdered(&ConferenceDayReservation::conferenceDay, conferenceDay);
-            const int firstWorkshopIndex = m_params.workshops->findFirstIndexOrdered(&Workshop::conferenceDay, conferenceDay);
+            const auto& workshopEarlyReservation = *iter;
+            const auto& conferenceDayEarlyReservation = workshopEarlyReservation.conferenceDayEarlyReservation();
+            const auto& conferenceDay = conferenceDayEarlyReservation->conferenceDay();
+            const auto& company = workshopEarlyReservation.company();
 
-            // reservations and workshops are ordered by conference day id so we can loop through them
-            // until we hit a res/workshop from next day
-            int reservationIndex = firstReservationIndex;
-            int workshopIndex = firstWorkshopIndex;
-            for (;;)
+            Table<ConferenceDayReservation> conferenceDayReservations = m_params.conferenceDayReservations->queryOrdered(&ConferenceDayReservation::conferenceDay, conferenceDay);
+            Table<ConferenceDayReservation> conferenceDayReservationsFromCompany;
+            for (const auto& conferenceDayReservation : conferenceDayReservations)
             {
-                if (workshopIndex >= m_params.workshops->size()) break;
+                if (conferenceDayReservation.conferenceDayEarlyReservation().has_value()
+                    && conferenceDayReservation.conferenceDayEarlyReservation().value()->company() != company) continue;
 
-                const Workshop& workshop = (*m_params.workshops)[workshopIndex];
-                if (workshop.conferenceDay() != conferenceDay) break;
+                conferenceDayReservationsFromCompany.add(conferenceDayReservation);
+            }
 
-                // fill each workshop
-                int spotsLeftInWorkshop = static_cast<int>(workshop.numSpots() * m_params.spotSaturation);
-                for (int i = 0; i < spotsLeftInWorkshop; ++i)
+            int conferenceDayReservationIdx = 0;
+            for (; iter != m_params.workshopEarlyReservations->end() && iter->conferenceDayEarlyReservation()->conferenceDay() == conferenceDay; ++iter)
+            {
+                const auto& workshopEarlyReservation = *iter;
+                const int numSpots = workshopEarlyReservation.numReservedSpots();
+                for (int i = 0; i < numSpots; ++i, ++conferenceDayReservationIdx)
                 {
-                    // one participant may be in many workshops
-                    // here we loop on the participants if there is too few
-                    if (reservationIndex >= m_params.conferenceDayReservations->size() || (*m_params.conferenceDayReservations)[reservationIndex].conferenceDay() != conferenceDay)
-                    {
-                        reservationIndex = firstReservationIndex;
-                    }
+                    conferenceDayReservationIdx %= conferenceDayReservationsFromCompany.size();
+                    const auto& conferenceDayReservationLocal = conferenceDayReservationsFromCompany[conferenceDayReservationIdx];
+                    const auto& conferenceDayReservation = (*m_params.conferenceDayReservations)[conferenceDayReservationLocal.primaryKey()];
 
-                    const ConferenceDayReservation& reservation = (*m_params.conferenceDayReservations)[reservationIndex];
-
-                    //add reservation to current workshop
-
-                    const Price charge = workshop.entryPrice();
+                    const auto& workshop = workshopEarlyReservation.workshop();
+                    const Price charge = workshop->entryPrice();
                     workshopReservations.add(
                         WorkshopReservation(
                             id++,
-                            reservation.participant(),
+                            conferenceDayReservation,
+                            workshopEarlyReservation,
+                            conferenceDayReservation.participant(),
                             workshop,
-                            reservation.date() + offsetFromDayReservationGenerator(rng),
+                            conferenceDayReservation.date() + offsetFromDayReservationGenerator(rng),
                             charge,
                             dIsPaid(rng) ? charge : Price(0)
                         )
                     );
-
-                    ++reservationIndex;
                 }
-
-                ++workshopIndex;
             }
         }
 

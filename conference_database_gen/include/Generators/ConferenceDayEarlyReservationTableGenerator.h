@@ -55,6 +55,8 @@ public:
 
             for (const int reservation : reservations)
             {
+                if (reservation == 0) continue;
+
                 ForeignKey<Company> company = Common::chooseSqr(m_params.companies->records(), rng);
 
                 conferenceDayReservations.add(

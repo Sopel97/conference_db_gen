@@ -16,6 +16,7 @@
 #include "ConferenceDatabase/Tables/ConferenceDayEarlyReservation.h"
 #include "ConferenceDatabase/Tables/ConferenceDayReservation.h"
 #include "ConferenceDatabase/Tables/Workshop.h"
+#include "ConferenceDatabase/Tables/WorkshopEarlyReservation.h"
 #include "ConferenceDatabase/Tables/WorkshopReservation.h"
 #include "ConferenceDatabase/Tables/PriceRange.h"
 #include "ConferenceDatabase/Tables/Participant.h"
@@ -34,6 +35,7 @@ class ConferenceDatabase :
         Workshop,
         ConferenceDayEarlyReservation,
         ConferenceDayReservation,
+        WorkshopEarlyReservation,
         WorkshopReservation
     >
 {
@@ -55,6 +57,7 @@ public:
     const Table<Workshop>& workshops() const;
     const Table<ConferenceDayEarlyReservation>& conferenceDayEarlyReservations() const;
     const Table<ConferenceDayReservation>& conferenceDayReservations() const;
+    const Table<WorkshopEarlyReservation>& workshopEarlyReservations() const;
     const Table<WorkshopReservation>& workshopReservations() const;
 
 private:

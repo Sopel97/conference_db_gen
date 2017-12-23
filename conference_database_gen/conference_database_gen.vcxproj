@@ -173,6 +173,7 @@
     <ClCompile Include="src\ConferenceDatabase\Tables\PriceRange.cpp" />
     <ClCompile Include="src\ConferenceDatabase\Tables\Student.cpp" />
     <ClCompile Include="src\ConferenceDatabase\Tables\Workshop.cpp" />
+    <ClCompile Include="src\ConferenceDatabase\Tables\WorkshopEarlyReservation.cpp" />
     <ClCompile Include="src\ConferenceDatabase\Tables\WorkshopReservation.cpp" />
     <ClCompile Include="src\Csv\CsvDocument.cpp" />
     <ClCompile Include="src\Csv\CsvRecord.cpp" />
@@ -197,6 +198,7 @@
     <ClCompile Include="src\Generators\PriceGenerator.cpp" />
     <ClCompile Include="src\Generators\PriceRangeTableGenerator.cpp" />
     <ClCompile Include="src\Generators\StudentTableGenerator.cpp" />
+    <ClCompile Include="src\Generators\WorkshopEarlyReservationTableGenerator.cpp" />
     <ClCompile Include="src\Generators\WorkshopReservationTableGenerator.cpp" />
     <ClCompile Include="src\Generators\WorkshopTableGenerator.cpp" />
     <ClCompile Include="src\Price.cpp" />
@@ -215,6 +217,7 @@
     <ClInclude Include="include\ConferenceDatabase\Tables\PriceRange.h" />
     <ClInclude Include="include\ConferenceDatabase\Tables\Student.h" />
     <ClInclude Include="include\ConferenceDatabase\Tables\Workshop.h" />
+    <ClInclude Include="include\ConferenceDatabase\Tables\WorkshopEarlyReservation.h" />
     <ClInclude Include="include\ConferenceDatabase\Tables\WorkshopReservation.h" />
     <ClInclude Include="include\Csv\CsvDocument.h" />
     <ClInclude Include="include\Csv\CsvRecord.h" />
@@ -244,6 +247,7 @@
     <ClInclude Include="include\Generators\StudentTableGenerator.h" />
     <ClInclude Include="include\Generators\TableGenerator.h" />
     <ClInclude Include="include\Generators\ConferenceDayTableGenerator.h" />
+    <ClInclude Include="include\Generators\WorkshopEarlyReservationTableGenerator.h" />
     <ClInclude Include="include\Generators\WorkshopReservationTableGenerator.h" />
     <ClInclude Include="include\Generators\WorkshopTableGenerator.h" />
     <ClInclude Include="include\Price.h" />
