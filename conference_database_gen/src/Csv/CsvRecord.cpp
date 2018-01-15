@@ -23,6 +23,8 @@ std::string CsvRecord::toString() const
         }
         isFirst = false;
 
+        if (str == "NULL") continue;
+
         buffer += '\"';
         buffer += str;
         buffer += '\"';
@@ -41,6 +43,8 @@ std::ostream& operator<< (std::ostream& stream, const CsvRecord& record)
             stream << ',';
         }
         isFirst = false;
+
+        if (str == "NULL") continue;
 
         stream << '\"';
         stream << str;
